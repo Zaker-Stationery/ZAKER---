@@ -7,66 +7,68 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; color: #333; }
-        header { background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header { background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 30px 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .logo { width: 120px; height: auto; border-radius: 50%; border: 3px solid white; background: white; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         .container { padding: 15px; max-width: 800px; margin: auto; }
         .hero { background: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .category-title { color: #2c3e50; border-right: 5px solid #3498db; padding-right: 10px; margin: 25px 0 15px; }
+        .category-title { color: #2c3e50; border-right: 5px solid #3498db; padding-right: 10px; margin: 25px 0 15px; font-size: 1.5rem; }
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .product-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: 0.3s; }
+        .product-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
         .product-card:active { transform: scale(0.95); }
         .product-card h3 { font-size: 16px; margin: 10px 0; color: #444; }
-        .price { color: #27ae60; font-weight: bold; display: block; margin-bottom: 10px; }
-        .order-btn { background-color: #25d366; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 14px; display: inline-block; }
-        footer { background: #eee; text-align: center; padding: 20px; margin-top: 40px; font-size: 13px; color: #777; }
-        .location { color: #e74c3c; font-size: 14px; margin-top: 5px; }
+        .price { color: #27ae60; font-weight: bold; display: block; margin-bottom: 10px; font-size: 1.1rem; }
+        .order-btn { background-color: #25d366; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 14px; display: inline-block; font-weight: bold; }
+        footer { background: #2c3e50; text-align: center; padding: 25px; margin-top: 40px; font-size: 13px; color: white; }
+        .location { color: #e74c3c; font-size: 14px; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <header>
+    <img src="https://i.ibb.co/JjGYxZSd/logo.png" alt="ZAKER Logo" class="logo">
     <h1>ZAKER - ذاكر</h1>
-    <p>أدوات مكتبية - قرطاسية - كتب خارجية</p>
+    <p>أدوات مكتبية • قرطاسية • كتب خارجية</p>
 </header>
 
 <div class="container">
     <div class="hero">
         <h3>أهلاً بك في مكتبة ذاكر</h3>
         <p>كل ما يحتاجه الطالب في مكان واحد</p>
-        <div class="location">📍 الموقع: مدينة السلام، القاهرة</div>
+        <div class="location">📍 مدينة السلام، القاهرة</div>
     </div>
 
     <h2 class="category-title">الكتب الخارجية</h2>
     <div class="product-grid">
         <div class="product-card">
-            <h3>اسم الكتاب الخارجي</h3>
-            <span class="price">00.00 ج.م</span>
-            <a href="https://wa.me/201027021011?text=أريد طلب: اسم الكتاب" class="order-btn">اطلب واتساب</a>
+            <h3>كتب جميع المراحل</h3>
+            <span class="price">تواصل للسعر</span>
+            <a href="https://wa.me/201027021011?text=أريد الاستفسار عن الكتب الخارجية المتاحة" class="order-btn">اطلب عبر واتساب</a>
         </div>
         <div class="product-card">
-            <h3>كتاب مستوى آخر</h3>
-            <span class="price">00.00 ج.م</span>
-            <a href="https://wa.me/201027021011?text=أريد طلب: كتاب آخر" class="order-btn">اطلب واتساب</a>
+            <h3>ملازم وشيتات</h3>
+            <span class="price">حسب الطلب</span>
+            <a href="https://wa.me/201027021011?text=أريد طلب تصوير أو طباعة ملازم" class="order-btn">اطلب عبر واتساب</a>
         </div>
     </div>
 
     <h2 class="category-title">أدوات مكتبية وقرطاسية</h2>
     <div class="product-grid">
         <div class="product-card">
-            <h3>اسم المنتج (مثلاً طقم أقلام)</h3>
-            <span class="price">00.00 ج.م</span>
-            <a href="https://wa.me/201027021011?text=أريد طلب: طقم أقلام" class="order-btn">اطلب واتساب</a>
+            <h3>أقلام وأدوات كتابة</h3>
+            <span class="price">أسعار متفاوتة</span>
+            <a href="https://wa.me/201027021011?text=أريد طلب أدوات مكتبية" class="order-btn">اطلب عبر واتساب</a>
         </div>
         <div class="product-card">
-            <h3>كشكول سلك</h3>
-            <span class="price">00.00 ج.م</span>
-            <a href="https://wa.me/201027021011?text=أريد طلب: كشكول سلك" class="order-btn">اطلب واتساب</a>
+            <h3>كشاكيل ونوت بوك</h3>
+            <span class="price">أسعار متفاوتة</span>
+            <a href="https://wa.me/201027021011?text=أريد طلب كشاكيل" class="order-btn">اطلب عبر واتساب</a>
         </div>
     </div>
 </div>
 
 <footer>
     <p>جميع الحقوق محفوظة لمكتبة ZAKER &copy; 2026</p>
-    <p>تصميم وتطوير: Gemini AI</p>
+    <p>نتشرف بزيارتكم في مدينة السلام</p>
 </footer>
 
 </body>
