@@ -13,55 +13,21 @@
         .container { padding: 10px; max-width: 1000px; margin: auto; }
         .category-title { border-right: 4px solid var(--s); padding-right: 10px; margin: 15px 0; color: var(--p); font-size: 1.1rem; text-align: right; }
         
-        /* نظام الشبكة - منتجين في كل صف ثابت */
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 12px; 
-            margin-bottom: 20px;
-        }
+        /* نظام الشبكة للأدوات */
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         
-        .card { 
-            background: #fff; 
-            padding: 10px; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-            text-align: center; 
-            display: flex; 
-            flex-direction: column;
-        }
-
-        .img { width: 100%; height: 130px; object-fit: contain; margin-bottom: 8px; border-radius: 8px; }
-        .name { font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; min-height: 40px; color: #333; display: flex; align-items: center; justify-content: center; }
-        .price { color: #27ae60; font-weight: bold; margin-bottom: 8px; font-size: 0.95rem; }
-        .label { display: block; text-align: right; font-size: 0.7rem; margin-bottom: 3px; color: #666; font-weight: bold; }
+        .card { background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; }
+        .img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 8px; border-radius: 8px; }
+        .name { font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; min-height: 35px; color: #333; display: flex; align-items: center; justify-content: center; }
+        .price { color: #27ae60; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
+        .label { display: block; text-align: right; font-size: 0.7rem; margin-bottom: 2px; color: #666; font-weight: bold; }
         
-        select { 
-            width: 100%; 
-            padding: 5px; 
-            border-radius: 5px; 
-            border: 1px solid #ddd; 
-            margin-bottom: 10px; 
-            font-family: 'Cairo'; 
-            font-size: 0.75rem;
-            background: #fff;
-        }
+        select { width: 100%; padding: 4px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 8px; font-family: 'Cairo'; font-size: 0.75rem; background: #fff; }
+        .btn { background: var(--a); color: #fff; border: none; padding: 8px 2px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; font-size: 0.8rem; text-decoration: none; margin-top: auto; }
 
-        .btn { 
-            background: var(--a); 
-            color: #fff; 
-            border: none; 
-            padding: 10px 2px; 
-            border-radius: 8px; 
-            width: 100%; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 0.8rem;
-            text-decoration: none;
-            margin-top: auto;
-        }
-
-        .full-card { grid-column: 1 / span 2; background: #fff; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        /* تنسيق الأقسام الإضافية (تصوير - كتب) */
+        .service-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 10px; border-right: 5px solid var(--s); }
+        .service-btn { background: var(--s); color: #fff; padding: 10px; border-radius: 8px; display: block; text-decoration: none; font-weight: bold; margin-top: 10px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -72,7 +38,7 @@
 </header>
 
 <div class="container">
-    <h2 class="category-title">أدوات مكتبية وقرطاسية</h2>
+    <h2 class="category-title">قسم الأدوات المدرسية</h2>
     <div class="product-grid">
 
         <div class="card">
@@ -128,4 +94,42 @@
             <div class="name">مسطرة شفافة</div>
             <label class="label">المقاس:</label>
             <select id="cl">
-                <option value="20 سم" data
+                <option value="20 سم" data-p="5">20 سم - 5ج</option>
+                <option value="30 سم" data-p="10">30 سم - 10ج</option>
+            </select>
+            <button onclick="orderS('مسطرة شفافة', 'cl')" class="btn">طلب واتساب</button>
+        </div>
+
+    </div>
+
+    <h2 class="category-title">خدمات المكتبة والكتب</h2>
+    
+    <div class="service-card">
+        <div style="font-weight: bold; color: var(--p);">📸 تصوير ومستندات</div>
+        <div style="font-size: 0.8rem; color: #666;">تصوير أوراق - طباعة ألوان - سكانر - تغليف</div>
+        <a href="https://wa.me/201027021011?text=أريد الاستفسار عن خدمات التصوير والطباعة" class="service-btn">استفسار واتساب</a>
+    </div>
+
+    <div class="service-card">
+        <div style="font-weight: bold; color: var(--p);">📚 الكتب الخارجية</div>
+        <div style="font-size: 0.8rem; color: #666;">سلاح التلميذ - الأضواء - المعاصر - الامتحان</div>
+        <a href="https://wa.me/201027021011?text=أريد الاستفسار عن توافر كتب خارجية" class="service-btn" style="background: #27ae60;">طلب كتاب</a>
+    </div>
+</div>
+
+<script>
+    function order(n, p) {
+        let m = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + n + " بسعر " + p + " جنيه");
+        window.open("https://wa.me/201027021011?text=" + m);
+    }
+    function orderS(n, id) {
+        let s = document.getElementById(id);
+        let v = s.value;
+        let p = s.options[s.selectedIndex].getAttribute('data-p');
+        let m = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + n + " (" + v + ") بسعر " + p + " جنيه");
+        window.open("https://wa.me/201027021011?text=" + m);
+    }
+</script>
+
+</body>
+</html>
