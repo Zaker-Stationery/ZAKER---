@@ -11,13 +11,14 @@
         header { background: linear-gradient(135deg, var(--p), var(--s)); color: #fff; padding: 15px; text-align: center; }
         .logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #fff; background: #fff; margin-bottom: 5px; }
         .container { padding: 10px; max-width: 1000px; margin: auto; }
-        .category-title { border-right: 4px solid var(--s); padding-right: 10px; margin: 15px 0; color: var(--p); font-size: 1.1rem; }
+        .category-title { border-right: 4px solid var(--s); padding-right: 10px; margin: 15px 0; color: var(--p); font-size: 1.1rem; text-align: right; }
         
-        /* نظام الشبكة (Grid) - منتجين في الصف */
-        .grid { 
+        /* نظام الشبكة - منتجين في كل صف ثابت */
+        .product-grid { 
             display: grid; 
-            grid-template-columns: 1fr 1fr; /* هذا السطر يجعلها منتجين في الصف */
-            gap: 10px; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 20px;
         }
         
         .card { 
@@ -27,14 +28,13 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
             text-align: center; 
             display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
+            flex-direction: column;
         }
 
-        .img { width: 100%; height: 140px; object-fit: contain; margin-bottom: 8px; }
-        .name { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; min-height: 40px; color: #333; }
-        .price { color: #27ae60; font-weight: bold; margin: 5px 0; font-size: 1rem; }
-        .label { display: block; text-align: right; font-size: 0.7rem; margin-bottom: 3px; color: #666; }
+        .img { width: 100%; height: 130px; object-fit: contain; margin-bottom: 8px; border-radius: 8px; }
+        .name { font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; min-height: 40px; color: #333; display: flex; align-items: center; justify-content: center; }
+        .price { color: #27ae60; font-weight: bold; margin-bottom: 8px; font-size: 0.95rem; }
+        .label { display: block; text-align: right; font-size: 0.7rem; margin-bottom: 3px; color: #666; font-weight: bold; }
         
         select { 
             width: 100%; 
@@ -43,38 +43,89 @@
             border: 1px solid #ddd; 
             margin-bottom: 10px; 
             font-family: 'Cairo'; 
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            background: #fff;
         }
 
         .btn { 
             background: var(--a); 
             color: #fff; 
             border: none; 
-            padding: 10px 5px; 
+            padding: 10px 2px; 
             border-radius: 8px; 
             width: 100%; 
             font-weight: bold; 
             cursor: pointer; 
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-decoration: none;
+            margin-top: auto;
         }
 
-        .books-card { grid-column: 1 / span 2; background: #fff; padding: 15px; border-radius: 12px; text-align: center; margin-top: 10px; }
+        .full-card { grid-column: 1 / span 2; background: #fff; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
 <header>
     <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
-    <h1>مكتبة ذاكر - ZAKER</h1>
+    <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
 
 <div class="container">
-    <h2 class="category-title">قسم الأدوات المدرسية</h2>
-    <div class="grid">
+    <h2 class="category-title">أدوات مكتبية وقرطاسية</h2>
+    <div class="product-grid">
 
         <div class="card">
             <img src="https://i.ibb.co/6RnvW32C/image.jpg" class="img">
             <div class="name">استيكي نوت فواصل</div>
             <div class="price">10 ج.م</div>
-            <button onclick="order('استيكي نوت فواصل', '10')" class="btn
+            <button onclick="order('استيكي نوت فواصل', '10')" class="btn">طلب واتساب</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/dwvfDC7S/image.jpg" class="img">
+            <div class="name">صلصال فوم (دستة)</div>
+            <div class="price">20 ج.م</div>
+            <button onclick="order('صلصال فوم دستة', '20')" class="btn">طلب واتساب</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/5XZTTv8D/image.jpg" class="img">
+            <div class="name">بالتة ألوان مياه</div>
+            <label class="label">الحجم:</label>
+            <select id="pnt">
+                <option value="صغير" data-p="25">صغير - 25ج</option>
+                <option value="وسط" data-p="30">وسط - 30ج</option>
+                <option value="كبير" data-p="35">كبير - 35ج</option>
+            </select>
+            <button onclick="orderS('بالتة ألوان', 'pnt')" class="btn">طلب واتساب</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/Ps58QtrZ/image.jpg" class="img">
+            <div class="name">قلم سنون جيدو</div>
+            <label class="label">السن:</label>
+            <select id="jd">
+                <option value="0.7 مم" data-p="25">0.7 مم - 25ج</option>
+                <option value="0.9 مم" data-p="25">0.9 مم - 25ج</option>
+            </select>
+            <button onclick="orderS('قلم سنون جيدو', 'jd')" class="btn">طلب واتساب</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/q3Qr6LVn/image.jpg" class="img">
+            <div class="name">مسطرة سيليكون</div>
+            <label class="label">المقاس:</label>
+            <select id="sl">
+                <option value="20 سم" data-p="7">20 سم - 7ج</option>
+                <option value="30 سم" data-p="12">30 سم - 12ج</option>
+            </select>
+            <button onclick="orderS('مسطرة سيليكون', 'sl')" class="btn">طلب واتساب</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/RZhq66L/image.jpg" class="img">
+            <div class="name">مسطرة شفافة</div>
+            <label class="label">المقاس:</label>
+            <select id="cl">
+                <option value="20 سم" data
