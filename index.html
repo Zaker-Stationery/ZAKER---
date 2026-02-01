@@ -7,49 +7,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary-color: #2c3e50; --secondary-color: #3498db; --accent-color: #27ae60; }
-        body { font-family: 'Cairo', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
-        header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 25px 15px; text-align: center; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; text-align: center; }
+        header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 25px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid white; background: white; margin-bottom: 10px; object-fit: cover; }
-        .container { padding: 15px; max-width: 800px; margin: auto; }
-        .category-title { color: var(--primary-color); border-right: 5px solid var(--secondary-color); padding-right: 15px; margin: 25px 0 15px; font-weight: bold; font-size: 1.2rem; }
-        .product-card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; max-width: 300px; margin: auto; }
-        .product-img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
-        .product-name { font-size: 18px; font-weight: bold; color: #444; margin-bottom: 10px; }
-        .price-tag { background: #f1f8ff; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #e1e8ef; }
-        .price-item { display: block; font-size: 15px; color: #2ecc71; font-weight: bold; margin: 5px 0; }
-        .order-btn { background-color: #25d366; color: white; border: none; padding: 12px; border-radius: 8px; text-decoration: none; font-size: 14px; display: block; font-weight: bold; transition: 0.3s; }
-        .order-btn:active { transform: scale(0.95); }
-        footer { text-align: center; padding: 30px; color: #999; font-size: 13px; }
+        .container { padding: 15px; max-width: 400px; margin: auto; }
+        .product-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+        .product-img { width: 100%; border-radius: 15px; margin-bottom: 15px; }
+        .product-name { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; }
+        
+        /* تنسيق قائمة الاختيار */
+        .select-label { display: block; margin-bottom: 8px; font-size: 14px; color: #666; font-weight: bold; }
+        .size-select { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #eee; background: #f9f9f9; font-family: 'Cairo'; font-size: 16px; margin-bottom: 20px; outline: none; transition: 0.3s; }
+        .size-select:focus { border-color: var(--secondary-color); }
+
+        .order-btn { background-color: #25d366; color: white; border: none; padding: 15px; border-radius: 12px; text-decoration: none; font-size: 16px; display: block; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; box-sizing: border-box; }
+        .order-btn:hover { background-color: #1ebe57; transform: translateY(-2px); }
+        footer { margin-top: 40px; color: #999; font-size: 13px; padding-bottom: 20px; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="https://i.ibb.co/JjGYxZSd/logo.png" alt="ZAKER Logo" class="logo">
-    <h1>مكتبة ذاكر - ZAKER</h1>
-</header>
-
-<div class="container">
-    <h2 class="category-title">أدوات مكتبية</h2>
-    
-    <div class="product-card">
-        <img src="https://i.ibb.co/Jv89xW6v/1000412346.jpg" class="product-img" alt="مساطر شفافة">
-        
-        <div class="product-name">مسطرة بلاستيك شفافة</div>
-        
-        <div class="price-tag">
-            <span class="price-item">مقاس 20 سم: 5 ج.م</span>
-            <span class="price-item">مقاس 30 سم: 10 ج.م</span>
-        </div>
-        
-        <a href="https://wa.me/201027021011?text=أريد طلب مسطرة شفافة" class="order-btn">طلب عبر واتساب</a>
-    </div>
-</div>
-
-<footer>
-    <p>📍 مدينة السلام، القاهرة</p>
-    <p>جميع الحقوق محفوظة &copy; 2026</p>
-</footer>
-
-</body>
-</html>
+    <img src="https://i.ibb.co/JjGYxZSd/logo.png" alt="Z
