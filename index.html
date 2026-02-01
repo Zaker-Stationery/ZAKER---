@@ -10,7 +10,7 @@
         body { font-family: 'Cairo', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
         header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 25px 15px; text-align: center; }
         .logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid white; background: white; margin-bottom: 10px; object-fit: cover; }
-        .container { padding: 15px; max-width: 900px; margin: auto; }
+        .container { padding: 15px; max-width: 1000px; margin: auto; }
         .category-title { color: var(--primary-color); border-right: 5px solid var(--secondary-color); padding-right: 15px; margin: 30px 0 20px; font-weight: bold; font-size: 1.4rem; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .product-card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); text-align: center; display: flex; flex-direction: column; }
@@ -34,9 +34,21 @@
     <div class="product-grid">
         
         <div class="product-card">
+            <img src="https://i.ibb.co/5XZTTv8D/image.jpg" class="product-img" alt="بالتة ألوان مياه">
+            <div class="product-name">بالتة ألوان مياه</div>
+            <label class="select-label">اختر الحجم:</label>
+            <select id="paintSize" class="size-select">
+                <option value="صغير" data-price="25">حجم صغير - 25 ج.م</option>
+                <option value="وسط" data-price="30">حجم وسط - 30 ج.م</option>
+                <option value="كبير" data-price="35">حجم كبير - 35 ج.م</option>
+            </select>
+            <button onclick="sendOrder('بالتة ألوان مياه', 'paintSize')" class="order-btn">طلب عبر واتساب</button>
+        </div>
+
+        <div class="product-card">
             <img src="https://i.ibb.co/Ps58QtrZ/image.jpg" class="product-img" alt="قلم سنون جيدو">
-            <div class="product-name">قلم سنون ميكرو جيدو (NEW JEDO)</div>
-            <label class="select-label">اختر السن المطلوب:</label>
+            <div class="product-name">قلم سنون ميكرو جيدو</div>
+            <label class="select-label">اختر السن:</label>
             <select id="jedoSize" class="size-select">
                 <option value="0.7 مم" data-price="25">سن 0.7 مم - 25 ج.م</option>
                 <option value="0.9 مم" data-price="25">سن 0.9 مم - 25 ج.م</option>
@@ -45,7 +57,7 @@
         </div>
 
         <div class="product-card">
-            <img src="https://i.ibb.co/q3Qr6LVn/image.jpg" class="product-img" alt="مسطرة سيليكون ضد الكسر">
+            <img src="https://i.ibb.co/q3Qr6LVn/image.jpg" class="product-img" alt="مسطرة سيليكون">
             <div class="product-name">مسطرة سيليكون ضد الكسر</div>
             <label class="select-label">اختر المقاس:</label>
             <select id="siliconeSize" class="size-select">
@@ -57,41 +69,4 @@
 
         <div class="product-card">
             <img src="https://i.ibb.co/RZhq66L/image.jpg" class="product-img" alt="مسطرة شفافة">
-            <div class="product-name">مسطرة بلاستيك شفافة</div>
-            <label class="select-label">اختر المقاس:</label>
-            <select id="clearSize" class="size-select">
-                <option value="20 سم" data-price="5">مقاس 20 سم - 5 ج.م</option>
-                <option value="30 سم" data-price="10">مقاس 30 سم - 10 ج.م</option>
-            </select>
-            <button onclick="sendOrder('مسطرة بلاستيك شفافة', 'clearSize')" class="order-btn">طلب عبر واتساب</button>
-        </div>
-
-    </div>
-
-    <h2 class="category-title">الكتب الخارجية</h2>
-    <div class="product-grid">
-        <div class="product-card">
-            <div class="product-name">كتب جميع المراحل التعليمية</div>
-            <p style="color: #666; font-size: 14px;">سلاح التلميذ - الأضواء - الامتحان - المعاصر</p>
-            <a href="https://wa.me/201027021011?text=أريد الاستفسار عن توافر كتب خارجية" class="order-btn" style="background-color: #3498db;">استفسار عن كتاب</a>
-        </div>
-    </div>
-</div>
-
-<footer>
-    <p>📍 مدينة السلام، القاهرة</p>
-    <p>جميع الحقوق محفوظة لمكتبة ذاكر &copy; 2026</p>
-</footer>
-
-<script>
-    function sendOrder(productName, selectId) {
-        const select = document.getElementById(selectId);
-        const choice = select.value;
-        const price = select.options[select.selectedIndex].getAttribute('data-price');
-        const message = `أهلاً مكتبة ذاكر، أريد طلب ${productName} (${choice}) بسعر ${price} جنيه`;
-        window.open(`https://wa.me/201027021011?text=${encodeURIComponent(message)}`, '_blank');
-    }
-</script>
-
-</body>
-</html>
+            <div class="
