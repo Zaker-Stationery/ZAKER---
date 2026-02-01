@@ -34,6 +34,17 @@
     <div class="product-grid">
         
         <div class="product-card">
+            <img src="https://i.ibb.co/Ps58QtrZ/image.jpg" class="product-img" alt="قلم سنون جيدو">
+            <div class="product-name">قلم سنون ميكرو جيدو (NEW JEDO)</div>
+            <label class="select-label">اختر السن المطلوب:</label>
+            <select id="jedoSize" class="size-select">
+                <option value="0.7 مم" data-price="25">سن 0.7 مم - 25 ج.م</option>
+                <option value="0.9 مم" data-price="25">سن 0.9 مم - 25 ج.م</option>
+            </select>
+            <button onclick="sendOrder('قلم سنون جيدو', 'jedoSize')" class="order-btn">طلب عبر واتساب</button>
+        </div>
+
+        <div class="product-card">
             <img src="https://i.ibb.co/q3Qr6LVn/image.jpg" class="product-img" alt="مسطرة سيليكون ضد الكسر">
             <div class="product-name">مسطرة سيليكون ضد الكسر</div>
             <label class="select-label">اختر المقاس:</label>
@@ -75,9 +86,9 @@
 <script>
     function sendOrder(productName, selectId) {
         const select = document.getElementById(selectId);
-        const size = select.value;
+        const choice = select.value;
         const price = select.options[select.selectedIndex].getAttribute('data-price');
-        const message = `أهلاً مكتبة ذاكر، أريد طلب ${productName} مقاس ${size} بسعر ${price} جنيه`;
+        const message = `أهلاً مكتبة ذاكر، أريد طلب ${productName} (${choice}) بسعر ${price} جنيه`;
         window.open(`https://wa.me/201027021011?text=${encodeURIComponent(message)}`, '_blank');
     }
 </script>
