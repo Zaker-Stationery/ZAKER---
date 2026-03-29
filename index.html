@@ -8,22 +8,22 @@
         :root { --primary: #2c3e50; --accent: #e67e22; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; }
         .header { text-align: center; background: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .search-box { width: 90%; max-width: 400px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; display: block; margin: 0 auto 20px; outline: none; }
+        .search-box { width: 90%; max-width: 400px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; display: block; margin: 0 auto 20px; outline: none; box-sizing: border-box; }
         
-        /* التنسيق اللي طلبتيه: منتجين في الصف */
+        /* التنسيق المطلوب: منتجين في الصف */
         .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 500px; margin: 0 auto; }
-        .product-card { background: white; border-radius: 12px; padding: 12px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; height: 350px; }
+        .product-card { background: white; border-radius: 12px; padding: 10px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; height: 350px; }
         .product-card img { width: 100%; height: 120px; object-fit: contain; border-radius: 8px; background: #fff; margin-bottom: 8px; }
         .product-card h3 { font-size: 0.85rem; margin: 5px 0; height: 40px; overflow: hidden; line-height: 1.2; }
         
-        /* اختيار النوع والسعر التفاعلي */
+        /* الأوبشنز والسعر */
         .options-select { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 8px; font-size: 0.75rem; background: #fafafa; }
         .price-tag { color: var(--accent); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; display: block; }
         .order-btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
         
-        /* نظام الصفحات المتعددة */
-        .pagination { text-align: center; margin: 30px 0; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding-bottom: 50px; }
-        .page-btn { padding: 8px 14px; cursor: pointer; border: 1px solid var(--accent); background: white; border-radius: 6px; color: var(--accent); font-weight: bold; }
+        /* الصفحات */
+        .pagination { text-align: center; margin: 30px 0; display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; padding-bottom: 50px; }
+        .page-btn { padding: 8px 12px; border: 1px solid var(--accent); background: white; border-radius: 6px; color: var(--accent); cursor: pointer; }
         .active-page { background: var(--accent); color: white; }
     </style>
 </head>
@@ -31,116 +31,455 @@
 
 <div class="header">
     <h1>مكتبة ذاكر 📚</h1>
-    <p id="countDisplay">تحميل 881 صنف...</p>
+    <p id="count">جاري التحميل...</p>
 </div>
 
-<input type="text" id="searchInput" class="search-box" placeholder="ابحثي عن المعاصر، روتو، ساعات..." onkeyup="search()">
+<input type="text" id="searchInput" class="search-box" placeholder="ابحثي هنا..." onkeyup="search()">
 
 <div class="products-grid" id="productsGrid"></div>
 <div id="pagination" class="pagination"></div>
 
 <script>
-    // قاعدة البيانات الشاملة (الصور الحقيقية + الأسعار + الـ Options)
+    // قائمة البيانات (هنملى القوسين دول في الرسايل الجاية)
     const allProducts = [
-        { 
-            name: "كتاب المعاصر Math لغات", 
-            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", 
-            variants: [{ label: "ابتدائي", price: "180 جنيه" }, { label: "إعدادي", price: "210 جنيه" }, { label: "ثانوي", price: "245 جنيه" }] 
-        },
-        { 
-            name: "كتاب الامتحان جغرافيا", 
+        /* هتحطي البيانات هنا بالترتيب */        { 
+            name: "الامتحان جغرافيا 3 ث", 
             img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/geo-cover.jpg", 
-            variants: [{ label: "3 ثانوي شرح", price: "195 جنيه" }, { label: "3 ثانوي أسئلة", price: "165 جنيه" }] 
+            variants: [{ label: "شرح", price: "195 جنيه" }, { label: "أسئلة", price: "160 جنيه" }] 
         },
         { 
-            name: "مسطرة بلاستيك", 
-            img: "https://images.unsplash.com/photo-1583522365024-8935c49097e3?w=200", 
-            variants: [{ label: "20 سم", price: "10 جنيه" }, { label: "30 سم", price: "15 جنيه" }, { label: "50 سم", price: "25 جنيه" }] 
-        },
-        { 
-            name: "قلم جاف روتو بريمو", 
-            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
-            variants: [{ label: "أبيض", price: "5 جنيه" }, { label: "أسود", price: "5 جنيه" }, { label: "أزرق", price: "5 جنيه" }] 
-        },
-        { 
-            name: "كشكول إيطالي برافو", 
+            name: "كشكول ايطالي برافو", 
             img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=200", 
             variants: [{ label: "80 ورقة", price: "40 جنيه" }, { label: "100 ورقة", price: "45 جنيه" }] 
         },
         { 
-            name: "طقم ساعة ومحفظة رجالي", 
+            name: "طقم ساعة ومحفظة", 
             img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200", 
-            variants: [{ label: "أسود ملكي", price: "320 جنيه" }, { label: "بني كلاسيك", price: "320 جنيه" }] 
+            variants: [{ label: "رجالي شيك", price: "320 جنيه" }, { label: "بني كلاسيك", price: "320 جنيه" }] 
         },
-        { name: "بلانشيطه خشب", img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=200", variants: [{ label: "A4", price: "15 جنيه" }] },
-        { name: "ليزر اخضر كبير", img: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=200", variants: [{ label: "USB", price: "350 جنيه" }] },
-        { name: "ستيكي نوت ألوان", img: "https://images.unsplash.com/photo-1589149098258-3e9102ca93d3?w=200", variants: [{ label: "صغير", price: "25 جنيه" }, { label: "مكعب 400ق", price: "45 جنيه" }] },
-        { name: "ساعة كاربون", img: "https://images.unsplash.com/photo-1524592091214-845baf7f09a2?w=200", variants: [{ label: "أسود", price: "220 جنيه" }] }
-        // الـ 800 صنف الباقين تم دمجهم هنا برمجياً
+        { 
+            name: "قلم جاف روتو بريمو", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "أبيض", price: "5 جنيه" }, { label: "أسود", price: "5 جنيه" }] 
+        },
+        { 
+            name: "مسطرة بلاستيك ذاكر", 
+            img: "https://images.unsplash.com/photo-1583522365024-8935c49097e3?w=200", 
+            variants: [{ label: "20 سم", price: "10 جنيه" }, { label: "30 سم", price: "15 جنيه" }] 
+        },
+        { 
+            name: "المعاصر Math لغات", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", 
+            variants: [{ label: "ابتدائي", price: "180 جنيه" }, { label: "إعدادي", price: "210 جنيه" }] 
+        },
+        { 
+            name: "سلاح التلميذ عربي 1 ابتدائي", 
+            img: "https://selaheltelemiz.com/covers/ar-1.jpg", 
+            variants: [{ label: "كتاب الشرح", price: "140 جنيه" }] 
+        },
+        { 
+            name: "الأضواء رياضيات 4 ابتدائي", 
+            img: "https://aladwaa.com/covers/math-4.jpg", 
+            variants: [{ label: "كتاب الطالب", price: "135 جنيه" }] 
+        },
+        { 
+            name: "براية معدن فتحتين ألماني", 
+            img: "https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=200", 
+            variants: [{ label: "فضي", price: "12 جنيه" }] 
+        },
+        { 
+            name: "ألوان خشب فابر كاستل", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "12 لون", price: "85 جنيه" }, { label: "24 لون", price: "160 جنيه" }] 
+        },
+        { 
+            name: "زمزمية مياه تانك", 
+            img: "https://images.unsplash.com/photo-1523362628744-0c14a394bc85?w=200", 
+            variants: [{ label: "0.5 لتر", price: "65 جنيه" }, { label: "1 لتر", price: "95 جنيه" }] 
+        },
+        { 
+            name: "دباسة كانغارو صغير", 
+            img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=200", 
+            variants: [{ label: "بالدبابيس", price: "55 جنيه" }] 
+        },
+        { 
+            name: "لانش بوكس أطفال مقسم", 
+            img: "https://images.unsplash.com/photo-1594911772125-07fc7a2d8d9f?w=200", 
+            variants: [{ label: "بتقسيمة داخلي", price: "110 جنيه" }] 
+        },
+        { 
+            name: "مقص ورق مشرشر ألوان", 
+            img: "https://images.unsplash.com/photo-1530210124550-912dc1381cb8?w=200", 
+            variants: [{ label: "ستانلس", price: "20 جنيه" }] 
+        },
+        { 
+            name: "ملف جيوب 20 جيب شفاف", 
+            img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=200", 
+            variants: [{ label: "مقاس A4", price: "45 جنيه" }] 
+        },
+        { 
+            name: "قلم سنون روترينج أصلي", 
+            img: "https://images.unsplash.com/photo-1511108690759-009324a90311?w=200", 
+            variants: [{ label: "0.5 ملم", price: "45 جنيه" }, { label: "0.7 ملم", price: "45 جنيه" }] 
+        },
+        { 
+            name: "ستيكي نوت ألوان فوسفوري", 
+            img: "https://images.unsplash.com/photo-1589149098258-3e9102ca93d3?w=200", 
+            variants: [{ label: "صغير", price: "25 جنيه" }, { label: "مكعب كبير", price: "45 جنيه" }] 
+        },
+        { 
+            name: "ساعة كاربون ديجيتال", 
+            img: "https://images.unsplash.com/photo-1524592091214-845baf7f09a2?w=200", 
+            variants: [{ label: "أسود ملكي", price: "220 جنيه" }] 
+        },
+        { 
+            name: "طقم مكتب خشب 5 قطع", 
+            img: "https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?w=200", 
+            variants: [{ label: "بني محروق", price: "450 جنيه" }, { label: "بيج فاتح", price: "450 جنيه" }] 
+        },
+        { 
+            name: "قلم جاف يوني بول 0.7", 
+            img: "https://images.unsplash.com/photo-1585336139118-b3191f9b0222?w=200", 
+            variants: [{ label: "أزرق", price: "35 جنيه" }, { label: "أسود", price: "35 جنيه" }] 
+        },
+        { 
+            name: "دباسة ورق كبيرة معدن", 
+            img: "https://images.unsplash.com/photo-1562564055-71e051d33c19?w=200", 
+            variants: [{ label: "تستوعب 50 ورقة", price: "180 جنيه" }] 
+        },
+        { 
+            name: "سبورة بيضاء مغناطيسية", 
+            img: "https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=200", 
+            variants: [{ label: "60*90 سم", price: "280 جنيه" }, { label: "40*60 سم", price: "150 جنيه" }] 
+        },
+        { 
+            name: "ألوان مائية فابريانو", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "12 لون عصار", price: "210 جنيه" }] 
+        },
+        { 
+            name: "شنطة لاب توب ضد الماء", 
+            img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200", 
+            variants: [{ label: "مقاس 15.6 بوصة", price: "380 جنيه" }] 
+        },
+        { 
+            name: "آلة حاسبة كاسيو FX-991ARX", 
+            img: "https://images.unsplash.com/photo-1574607383476-f517f220d356?w=200", 
+            variants: [{ label: "عربي - أصلية", price: "1250 جنيه" }] 
+        },
+        { 
+            name: "قلم هايلايتر فابر كاستل", 
+            img: "https://images.unsplash.com/photo-1511108690759-009324a90311?w=200", 
+            variants: [{ label: "أصفر", price: "35 جنيه" }, { label: "فسفوري", price: "35 جنيه" }] 
+        },
+        { 
+            name: "لوحة كانفاس رسم زيت", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "30*40 سم", price: "75 جنيه" }, { label: "40*50 سم", price: "95 جنيه" }] 
+        },
+        { 
+            name: "طقم روتو جاف ألوان", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "10 ألوان", price: "45 جنيه" }] 
+        },
+        { 
+            name: "نوت بوك سلك A5", 
+            img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=200", 
+            variants: [{ label: "ورق كريمي", price: "65 جنيه" }, { label: "ورق أبيض", price: "60 جنيه" }] 
+        },
+        { 
+            name: "بوكس هدايا كرتون", 
+            img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=200", 
+            variants: [{ label: "مقاس كبير", price: "55 جنيه" }, { label: "مقاس وسط", price: "40 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر انجليزي كونكت", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/english-cover.png", 
+            variants: [{ label: "1 ابتدائي", price: "130 جنيه" }, { label: "2 ابتدائي", price: "135 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان كيمياء 3 ث", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/chem-cover.jpg", 
+            variants: [{ label: "شرح", price: "220 جنيه" }, { label: "أسئلة", price: "185 جنيه" }] 
+        },
+        { 
+            name: "أقلام رصاص فابر كاستل جولد", 
+            img: "https://images.unsplash.com/photo-1511108690759-009324a90311?w=200", 
+            variants: [{ label: "درجة HB", price: "8 جنيه" }, { label: "درجة 2B", price: "10 جنيه" }] 
+        },
+        { 
+            name: "أستيكة روتring أصلية", 
+            img: "https://images.unsplash.com/photo-1583522365024-8935c49097e3?w=200", 
+            variants: [{ label: "صغيرة", price: "15 جنيه" }, { label: "كبيرة", price: "25 جنيه" }] 
+        },
+        { 
+            name: "طقم ألوان شمع 12 لون", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "ألوان زاهية", price: "35 جنيه" }] 
+        },
+        { 
+            name: "خرامة ورق معدن 2 خرم", 
+            img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=200", 
+            variants: [{ label: "ماركة كانغارو", price: "95 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر فرنساوي 3 ث", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/french-cover.png", 
+            variants: [{ label: "كتاب الشرح", price: "185 جنيه" }, { label: "كتاب المراجعة", price: "140 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان أحياء 3 ث", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/bio-cover.jpg", 
+            variants: [{ label: "شرح", price: "215 جنيه" }, { label: "أسئلة", price: "170 جنيه" }] 
+        },
+        { 
+            name: "مسطرة اشكال فين هندسية", 
+            img: "https://images.unsplash.com/photo-1583522365024-8935c49097e3?w=200", 
+            variants: [{ label: "شفاف", price: "15 جنيه" }, { label: "ألوان", price: "18 جنيه" }] 
+        },
+        { 
+            name: "قلم ماركر سبورة روتو", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "أسود", price: "12 جنيه" }, { label: "أزرق", price: "12 جنيه" }, { label: "أحمر", price: "12 جنيه" }] 
+        },
+        { 
+            name: "صلصال فابر كاستل 12 لون", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "آمن للأطفال", price: "45 جنيه" }] 
+        },
+        { 
+            name: "منظم مكتب بلاستيك 3 درج", 
+            img: "https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?w=200", 
+            variants: [{ label: "شفاف", price: "165 جنيه" }, { label: "أبيض", price: "150 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر فيزياء 3 ث لغات", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/physics-cover.png", 
+            variants: [{ label: "شرح", price: "245 جنيه" }, { label: "أسئلة", price: "210 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان فلسفة 3 ث", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/philosophy-cover.jpg", 
+            variants: [{ label: "كتاب واحد", price: "185 جنيه" }] 
+        },
+        { 
+            name: "براية أوتوماتيك كهرباء", 
+            img: "https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=200", 
+            variants: [{ label: "شحن USB", price: "380 جنيه" }] 
+        },
+        { 
+            name: "طقم ألوان جواش 12 لون", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "علبة معدن", price: "260 جنيه" }] 
+        },
+        { 
+            name: "ملف عرض بولي بروبلين", 
+            img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=200", 
+            variants: [{ label: "40 جيب", price: "75 جنيه" }, { label: "60 جيب", price: "95 جنيه" }] 
+        },
+        { 
+            name: "قلم جاف سنون روتو", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "أزرق 0.5", price: "8 جنيه" }, { label: "أسود 0.5", price: "8 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر جبر 3 ث لغات", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", 
+            variants: [{ label: "شرح", price: "195 جنيه" }, { label: "أسئلة", price: "165 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان علم نفس 3 ث", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/psychology-cover.jpg", 
+            variants: [{ label: "كتاب شامل", price: "185 جنيه" }] 
+        },
+        { 
+            name: "طقم روتو جاف شيك", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "5 أقلام ألوان", price: "35 جنيه" }] 
+        },
+        { 
+            name: "ألوان مياه بريمو 12 لون", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "علبة بلاستيك", price: "145 جنيه" }] 
+        },
+        { 
+            name: "منظم أدوات مكتب كبير", 
+            img: "https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?w=200", 
+            variants: [{ label: "أسود شبك معدن", price: "195 جنيه" }] 
+        },
+        { 
+            name: "نوت بوك كفر قماش", 
+            img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=200", 
+            variants: [{ label: "مقاس A6", price: "45 جنيه" }, { label: "مقاس A5", price: "75 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر انجليزي 3 ثانوي", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/english-cover.png", 
+            variants: [{ label: "كتاب الشرح", price: "230 جنيه" }, { label: "كتاب الأسئلة", price: "195 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان جيولوجيا 3 ث", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/geo-cover.jpg", 
+            variants: [{ label: "شرح", price: "210 جنيه" }, { label: "مراجعة نهائية", price: "175 جنيه" }] 
+        },
+        { 
+            name: "أقلام جاف يوني بول Signo", 
+            img: "https://images.unsplash.com/photo-1585336139118-b3191f9b0222?w=200", 
+            variants: [{ label: "أزرق 0.7", price: "45 جنيه" }, { label: "ذهبي/فضي", price: "55 جنيه" }] 
+        },
+        { 
+            name: "لوحة ورق رسم كانسون", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "ملمس ناعم", price: "125 جنيه" }, { label: "ملمس خشن", price: "140 جنيه" }] 
+        },
+        { 
+            name: "طقم روتو هايلايتر قلم", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "6 ألوان فلاش", price: "55 جنيه" }] 
+        },
+        { 
+            name: "حافظة ملفات جلد بسوستة", 
+            img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=200", 
+            variants: [{ label: "مقاس A4 أسود", price: "135 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر استاتيكا 3 ث لغات", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", 
+            variants: [{ label: "كتاب واحد شامل", price: "185 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان تاريخ 3 ثانوي", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/history-cover.jpg", 
+            variants: [{ label: "شرح", price: "190 جنيه" }, { label: "أسئلة", price: "155 جنيه" }] 
+        },
+        { 
+            name: "براية بوعاء تجميع روتو", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "فتحة واحدة", price: "15 جنيه" }, { label: "فتحتين", price: "20 جنيه" }] 
+        },
+        { 
+            name: "طقم ألوان فلوماستر ماركة برافو", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "12 لون سن رفيع", price: "65 جنيه" }] 
+        },
+        { 
+            name: "منظم مكتب معدن دائري", 
+            img: "https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?w=200", 
+            variants: [{ label: "أسود شبك", price: "65 جنيه" }, { label: "فضي", price: "65 جنيه" }] 
+        },
+        { 
+            name: "نوت بوك جيب سلك صغير", 
+            img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=200", 
+            variants: [{ label: "80 ورقة أبيض", price: "35 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر ديناميكا 3 ث لغات", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", 
+            variants: [{ label: "كتاب واحد شامل", price: "185 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان تربية وطنية 3 ث", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/history-cover.jpg", 
+            variants: [{ label: "كتاب واحد", price: "85 جنيه" }] 
+        },
+        { 
+            name: "قلم تصحيح (كوريكتور) روتو", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "سن معدن 7 مل", price: "25 جنيه" }, { label: "قلم كبير", price: "35 جنيه" }] 
+        },
+        { 
+            name: "طقم ألوان أكريليك بريمو", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "12 لون عصار", price: "285 جنيه" }] 
+        },
+        { 
+            name: "سكيتش رسم كانسون A4", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "20 ورقة 150 جرام", price: "95 جنيه" }] 
+        },
+        { 
+            name: "حافظة كروت شخصية معدن", 
+            img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=200", 
+            variants: [{ label: "فضي مطفي", price: "65 جنيه" }, { label: "أسود شيك", price: "75 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر تفاضل 3 ث لغات", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", 
+            variants: [{ label: "كتاب الشرح", price: "195 جنيه" }, { label: "كتاب الأسئلة", price: "170 جنيه" }] 
+        },
+        { 
+            name: "كتاب الامتحان اقتصاد 3 ثانوي", 
+            img: "https://alamtahanbooks.com/wp-content/uploads/2023/08/history-cover.jpg", 
+            variants: [{ label: "كتاب واحد", price: "95 جنيه" }] 
+        },
+        { 
+            name: "قلم رصاص سنون روتو 0.5", 
+            img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", 
+            variants: [{ label: "جسم معدن", price: "35 جنيه" }, { label: "جسم بلاستيك", price: "20 جنيه" }] 
+        },
+        { 
+            name: "طقم ألوان زيت رويال تالنز", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "12 لون احترافي", price: "480 جنيه" }] 
+        },
+        { 
+            name: "سكيتش رسم فابريانو A3", 
+            img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", 
+            variants: [{ label: "30 ورقة 200 جرام", price: "240 جنيه" }] 
+        },
+        { 
+            name: "شنطة هدايا ورقية كبيرة", 
+            img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=200", 
+            variants: [{ label: "رسومات مودرن", price: "35 جنيه" }, { label: "سادة شيك", price: "30 جنيه" }] 
+        },
+        { 
+            name: "كتاب المعاصر إحصاء 3 ثانوي", 
+            img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", 
+            variants: [{ label: "كتاب واحد لغات", price: "145 جنيه" }, { label: "كتاب واحد عربي", price: "125 جنيه" }] 
+        },
+        { 
+            name: "نوت بوك سلك كبير A4", 
+            img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=200", 
+            variants: [{ label: "200 ورقة مربعات", price: "115 جنيه" }, { label: "200 ورقة مسطر", price: "115 جنيه" }] 
+        },
+        { 
+            name: "قلم جاف روترينج تيكوس", 
+            img: "https://images.unsplash.com/photo-1511108690759-009324a90311?w=200", 
+            variants: [{ label: "أزرق شيك", price: "55 جنيه" }, { label: "أسود شيك", price: "55 جنيه" }] 
+        },
+        { 
+            name: "مناديل مبللة ديتول 10 منديل", 
+            img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=200", 
+            variants: [{ label: "للشنطة", price: "25 جنيه" }] 
+        },
+        { 
+            name: "ساعة حائط كلاسيك هادئة", 
+            img: "https://images.unsplash.com/photo-1524592091214-845baf7f09a2?w=200", 
+            variants: [{ label: "أبيض في أسود", price: "185 جنيه" }] 
+        },
+        { 
+            name: "مظروف ورق أبيض A4", 
+            img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=200", 
+            variants: [{ label: "باكيت 10 قطع", price: "20 جنيه" }] 
+        }
+
     ];
 
     let currentPage = 1;
-    const itemsPerPage = 10; // 10 منتجات في كل صفحة (5 صفوف)
+    const itemsPerPage = 12;
     let filteredItems = [...allProducts];
 
     function render(page) {
         const grid = document.getElementById('productsGrid');
         const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const currentData = filteredItems.slice(start, end);
+        const currentData = filteredItems.slice(start, start + itemsPerPage);
 
-        grid.innerHTML = currentData.map((p, index) => {
-            const id = start + index;
-            return `
-                <div class="product-card">
-                    <img src="${p.img}" alt="${p.name}">
-                    <h3>${p.name}</h3>
-                    <select class="options-select" onchange="document.getElementById('price-${id}').innerText = this.value">
-                        ${p.variants.map(v => `<option value="${v.price}">${v.label}</option>`).join('')}
-                    </select>
-                    <span class="price-tag" id="price-${id}">${p.variants[0].price}</span>
-                    <button class="order-btn" onclick="order('${p.name}')">طلب واتساب</button>
-                </div>
-            `;
-        }).join('');
-        
-        document.getElementById('countDisplay').innerText = `يعرض ${filteredItems.length} صنف من ملفك`;
-        setupPagination();
-    }
+        grid.innerHTML = currentData.map((p, i) => `
+            <div class="product-card">
+                <img src="${p.img}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <select class="options-select" onchange="document.getElementById('price-${start+i}').innerText = this.value">
+                    ${p.variants.map(v => `<option value="${v.price}">${v.label}</option>`).join('')}
+                </select>
+                <span class
 
-    function setupPagination() {
-        const pages = Math.ceil(filteredItems.length / itemsPerPage);
-        const nav = document.getElementById('pagination');
-        nav.innerHTML = '';
-        if (pages <= 1) return;
-
-        for (let i = 1; i <= pages; i++) {
-            if (i === 1 || i === pages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-                nav.innerHTML += `<button class="page-btn ${i===currentPage?'active-page':''}" onclick="changePage(${i})">${i}</button>`;
-            } else if (i === currentPage - 2 || i === currentPage + 2) {
-                nav.innerHTML += `<span>...</span>`;
-            }
-        }
-    }
-
-    function changePage(i) {
-        currentPage = i;
-        render(i);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function search() {
-        const term = document.getElementById('searchInput').value.toLowerCase();
-        filteredItems = allProducts.filter(p => p.name.toLowerCase().includes(term));
-        currentPage = 1;
-        render(1);
-    }
-
-    function order(name) {
-        window.open(`https://wa.me/201234567890?text=محتاج أطلب: ${name}`, '_blank');
-    }
-
-    render(1);
-</script>
-</body>
-</html>
