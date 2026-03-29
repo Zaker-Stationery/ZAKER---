@@ -1,89 +1,26 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مكتبة ذاكر - المتجر الكامل</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #e67e22;
-            --bg: #f4f7f6;
-        }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--primary); }
-        .header { text-align: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .search-container { max-width: 600px; margin: 0 auto 30px; position: relative; }
-        .search-box { width: 100%; padding: 15px 25px; border-radius: 30px; border: 2px solid #ddd; font-size: 1.1rem; outline: none; transition: 0.3s; box-sizing: border-box; }
-        .search-box:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(230, 126, 34, 0.2); }
-        
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
-        .product-card { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: 0.3s; position: relative; overflow: hidden; }
-        .product-card:hover { transform: translateY(-8px); }
-        .product-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; background: #eee; }
-        .product-card h3 { font-size: 1.1rem; margin: 10px 0; height: 45px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        
-        .options-select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; font-family: inherit; cursor: pointer; }
-        .price { color: var(--accent); font-weight: bold; font-size: 1.2rem; display: block; margin-bottom: 15px; }
-        .order-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; text-decoration: none; display: inline-block; box-sizing: border-box; }
-        .order-btn:hover { background: #d35400; }
-    </style>
-</head>
-<body>
+const rawProducts = [
+    // --- الأصناف المجمعة من ملف الإكسيل بتاعك ---
+    { 
+        name: "مجموعة أقلام روتو (جاف وجليتر)", 
+        img: "https://images.unsplash.com/photo-1585336139118-b3191f9b0222?w=400", 
+        options: ["بريمو أبيض", "بريمو أسود", "أزرق 0.7", "أحمر 0.7", "روتو جليتر (ألوان)"] 
+    },
+    { 
+        name: "كشاكيل وكارنيهات ذاكر", 
+        img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400", 
+        options: ["كشكول 60 ورقة", "كشكول 80 ورقة", "كشكول 100 ورقة", "كشكول سلك"] 
+    },
+    { 
+        name: "أدوات مكتبية (دباسات ومقصات)", 
+        img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=400", 
+        options: ["دباسة كانجارو", "خرامة ورق", "مقص مكتب", "لزق سيلوتيب"] 
+    },
+    { 
+        name: "ألوان ماركات (فلوماستر وخشب)", 
+        img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400", 
+        options: ["ألوان فلوماستر 12 لون", "ألوان خشب 24 لون", "ألوان مياه"] 
+    },
+    // ضيفي هنا أي أصناف تانية بنفس الطريقة
+];
 
-    <div class="header">
-        <h1>مكتبة ذاكر 📚</h1>
-        <p>أهلاً بكِ يا ندى.. الموقع الآن يضم أكثر من 800 صنف منظمين بذكاء</p>
-    </div>
-
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن: قلم روتو، كشكول، ألوان فلوماستر..." onkeyup="filterProducts()">
-    </div>
-
-    <div class="products-grid" id="productsGrid">
-        </div>
-
-    <script>
-        // دمج المنتجات القديمة مع بيانات الملف الجديد بتجميع ذكي
-        const rawProducts = [
-            // أمثلة مجمعة من ملفك الـ 881 صنف
-            { name: "قلم جاف روتو (جميع الألوان)", category: "أقلام", img: "https://images.unsplash.com/photo-1585336139118-b3191f9b0222?w=400", options: ["أبيض", "أسود", "أزرق", "أحمر", "أخضر", "جليتر"] },
-            { name: "كشكول سلك سمير وعلي", category: "كشاكيل", img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400", options: ["60 ورقة", "80 ورقة", "100 ورقة"] },
-            { name: "ألوان فلوماستر ماركات", category: "ألوان", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400", options: ["6 لون", "12 لون", "24 لون"] },
-            { name: "مسطرة بلاستيك ذاكر", category: "أدوات", img: "https://images.unsplash.com/photo-1583522365024-8935c49097e3?w=400", options: ["20 سم", "30 سم", "50 سم"] },
-            { name: "براية وممحاة مكتبية", category: "أدوات", img: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=400", options: ["براية حديد", "براية بلاستيك", "أستيكة فابر كاستل"] },
-            { name: "زمزمية مياه ديزني", category: "هدايا", img: "https://images.unsplash.com/photo-1602143399827-bd95951ca950?w=400", options: ["شكل ميكي", "شكل سبايدرمان", "شكل ملكة الثلج"] }
-            // سيتم إضافة باقي الأصناف الـ 800 هنا تلقائياً
-        ];
-
-        function renderProducts(products) {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.map(p => `
-                <div class="product-card">
-                    <img src="${p.img}" alt="${p.name}">
-                    <h3>${p.name}</h3>
-                    <select class="options-select">
-                        ${p.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-                    </select>
-                    <span class="price">السعر حسب الصنف</span>
-                    <button class="order-btn" onclick="order('${p.name}')">طلب عبر واتساب</button>
-                </div>
-            `).join('');
-        }
-
-        function filterProducts() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = rawProducts.filter(p => p.name.toLowerCase().includes(term));
-            renderProducts(filtered);
-        }
-
-        function order(name) {
-            const msg = `أهلاً مكتبة ذاكر، حابب أطلب: ${name}`;
-            window.open(`https://wa.me/201234567890?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        // تشغيل الموقع عند التحميل
-        renderProducts(rawProducts);
-    </script>
-</body>
-</html>
 
