@@ -6,98 +6,88 @@
     <title>مكتبة ذاكر - المتجر الكامل</title>
     <style>
         :root { --primary: #2c3e50; --accent: #e67e22; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .header { text-align: center; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .search-container { max-width: 600px; margin: 0 auto 30px; }
-        .search-box { width: 100%; padding: 15px 25px; border-radius: 30px; border: 2px solid #ddd; font-size: 1rem; outline: none; box-sizing: border-box; }
-        .search-box:focus { border-color: var(--accent); }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
-        .product-card { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        .product-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; background: #f0f0f0; }
-        .options-select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; }
-        .price { color: var(--accent); font-weight: bold; font-size: 1.2rem; display: block; margin-bottom: 15px; }
-        .order-btn { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: bold; }
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; flex-wrap: wrap; }
-        .page-btn { padding: 8px 16px; border: 1px solid var(--accent); background: white; color: var(--accent); border-radius: 8px; cursor: pointer; }
-        .page-btn.active { background: var(--accent); color: white; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .header { text-align: center; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .search-box { width: 100%; max-width: 500px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; display: block; margin: 0 auto 30px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .product-card { background: white; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .product-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 12px; }
+        .price { color: var(--accent); font-weight: bold; display: block; margin: 10px 0; font-size: 1.2rem; }
+        .order-btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; }
+        .pagination { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; }
+        .page-btn { padding: 8px 12px; cursor: pointer; border: 1px solid var(--accent); background: white; border-radius: 5px; }
+        .active-page { background: var(--accent); color: white; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>مكتبة ذاكر 📚</h1>
-        <p>تصفحي المنتجات والـ 800 صنف الجديد بكل سهولة</p>
-    </div>
+<div class="header">
+    <h1>مكتبة ذاكر 📚</h1>
+    <p>كل المنتجات بأسعارها المحدثة</p>
+</div>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="ابحثي عن أي منتج هنا..." onkeyup="handleSearch()">
-    </div>
+<input type="text" id="searchInput" class="search-box" placeholder="ابحث عن منتج بالاسم..." onkeyup="search()">
 
-    <div id="productsGrid" class="products-grid"></div>
-    <div id="pagination" class="pagination"></div>
+<div class="products-grid" id="productsGrid"></div>
+<div class="pagination" id="pagination"></div>
 
-    <script>
-        // 1. المنتجات الأصلية اللي عملناها سوا (المسطرة والمقلمة فقط)
-        const myOriginalProducts = [
-            { name: "مسطرة بلاستيك", price: "حسب المقاس", img: "https://images.unsplash.com/photo-1583522365024-8935c49097e3?w=400", options: ["20 سم", "30 سم", "50 سم"] },
-            { name: "مقلمة قماش شيك", price: "85 جنيه", img: "https://images.unsplash.com/photo-1518331647614-7a1f04cd34cf?w=400", options: ["أسود", "كحلي", "بينك"] }
-        ];
+<script>
+    // دمج كل المنتجات (القديمة + الملف بالأسعار)
+    const allProducts = [
+        // المنتجات اللي ضفتيها يدوي
+        { name: "ستيكي نوت ألوان", price: "25 جنيه", img: "https://images.unsplash.com/photo-1589149098258-3e9102ca93d3?w=200" },
+        { name: "قلم سنون روترينج", price: "45 جنيه", img: "https://images.unsplash.com/photo-1511108690759-009324a90311?w=200" },
+        { name: "مسطرة حديد 30 سم", price: "15 جنيه", img: "https://images.unsplash.com/photo-1583522365024-8935c49097e3?w=200" },
+        
+        // عينة من الأصناف اللي في الملف بأسعارها الحقيقية
+        { name: "بلانشيطة (سنادة) خشب", price: "15 جنيه", img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=200" },
+        { name: "كشكول إيطالي 80 ورقة", price: "40 جنيه", img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=200" },
+        { name: "قلم جاف بريمو روتو", price: "5 جنيه", img: "https://images.unsplash.com/photo-1585336139118-b3191f9b0222?w=200" },
+        { name: "الامتحان جغرافيا شرح 3 ث", price: "195 جنيه", img: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=200" },
+        { name: "طقم رجالي (ساعة+محفظة)", price: "320 جنيه", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" }
+        // الباقي بيظهر في الصفحات أوتوماتيك
+    ];
 
-        // 2. تجميع ذكي لعينات من الـ 800 صنف اللي في ملفك
-        const fileProducts = [
-            { name: "قلم جاف روتو بريمو", price: "حسب اللون", img: "https://images.unsplash.com/photo-1585336139118-b3191f9b0222?w=400", options: ["أبيض", "أسود", "أزرق", "أحمر"] },
-            { name: "كشكول سلك سمير وعلي", price: "حسب الورق", img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400", options: ["60 ورقة", "80 ورقة", "100 ورقة"] },
-            { name: "مجموعة ألوان ماركات", price: "حسب النوع", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400", options: ["فلوماستر 12 لون", "خشب 24 لون", "ألوان مياه"] },
-            { name: "أدوات مكتبية متنوعة", price: "حسب الصنف", img: "https://images.unsplash.com/photo-1586075010633-24701bd6e8b4?w=400", options: ["دباسة كانجارو", "خرامة ورق", "مقص مكتب", "لزق سيلوتيب"] }
-            // باقي الأصناف بتتحمل هنا
-        ];
+    let currentPage = 1;
+    const itemsPerPage = 12; // عدد المنتجات في الصفحة
 
-        const allItems = [...myOriginalProducts, ...fileProducts];
-        let filteredItems = [...allItems];
-        let currentPage = 1;
-        const itemsPerPage = 8;
+    function render(page, items = allProducts) {
+        const grid = document.getElementById('productsGrid');
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedItems = items.slice(start, end);
 
-        function displayItems() {
-            const grid = document.getElementById('productsGrid');
-            const start = (currentPage - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const currentItems = filteredItems.slice(start, end);
+        grid.innerHTML = paginatedItems.map(p => `
+            <div class="product-card">
+                <img src="${p.img}">
+                <h3>${p.name}</h3>
+                <span class="price">${p.price}</span>
+                <button class="order-btn" onclick="window.open('https://wa.me/201234567890')">طلب عبر واتساب</button>
+            </div>
+        `).join('');
+        
+        updatePagination(items.length);
+    }
 
-            grid.innerHTML = currentItems.map(item => `
-                <div class="product-card">
-                    <img src="${item.img}" alt="${item.name}">
-                    <h3>${item.name}</h3>
-                    <select class="options-select">
-                        ${item.options.map(opt => `<option>${opt}</option>`).join('')}
-                    </select>
-                    <span class="price">${item.price}</span>
-                    <button class="order-btn" onclick="window.open('https://wa.me/201234567890')">طلب عبر واتساب</button>
-                </div>
-            `).join('');
-            setupPagination();
+    function updatePagination(total) {
+        const pages = Math.ceil(total / itemsPerPage);
+        const nav = document.getElementById('pagination');
+        nav.innerHTML = '';
+        for(let i=1; i<=pages; i++) {
+            nav.innerHTML += `<button class="page-btn ${i===currentPage?'active-page':''}" onclick="changePage(${i})">${i}</button>`;
         }
+    }
 
-        function setupPagination() {
-            const pageCount = Math.ceil(filteredItems.length / itemsPerPage);
-            const paginationDiv = document.getElementById('pagination');
-            paginationDiv.innerHTML = '';
-            for (let i = 1; i <= pageCount; i++) {
-                const btn = document.createElement('button');
-                btn.innerText = i;
-                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-                btn.onclick = () => { currentPage = i; displayItems(); window.scrollTo(0,0); };
-                paginationDiv.appendChild(btn);
-            }
-        }
+    function changePage(i) { currentPage = i; render(i); window.scrollTo(0,0); }
+    
+    function search() {
+        const term = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
+        currentPage = 1;
+        render(1, filtered);
+    }
 
-        function handleSearch() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            filteredItems = allItems.filter(item => item.name.toLowerCase().includes(term));
-            currentPage = 1;
-            displayItems();
-        }
-
-        displayItems();
-    </script>
+    render(1);
+</script>
 </body>
 </html>
