@@ -39,10 +39,9 @@
 </header>
     <div style="text-align: center; margin: 20px 0; display: flex; justify-content: center; gap: 8px;">
     <input type="text" id="searchInput" placeholder="ابحث عن منتج..." 
-    style="width: 60%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
+    style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
     <button onclick="searchProducts()" style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">بحث</button>
 </div>
-
 <div class="container">
     <h2 class="category-title">قسم الأدوات والكتب</h2>
     <div id="products-grid" class="product-grid"></div>
@@ -1037,58 +1036,60 @@
         ];
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
+    const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
+    renderProducts(filtered, 1);
+}
 
-    if (term === "") {
-        renderProducts(1);
-        const pagin = document.querySelector('.pagination');
-        if (pagin) pagin.style.display = 'flex';
-        return;
+
+    const itemsPerPage = 12;
+    let currentPage = 1;
+    const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
+
+    function renderProducts(page) {
+        const grid = document.getElementById('products-grid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        const start = (page - 1) * itemsPerPage;
+        const items = allProducts.slice(start, start + itemsPerPage);
+
+        items.forEach((p, index) => {
+            const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
+            let selectBox = '';
+            if(p.variants && p.variants.length > 1) {
+                selectBox = `<label class="label">اختر النوع:</label>
+                             <select onchange="document.getElementById('p-${start+index}').innerText = this.value + ' ج.م'">
+                                ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price}ج</option>`).join('')}
+                             </select>`;
+            }
+            grid.innerHTML += `
+                <div class="card">
+                    <img src="${imageSrc}" class="img" onerror="this.src='${defaultImg}'">
+                    <div class="name">${p.name}</div>
+                    <div class="price" id="p-${start+index}">${p.variants[0].price} ج.م</div>
+                    ${selectBox}
+                    <button onclick="order('${p.name}', ${start+index})" class="btn">طلب واتساب</button>
+                </div>`;
+        });
+        renderPagination();
     }
 
-    const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
-    
-    filtered.forEach((p) => {
-        const imageSrc = (p.img && p.img.trim() !== "") ? p.img : defaultImg;
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <img src="${imageSrc}" class="product-image">
-            <div class="name">${p.name}</div>
-            <div class="price">${p.price} ج.م</div>
-            <button class="whatsapp-btn" onclick="window.open('https://wa.me/201027021011?text=أريد طلب: ${p.name}')">طلب واتساب</button>
-        `;
-        grid.appendChild(card);
-    });
+    function renderPagination() {
+        const pages = Math.ceil(allProducts.length / itemsPerPage);
+        const div = document.getElementById('pagination');
+        if(!div) return;
+        div.innerHTML = '';
+        for(let i=1; i<=pages; i++) {
+            div.innerHTML += `<button class="${i===currentPage?'active':''}" onclick="currentPage=${i};renderProducts(${i});window.scrollTo(0,0)">${i}</button>`;
+        }
+    }
 
-    const pagin = document.querySelector('.pagination');
-    if (pagin) pagin.style.display = 'none';
-}
+    function order(name, id) {
+        let price = document.getElementById('p-'+id).innerText;
+        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
+        window.open("https://wa.me/201027021011?text=" + msg);
+    }
 
-const itemsPerPage = 20;
-
-function renderProducts(page) {
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    
-    const start = (page - 1) * itemsPerPage;
-    const items = allProducts.slice(start, start + itemsPerPage);
-    
-    items.forEach((p) => {
-        const imageSrc = (p.img && p.img.trim() !== "") ? p.img : defaultImg;
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <img src="${imageSrc}" class="product-image">
-            <div class="name">${p.name}</div>
-            <div class="price">${p.price} ج.م</div>
-            <button class="whatsapp-btn" onclick="window.open('https://wa.me/201027021011?text=أريد طلب: ${p.name}')">طلب واتساب</button>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-renderProducts(1);
+    renderProducts(1);
+</script>
+</body>
+</html>
