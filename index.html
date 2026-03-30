@@ -13,10 +13,8 @@
         .container { padding: 10px; max-width: 1000px; margin: auto; }
         .category-title { border-right: 4px solid var(--s); padding-right: 10px; margin: 15px 0; color: var(--p); font-size: 1.1rem; text-align: right; }
         
-        /* شبكة المنتجات */
-        #products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        
-        .card { background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; height: 100%; box-sizing: border-box;}
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .card { background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; }
         .img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 8px; border-radius: 8px; }
         .name { font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; min-height: 35px; color: #333; display: flex; align-items: center; justify-content: center; }
         .price { color: #27ae60; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
@@ -25,7 +23,6 @@
         select { width: 100%; padding: 4px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 8px; font-family: 'Cairo'; font-size: 0.75rem; }
         .btn { background: var(--a); color: #fff; border: none; padding: 10px 2px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; font-size: 0.8rem; text-decoration: none; margin-top: auto; }
 
-        /* أزرار الصفحات */
         .pagination { display: flex; justify-content: center; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
         .pagination button { background: #fff; border: 1px solid var(--s); color: var(--s); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-family: 'Cairo'; }
         .pagination button.active { background: var(--s); color: #fff; }
@@ -43,10 +40,8 @@
 
 <div class="container">
     <h2 class="category-title">قسم الأدوات والكتب</h2>
-    
-    <div id="products-grid"></div>
-
-    <div class="pagination" id="pagination"></div>
+    <div id="products-grid" class="product-grid"></div>
+    <div id="pagination" class="pagination"></div>
 
     <h2 class="category-title">خدمات إضافية</h2>
     <div class="service-card">
@@ -56,98 +51,62 @@
 </div>
 
 <script>
-    // قائمة المنتجات (هنا بنحط الـ 880 منتج بتوعنا)
     const allProducts = [
-        { name: "استيكي نوت فواصل", img: "https://i.ibb.co/6RnvW32C/image.jpg", variants: [{label: "عادي", price: 10}] },
-        { name: "صلصال فوم دستة", img: "https://i.ibb.co/dwvfDC7S/image.jpg", variants: [{label: "12 قطعة", price: 20}] },
-        { name: "كتاب المعاصر Math 1 ابتدائي", img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", variants: [{label: "تيرم 1", price: 150}, {label: "تيرم 2", price: 150}] },
-        { name: "ألوان خشب فابر كاستل", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", variants: [{label: "12 لون", price: 85}, {label: "24 لون", price: 160}] },
-        { name: "قلم سنون روترينج 0.5", img: "https://images.unsplash.com/photo-1511108690759-009324a90311?w=200", variants: [{label: "أصلي", price: 45}] },
-        { name: "زمزمية تانك 1 لتر", img: "https://images.unsplash.com/photo-1523362628744-0c14a394bc85?w=200", variants: [{label: "موف", price: 95}, {label: "أزرق", price: 95}] },
-            const allProducts = [
-        // المنتجات اللي كانت في الكود الأول (القديمة)
-        { name: "استيكي نوت فواصل", img: "https://i.ibb.co/6RnvW32C/image.jpg", variants: [{label: "عادي", price: 10}] },
-        { name: "صلصال فوم دستة", img: "https://i.ibb.co/dwvfDC7S/image.jpg", variants: [{label: "12 قطعة", price: 20}] },
-        { name: "بالتة ألوان مياه", img: "https://i.ibb.co/5XZTTv8D/image.jpg", variants: [{label: "صغير", price: 25}, {label: "وسط", price: 30}, {label: "كبير", price: 35}] },
-        { name: "قلم سنون جيدو", img: "https://i.ibb.co/Ps58QtrZ/image.jpg", variants: [{label: "0.7 مم", price: 25}, {label: "0.9 مم", price: 25}] },
-        { name: "مسطرة سيليكون", img: "https://i.ibb.co/q3Qr6LVn/image.jpg", variants: [{label: "20 سم", price: 7}, {label: "30 سم", price: 12}] },
-        { name: "مسطرة شفافة", img: "https://i.ibb.co/RZhq66L/image.jpg", variants: [{label: "20 سم", price: 5}, {label: "30 سم", price: 10}] },
-        { name: "كتاب المعاصر Math 1 ابتدائي", img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/math-cover.png", variants: [{label: "تيرم 1", price: 150}, {label: "تيرم 2", price: 150}] },
-        { name: "كتاب الأضواء عربي 2 ابتدائي", img: "https://aladwaa.com/covers/ar-2.jpg", variants: [{label: "كتاب الطالب", price: 140}] },
-        { name: "ألوان خشب فابر كاستل", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200", variants: [{label: "12 لون", price: 85}, {label: "24 لون", price: 160}] },
-        { name: "قلم سنون روترينج 0.5", img: "https://images.unsplash.com/photo-1511108690759-009324a90311?w=200", variants: [{label: "أصلي", price: 45}] },
-        { name: "زمزمية تانك 1 لتر", img: "https://images.unsplash.com/photo-1523362628744-0c14a394bc85?w=200", variants: [{label: "موف", price: 95}, {label: "أزرق", price: 95}] },
-        { name: "لانش بوكس مقسم ألوان", img: "https://images.unsplash.com/photo-1594911772125-07fc7a2d8d9f?w=200", variants: [{label: "بتقسيمة", price: 110}] },
-        { name: "براية معدن ألماني", img: "https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=200", variants: [{label: "فتحة واحدة", price: 12}] },
-        { name: "كشكول سلك 100 ورقة", img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=200", variants: [{label: "A5 مسطر", price: 65}] },
-        { name: "طقم روتو جاف 10 قطع", img: "https://pro-pencils.com/wp-content/uploads/2021/05/roto-white.jpg", variants: [{label: "أزرق", price: 45}] },
-        { name: "آلة حاسبة كاسيو 991ARX", img: "https://images.unsplash.com/photo-1574607383476-f517f220d356?w=200", variants: [{label: "عربي أصلية", price: 1250}] }
+        { name: "استيكي نوت فواصل", img: "https://i.ibb.co/6RnvW32C/image.jpg", variants: [{label: "عادي", price: "10"}] },
+        { name: "صلصال فوم دستة", img: "https://i.ibb.co/dwvfDC7S/image.jpg", variants: [{label: "12 قطعة", price: "20"}] },
+        { name: "بالتة ألوان مياه", img: "https://i.ibb.co/5XZTTv8D/image.jpg", variants: [{label: "صغير", price: "25"}, {label: "وسط", price: "30"}, {label: "كبير", price: "35"}] },
+        { name: "قلم سنون جيدو", img: "https://i.ibb.co/Ps58QtrZ/image.jpg", variants: [{label: "0.7 مم", price: "25"}, {label: "0.9 مم", price: "25"}] },
+        { name: "مسطرة سيليكون", img: "https://i.ibb.co/q3Qr6LVn/image.jpg", variants: [{label: "20 سم", price: "7"}, {label: "30 سم", price: "12"}] },
+        { name: "مسطرة شفافة", img: "https://i.ibb.co/RZhq66L/image.jpg", variants: [{label: "20 سم", price: "5"}, {label: "30 سم", price: "10"}] },
+        { name: "كتاب المعاصر انجليزي 3 ثانوي", img: "https://elmoasserbooks.com/wp-content/uploads/2023/08/english-cover.png", variants: [{ label: "كتاب الشرح", price: "230" }, { label: "كتاب الأسئلة", price: "195" }] },
+        { name: "آلة حاسبة كاسيو 991ARX", img: "https://images.unsplash.com/photo-1574607383476-f517f220d356?w=200", variants: [{ label: "عربي أصلية", price: "1250" }] }
     ];
 
-    ];
-
-    const itemsPerPage = 12; // عدد المنتجات في كل صفحة
+    const itemsPerPage = 12;
     let currentPage = 1;
 
     function renderProducts(page) {
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const paginatedItems = allProducts.slice(start, end);
-        
         const grid = document.getElementById('products-grid');
         grid.innerHTML = '';
+        const start = (page - 1) * itemsPerPage;
+        const items = allProducts.slice(start, start + itemsPerPage);
 
-        paginatedItems.forEach((product, index) => {
-            let selectHTML = '';
-            if (product.variants.length > 1) {
-                selectHTML = `<label class="label">اختر النوع:</label>
-                              <select onchange="updatePrice(this, ${start + index})">
-                                ${product.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price}ج</option>`).join('')}
-                              </select>`;
+        items.forEach((p, index) => {
+            let selectBox = '';
+            if(p.variants.length > 1) {
+                selectBox = `<label class="label">اختر النوع:</label>
+                             <select onchange="document.getElementById('p-${start+index}').innerText = this.value + ' ج.م'">
+                                ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price}ج</option>`).join('')}
+                             </select>`;
             }
-
             grid.innerHTML += `
                 <div class="card">
-                    <img src="${product.img}" class="img">
-                    <div class="name">${product.name}</div>
-                    <div class="price" id="price-${start + index}">${product.variants[0].price} ج.م</div>
-                    ${selectHTML}
-                    <button onclick="sendOrder('${product.name}', ${start + index})" class="btn">طلب واتساب</button>
-                </div>
-            `;
+                    <img src="${p.img}" class="img">
+                    <div class="name">${p.name}</div>
+                    <div class="price" id="p-${start+index}">${p.variants[0].price} ج.م</div>
+                    ${selectBox}
+                    <button onclick="order('${p.name}', ${start+index})" class="btn">طلب واتساب</button>
+                </div>`;
         });
         renderPagination();
     }
 
-    function updatePrice(select, globalIndex) {
-        document.getElementById(`price-${globalIndex}`).innerText = select.value + " ج.م";
-    }
-
     function renderPagination() {
-        const totalPages = Math.ceil(allProducts.length / itemsPerPage);
-        const paginationDiv = document.getElementById('pagination');
-        paginationDiv.innerHTML = '';
-
-        for (let i = 1; i <= totalPages; i++) {
-            paginationDiv.innerHTML += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+        const pages = Math.ceil(allProducts.length / itemsPerPage);
+        const div = document.getElementById('pagination');
+        div.innerHTML = '';
+        for(let i=1; i<=pages; i++) {
+            div.innerHTML += `<button class="${i===currentPage?'active':''}" onclick="currentPage=${i};renderProducts(${i});window.scrollTo(0,0)">${i}</button>`;
         }
     }
 
-    function goToPage(i) {
-        currentPage = i;
-        renderProducts(i);
-        window.scrollTo(0,0);
+    function order(name, id) {
+        let price = document.getElementById('p-'+id).innerText;
+        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
+        window.open("https://wa.me/201027021011?text=" + msg);
     }
 
-    function sendOrder(name, index) {
-        let priceElement = document.getElementById(`price-${index}`).innerText;
-        let message = encodeURIComponent(`أهلاً مكتبة ذاكر، أريد طلب: ${name} بسعر ${priceElement}`);
-        window.open(`https://wa.me/201027021011?text=${message}`);
-    }
-
-    // ابدأ التشغيل
     renderProducts(1);
 </script>
-
 </body>
 </html>
