@@ -1037,20 +1037,23 @@
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
     const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
-    renderProducts(filtered, 1);
-}
+    renderProducts(1, filtered); // بنبعت القائمة المفلترة للصفحة الأولى
+if (document.querySelector('.pagination')) document.querySelector('.pagination').style.display = 'none'; // بنخفي الصفحات
+
 
 
     const itemsPerPage = 12;
     let currentPage = 1;
     const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-    function renderProducts(page) {
+    function renderProducts(productsList = allProducts, page = 1) { // بنعرف الدالة إنها ممكن تاخد قائمة تانية غير الـ 1000 صنف
+
         const grid = document.getElementById('products-grid');
         if(!grid) return;
         grid.innerHTML = '';
         const start = (page - 1) * itemsPerPage;
-        const items = allProducts.slice(start, start + itemsPerPage);
+        const items = productsList.slice(start, start + itemsPerPage); // بنقطع من القائمة اللي مبعوتة (سواء بحث أو الـ 1000 صنف)
+
 
         items.forEach((p, index) => {
             const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
