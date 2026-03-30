@@ -1053,31 +1053,54 @@ function renderProducts(products, page) {
     const start = (page - 1) * itemsPerPage;
     const items = products.slice(start, start + itemsPerPage);
 
-    items.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
+    items.forEach((p, index) => {
+        const imageSrc = (p.img && p.img.trim() !== '') ? p.img : defaultImg;
 
-        card.innerHTML = `
-            <img src="${product.img || defaultImg}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p>${product.price || ''}</p>
+        let selectBox = '';
+        if (p.variants && p.variants.length > 0) {
+            selectBox = `
+                <label class="label">اختار:</label>
+                <select>
+                    ${p.variants.map(v => `<option>${v}</option>`).join('')}
+                </select>
+            `;
+        }
+
+        grid.innerHTML += `
+            <div class="card">
+                <img src="${imageSrc}" class="product-img">
+                <div class="name">${p.name}</div>
+                <div class="price">${p.price || ''}</div>
+                ${selectBox}
+                <button onclick="order('${p.name}')">اطلب عبر واتساب</button>
+            </div>
         `;
-
-        grid.appendChild(card);
     });
+
+    // pagination
+    renderPagination(products.length, page);
 }
         
+function renderPagination(totalItems, currentPage) {
+    const pagesContainer = document.getElementById('pagination');
+    if (!pagesContainer) return;
 
-    function renderPagination() {
-        const pages = Math.ceil(allProducts.length / itemsPerPage);
-        const div = document.getElementById('pagination');
-        if(!div) return;
-        div.innerHTML = '';
-        for(let i=1; i<=pages; i++) {
-            div.innerHTML += `<button class="${i===currentPage?'active':''}" onclick="currentPage=${i};renderProducts(${i});window.scrollTo(0,0)">${i}</button>`;
-        }
+    pagesContainer.innerHTML = '';
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+        pagesContainer.innerHTML += `
+            <button onclick="goToPage(${i})">${i}</button>
+        `;
     }
+}
 
+function goToPage(page) {
+    currentPage = page;
+    renderProducts(allProducts, page);
+}
+    
     function order(name, id) {
         let price = document.getElementById('p-'+id).innerText;
         let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
