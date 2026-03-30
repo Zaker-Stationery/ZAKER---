@@ -1063,14 +1063,18 @@ function renderProducts(products, page) {
         }
 
         let selectBox = '';
-        if (p.variants && p.variants.length > 0) {
+        // هنا بنقول للكود: لو فيه فعلاً أنواع (variants) وأكتر من نوع واحد، اظهر "اختار"
+        if (p.variants && p.variants.length > 1) {
             selectBox = `
-                <label class="label">اختار:</label>
-                <select onchange="updatePrice(this, '${p.name.replace(/\s+/g, '')}')">
-                    ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price} ج.م</option>`).join('')}
-                </select>
+                <div class="variant-container" style="margin-top: 10px;">
+                    <label class="label" style="font-size: 12px; color: #666;">اختار النوع:</label>
+                    <select onchange="updatePrice(this, '${p.name.replace(/\s+/g, '')}')" style="width: 100%; padding: 5px; border-radius: 5px;">
+                        ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price} ج.م</option>`).join('')}
+                    </select>
+                </div>
             `;
         }
+
 
         grid.innerHTML += `
             <div class="card">
