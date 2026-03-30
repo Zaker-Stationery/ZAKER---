@@ -1065,7 +1065,6 @@ function searchProducts() {
 }
 
 const itemsPerPage = 20;
-let currentPage = 1;
 
 function renderProducts(page) {
     const grid = document.getElementById('products-grid');
@@ -1089,5 +1088,5 @@ function renderProducts(page) {
     });
 }
 
-// استدعاء الدالة لأول مرة عند فتح الموقع
+// تشغيل العرض لأول مرة
 renderProducts(1);
