@@ -1043,7 +1043,8 @@ function searchProducts() {
 
     if (term === "") {
         renderProducts(1);
-        document.querySelector('.pagination').style.display = 'flex';
+        const pagin = document.querySelector('.pagination');
+        if (pagin) pagin.style.display = 'flex';
         return;
     }
 
@@ -1061,7 +1062,9 @@ function searchProducts() {
         `;
         grid.appendChild(card);
     });
-    document.querySelector('.pagination').style.display = 'none';
+
+    const pagin = document.querySelector('.pagination');
+    if (pagin) pagin.style.display = 'none';
 }
 
 const itemsPerPage = 20;
@@ -1088,5 +1091,5 @@ function renderProducts(page) {
     });
 }
 
-// تشغيل العرض لأول مرة
+// السطر ده هو اللي هيرجع الـ 1000 صنف أول ما تفتحي
 renderProducts(1);
