@@ -37,10 +37,10 @@
     <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
-
 <div style="text-align: center; margin: 20px 0;">
-    <input type="text" id="searchInput" oninput="searchProducts()" placeholder="ابحث عن منتج بالاسم..." 
-    style="width: 90%; max-width: 450px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+    <input type="text" id="searchInput" oninput="searchProducts()" 
+    placeholder="ابحث عن منتج... (قلم، كشكول، ألوان)" 
+    style="width: 90%; max-width: 450px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; font-size: 16px; outline: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
 </div>
 
 <div class="container">
@@ -56,7 +56,6 @@
 </div>
 
 <script>
-
         const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "بلانشيطه (سناده) اشکال", img: "", variants: [{label: "عادي", price: "15"}] },
@@ -1036,30 +1035,26 @@
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
- 
-
-const itemsPerPage = 12;
-let currentPage = 1;
-const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
-
 function searchProducts() {
-    const term = document.getElementById('searchInput').value.toLowerCase().trim();
-    const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
+    const term = document.getElementById('searchInput').value.toLowerCase();
+    
+    const filtered = allProducts.filter(product => 
+        product.name.toLowerCase().includes(term)
+    );
+    
     renderProducts(filtered, 1);
 }
 
-function renderProducts(productsList = allProducts, page = 1) {
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    
-    const start = (page - 1) * itemsPerPage;
-    const items = productsList.slice(start, start + itemsPerPage);
+    const itemsPerPage = 12;
+    let currentPage = 1;
+    const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-    
-    const start = (page - 1) * itemsPerPage;
-    const items = productsList.slice(start, start + itemsPerPage);
-
+    function renderProducts(page) {
+        const grid = document.getElementById('products-grid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        const start = (page - 1) * itemsPerPage;
+        const items = allProducts.slice(start, start + itemsPerPage);
 
         items.forEach((p, index) => {
             const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
@@ -1102,5 +1097,3 @@ function renderProducts(productsList = allProducts, page = 1) {
 </script>
 </body>
 </html>
-
-    
