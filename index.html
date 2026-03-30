@@ -1101,10 +1101,14 @@ function goToPage(page) {
     renderProducts(allProducts, page);
 }
     
-    function order(name, id) {
-        let price = document.getElementById('p-'+id).innerText;
-        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
-        window.open("https://wa.me/201027021011?text=" + msg);
+    function order(productName) {
+    const phone = "201027021011"; // حطي رقمك هنا بصيغة دولية (من غير +)
+    
+    const message = عايز أطلب المنتج ده: ${productName}`;
+    
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    
+    window.open(url, '_blank');
     }
 
     renderProducts(allProducts, 1);
