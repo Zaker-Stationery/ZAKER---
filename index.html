@@ -1040,58 +1040,70 @@ function searchProducts() {
     renderProducts(filtered, 1);
 }
 
+const itemsPerPage = 12;
+let currentPage = 1;
+const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-    const itemsPerPage = 12;
-    let currentPage = 1;
-    const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 function renderProducts(products, page) {
     const grid = document.getElementById('products-grid');
     if (!grid) return;
-
     grid.innerHTML = '';
 
     const start = (page - 1) * itemsPerPage;
     const items = products.slice(start, start + itemsPerPage);
 
-    items.forEach((p, index) => {
+    items.forEach((p) => {
         const imageSrc = (p.img && p.img.trim() !== '') ? p.img : defaultImg;
+        
+        let displayPrice = '';
+        if (p.price) {
+            displayPrice = p.price;
+        } else if (p.variants && p.variants.length > 0) {
+            displayPrice = p.variants[0].price;
+        }
 
         let selectBox = '';
         if (p.variants && p.variants.length > 0) {
             selectBox = `
                 <label class="label">اختار:</label>
-                <select>
-                    ${p.variants.map(v => `<option>${v}</option>`).join('')}
+                <select onchange="updatePrice(this, '${p.name.replace(/\s+/g, '')}')">
+                    ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price} ج.م</option>`).join('')}
                 </select>
             `;
         }
 
-               grid.innerHTML += `
+        grid.innerHTML += `
             <div class="card">
                 <img src="${imageSrc}" class="product-img">
                 <div class="name">${p.name}</div>
-                <div class="price">${p.price ? p.price + ' ج.م' : ''}</div>
+                <div class="price" id="price-${p.name.replace(/\s+/g, '')}">${displayPrice ? displayPrice + ' ج.م' : ''}</div>
                 ${selectBox}
-                <button class="whatsapp-btn" onclick="order('${p.name.replace(/'/g, "\\'")}', '${p.price || ''}')">اطلب عبر واتساب</button>
+                <button onclick="order('${p.name.replace(/'/g, "\\'")}', '${p.name.replace(/\s+/g, '')}')">اطلب عبر واتساب</button>
             </div>
-        `; 
+        `;
     });
 
-    // pagination
     renderPagination(products.length, page);
 }
+
+function updatePrice(selectElement, productId) {
+    const priceDiv = document.getElementById('price-' + productId);
+    if (priceDiv) {
+        priceDiv.innerText = selectElement.value + ' ج.م';
+    }
+}
         
-function renderPagination(totalItems, currentPage) {
+function renderPagination(totalItems, currentPageNum) {
     const pagesContainer = document.getElementById('pagination');
     if (!pagesContainer) return;
-
     pagesContainer.innerHTML = '';
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (totalPages <= 1) return;
 
     for (let i = 1; i <= totalPages; i++) {
         pagesContainer.innerHTML += `
-            <button onclick="goToPage(${i})">${i}</button>
+            <button class="${i === currentPageNum ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>
         `;
     }
 }
@@ -1101,17 +1113,16 @@ function goToPage(page) {
     renderProducts(allProducts, page);
 }
     
-    function order(name, price) {
-        let text = "أهلاً مكتبة ذاكر، أريد طلب: " + name;
-        if (price) {
-            text += " بسعر " + price + " ج.م";
-        }
-        let msg = encodeURIComponent(text);
-        window.open("https://wa.me/201027021011?text=" + msg);
-    }
+function order(name, priceId) {
+    let priceElement = document.getElementById('price-' + priceId);
+    let currentPrice = priceElement ? priceElement.innerText : '';
+    let text = "أهلاً مكتبة ذاكر، أريد طلب: " + name + (currentPrice ? " بسعر " + currentPrice : "");
+    let msg = encodeURIComponent(text);
+    window.open("https://wa.me/201027021011?text=" + msg);
+}
 
-
-    renderProducts(allProducts, 1);
+// تشغيل الموقع لأول مرة
+renderProducts(allProducts, 1);
 </script>
 </body>
 </html>
