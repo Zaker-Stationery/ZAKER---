@@ -1046,25 +1046,26 @@ function searchProducts() {
     const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
     function renderProducts(page) {
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    
-    const start = (page - 1) * itemsPerPage;
-    const items = allProducts.slice(start, start + itemsPerPage);
-    
-    items.forEach((product) => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p class="price">${product.price} ج.م</p>
-        `;
-        grid.appendChild(card);
-    });
-}
+        const grid = document.getElementById('products-grid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        const start = (page - 1) * itemsPerPage;
+        const items = allProducts.slice(start, start + itemsPerPage);
 
+        items.forEach((p, index) => {
+            const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
+            let selectBox = '';
+            if(p.variants && p.variants.length > 1) {
+                selectBox = `<label class="label">اختر النوع:</label>
+                             <select onchange="document.getElementById('p-${start+index}').innerText = this.value + ' ج.م'">
+                                ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price}ج</option>`).join('')}
+                             </select>`;
+            }
+            grid.innerHTML += `
+                <div class="card">
+                    <img src="${imageSrc}" class="img" onerror="this.src='${defaultImg}'">
+                    <div class="name">${p.name}</div>
+                    <div class="price" id="p-${start+index}">${p.variants[0].price} ج.م</div>
                     ${selectBox}
                     <button onclick="order('${p.name}', ${start+index})" class="btn">طلب واتساب</button>
                 </div>`;
