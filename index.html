@@ -1035,20 +1035,13 @@
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
 function searchProducts() {
-    const input = document.getElementById('searchInput');
-    const term = input.value.toLowerCase().trim();
-    
-    if (term === "") {
-        renderProducts(allProducts, 1);
-        return;
-    }
-
+    const term = document.getElementById('searchInput').value.toLowerCase().trim();
     const filtered = allProducts.filter(product => 
         product.name.toLowerCase().includes(term)
     );
-    
     renderProducts(filtered, 1);
 }
+
 
 
     const itemsPerPage = 12;
