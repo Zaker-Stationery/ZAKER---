@@ -1046,12 +1046,16 @@ function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
     const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
     renderProducts(filtered, 1);
-    updatePagination(filtered); // لو عندك دالة للأرقام تحت
 }
-function renderProducts(productsList, page) {
+
+function renderProducts(productsList = allProducts, page = 1) {
     const grid = document.getElementById('products-grid');
     if (!grid) return;
     grid.innerHTML = '';
+    
+    const start = (page - 1) * itemsPerPage;
+    const items = productsList.slice(start, start + itemsPerPage);
+
     
     const start = (page - 1) * itemsPerPage;
     const items = productsList.slice(start, start + itemsPerPage);
