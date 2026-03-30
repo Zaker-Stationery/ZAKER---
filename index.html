@@ -39,9 +39,10 @@
 </header>
     <div style="text-align: center; margin: 20px 0; display: flex; justify-content: center; gap: 8px;">
     <input type="text" id="searchInput" placeholder="ابحث عن منتج..." 
-    style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
+    style="width: 60%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
     <button onclick="searchProducts()" style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">بحث</button>
 </div>
+
 <div class="container">
     <h2 class="category-title">قسم الأدوات والكتب</h2>
     <div id="products-grid" class="product-grid"></div>
@@ -1036,13 +1037,34 @@
         ];
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
+    
+    // لو الخانة فاضية، الموقع هيرجع يعرض كل الـ 1000 صنف فوراً
+    if (term === "") {
+        renderProducts(1); 
+        return;
+    }
+
+    // هنا بفلتر المنتجات اللي فيها الكلمة اللي كتبتيها
     const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
-    renderProducts(filtered, 1);
+    
+    const grid = document.getElementById('products-grid');
+    grid.innerHTML = ''; // بمسح الشاشة عشان أحط نتايج البحث
+
+    filtered.forEach((product) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p class="price">${product.price} ج.م</p>
+        `;
+        grid.appendChild(card);
+    });
+    
+    // بنخفي أرقام الصفحات وقت البحث عشان متلخبطش الدنيا
+    document.querySelector('.pagination').style.display = 'none';
 }
 
-
-    const itemsPerPage = 12;
-    let currentPage = 1;
     const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
     function renderProducts(page) {
