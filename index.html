@@ -254,13 +254,9 @@
         { name: "مسطره 15 سم دلي", img: "", variants: [{label: "عادي", price: "7"}] }
     ];
 
-
-    const itemsPerPage = 12;
-    let currentPage = 1;
     const itemsPerPage = 12;
     let currentPage = 1;
     const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
-
 
     function renderProducts(page) {
         const grid = document.getElementById('products-grid');
@@ -270,9 +266,7 @@
         const items = allProducts.slice(start, start + itemsPerPage);
 
         items.forEach((p, index) => {
-            
             const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
-            
             let selectBox = '';
             if(p.variants && p.variants.length > 1) {
                 selectBox = `<label class="label">اختر النوع:</label>
@@ -312,3 +306,5 @@
 </script>
 </body>
 </html>
+
+    
