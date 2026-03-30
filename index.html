@@ -1045,12 +1045,12 @@ function searchProducts() {
     let currentPage = 1;
     const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-    function renderProducts(productsList = allProducts, page = 1) {
+    function renderProducts(page) {
 
         const grid = document.getElementById('products-grid');
         if(!grid) return;
         grid.innerHTML = '';
-        const items = productsList.slice(start, start + itemsPerPage);
+        const items = allProducts.slice(start, start + itemsPerPage);
 
         const items = allProducts.slice(start, start + itemsPerPage);
 
