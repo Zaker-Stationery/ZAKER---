@@ -1066,15 +1066,15 @@ function renderProducts(products, page) {
             `;
         }
 
-        grid.innerHTML += `
+               grid.innerHTML += `
             <div class="card">
                 <img src="${imageSrc}" class="product-img">
                 <div class="name">${p.name}</div>
-                <div class="price">${p.price || ''}</div>
+                <div class="price">${p.price ? p.price + ' ج.م' : ''}</div>
                 ${selectBox}
-                <button onclick="order('${p.name}')">اطلب عبر واتساب</button>
+                <button class="whatsapp-btn" onclick="order('${p.name.replace(/'/g, "\\'")}', '${p.price || ''}')">اطلب عبر واتساب</button>
             </div>
-        `;
+        `; 
     });
 
     // pagination
@@ -1101,11 +1101,15 @@ function goToPage(page) {
     renderProducts(allProducts, page);
 }
     
-    function order(name, id) {
-        let price = document.getElementById('p-'+id).innerText;
-        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
+    function order(name, price) {
+        let text = "أهلاً مكتبة ذاكر، أريد طلب: " + name;
+        if (price) {
+            text += " بسعر " + price + " ج.م";
+        }
+        let msg = encodeURIComponent(text);
         window.open("https://wa.me/201027021011?text=" + msg);
     }
+
 
     renderProducts(allProducts, 1);
 </script>
