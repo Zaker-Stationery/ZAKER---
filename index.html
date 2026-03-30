@@ -37,20 +37,101 @@
     <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
-
 <div class="container">
+    <div style="margin: 15px 0;">
+        <input type="text" id="searchInput" placeholder="ابحث عن منتج (مثلاً: قلم، كشكول، مقص)..." 
+               style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid var(--s); font-family: 'Cairo'; box-sizing: border-box;">
+    </div>
+
     <h2 class="category-title">قسم الأدوات والكتب</h2>
     <div id="products-grid" class="product-grid"></div>
     <div id="pagination" class="pagination"></div>
 
     <h2 class="category-title">خدمات إضافية</h2>
     <div class="service-card">
-        <div style="font-weight: bold; color: var(--p);">📸 تصوير ومستندات</div>
-        <a href="https://wa.me/201027021011" class="service-btn">استفسار واتساب</a>
+        <div style="font-weight: bold; color: var(--p); font-size: 1.1rem; margin-bottom: 5px;">📸 تصوير ومستندات وطباعة</div>
+        <p style="font-size: 0.85rem; color: #666; margin: 5px 0;">طباعة أبيض وأسود، ألوان، وتصوير ورق بجميع الأحجام</p>
+        <a href="https://wa.me/201027021011?text=استفسار عن خدمة التصوير والطباعة" class="service-btn">استفسار عن السعر واتساب</a>
     </div>
 </div>
 
 <script>
+    // ضيفي كل المنتجات اللي بعتهالك قبل كدة هنا في المصفوفة دي
+    const allProducts = [
+        { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
+        // ... (باقي الـ 300 منتج بتوعك هنا) ...
+        { name: "مسطره 15 سم دلي", img: "", variants: [{label: "عادي", price: "7"}] }
+    ];
+
+    const itemsPerPage = 12;
+    let currentPage = 1;
+    let filteredProducts = [...allProducts]; // مصفوفة للبحث
+    const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
+
+    // وظيفة البحث
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const term = e.target.value.toLowerCase();
+        filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
+        currentPage = 1;
+        renderProducts(1);
+    });
+
+    function renderProducts(page) {
+        const grid = document.getElementById('products-grid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        const start = (page - 1) * itemsPerPage;
+        const items = filteredProducts.slice(start, start + itemsPerPage);
+
+        if(items.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 20px;">عفواً، لا يوجد منتج بهذا الاسم.</p>';
+            document.getElementById('pagination').innerHTML = '';
+            return;
+        }
+
+        items.forEach((p, index) => {
+            const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
+            let selectBox = '';
+            if(p.variants && p.variants.length > 1) {
+                selectBox = `<label class="label">اختر النوع:</label>
+                             <select onchange="document.getElementById('p-${start+index}').innerText = this.value + ' ج.م'">
+                                ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price}ج</option>`).join('')}
+                             </select>`;
+            }
+            grid.innerHTML += `
+                <div class="card">
+                    <img src="${imageSrc}" class="img" onerror="this.src='${defaultImg}'">
+                    <div class="name">${p.name}</div>
+                    <div class="price" id="p-${start+index}">${p.variants[0].price} ج.م</div>
+                    ${selectBox}
+                    <button onclick="order('${p.name}', ${start+index})" class="btn">طلب واتساب</button>
+                </div>`;
+        });
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const pages = Math.ceil(filteredProducts.length / itemsPerPage);
+        const div = document.getElementById('pagination');
+        if(!div) return;
+        div.innerHTML = '';
+        if(pages <= 1) return;
+
+        for(let i=1; i<=pages; i++) {
+            div.innerHTML += `<button class="${i===currentPage?'active':''}" onclick="currentPage=${i};renderProducts(${i});window.scrollTo(0,0)">${i}</button>`;
+        }
+    }
+
+    function order(name, id) {
+        let price = document.getElementById('p-'+id).innerText;
+        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
+        window.open("https://wa.me/201027021011?text=" + msg);
+    }
+
+    renderProducts(1);
+</script>
+
+
         const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "بلانشيطه (سناده) اشکال", img: "", variants: [{label: "عادي", price: "15"}] },
