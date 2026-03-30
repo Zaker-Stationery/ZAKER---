@@ -56,20 +56,6 @@
 </div>
 
 <script>
-// دالة البحث (خليها أول حاجة جوه السكريبت)
-function searchProducts() {
-    const input = document.getElementById('searchInput');
-    const term = input.value.toLowerCase().trim();
-    
-    // فلترة المنتجات (تأكدي إن اسم المصفوفة تحت هو allProducts)
-    const filtered = allProducts.filter(product => 
-        product.name.toLowerCase().includes(term)
-    );
-    
-    // عرض النتائج من الصفحة الأولى
-    renderProducts(filtered, 1);
-}
-
 
         const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
