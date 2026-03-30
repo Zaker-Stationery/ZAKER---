@@ -1034,19 +1034,25 @@
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
-function searchProducts() {
-    const term = document.getElementById('searchInput').value.toLowerCase().trim();
+ function searchProducts() {
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+    
+    const term = input.value.toLowerCase().trim();
+    
+    // فلترة المنتجات
     const filtered = allProducts.filter(product => 
         product.name.toLowerCase().includes(term)
     );
+    
+    // عرض النتائج من الصفحة الأولى
     renderProducts(filtered, 1);
 }
 
+const itemsPerPage = 12;
+let currentPage = 1;
+const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-
-    const itemsPerPage = 12;
-    let currentPage = 1;
-    const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
     function renderProducts(page) {
         const grid = document.getElementById('products-grid');
