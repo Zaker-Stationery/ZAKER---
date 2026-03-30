@@ -14,11 +14,10 @@
         .category-title { border-right: 4px solid var(--s); padding-right: 10px; margin: 15px 0; color: var(--p); font-size: 1.1rem; text-align: right; }
         
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .card { background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; }
+        .card { background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative; }
         .img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 8px; border-radius: 8px; }
         .name { font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; min-height: 35px; color: #333; display: flex; align-items: center; justify-content: center; }
         .price { color: #27ae60; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
-        .label { display: block; text-align: right; font-size: 0.7rem; margin-bottom: 2px; color: #666; font-weight: bold; }
         
         select { width: 100%; padding: 4px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 8px; font-family: 'Cairo'; font-size: 0.75rem; }
         .btn { background: var(--a); color: #fff; border: none; padding: 10px 2px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; font-size: 0.8rem; text-decoration: none; margin-top: auto; }
@@ -27,8 +26,10 @@
         .pagination button { background: #fff; border: 1px solid var(--s); color: var(--s); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-family: 'Cairo'; }
         .pagination button.active { background: var(--s); color: #fff; }
 
-        .service-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 10px; border-right: 5px solid var(--s); }
+        .service-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 30px; border-right: 5px solid var(--s); }
         .service-btn { background: var(--s); color: #fff; padding: 10px; border-radius: 8px; display: block; text-decoration: none; font-weight: bold; margin-top: 10px; font-size: 0.9rem; }
+        
+        #searchInput { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid var(--s); font-family: 'Cairo'; box-sizing: border-box; outline: none; }
     </style>
 </head>
 <body>
@@ -37,10 +38,10 @@
     <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
+
 <div class="container">
     <div style="margin: 15px 0;">
-        <input type="text" id="searchInput" placeholder="ابحث عن منتج (مثلاً: قلم، كشكول، مقص)..." 
-               style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid var(--s); font-family: 'Cairo'; box-sizing: border-box;">
+        <input type="text" id="searchInput" placeholder="🔍 ابحث عن قلم، كشكول، آلة حاسبة...">
     </div>
 
     <h2 class="category-title">قسم الأدوات والكتب</h2>
@@ -51,88 +52,12 @@
     <div class="service-card">
         <div style="font-weight: bold; color: var(--p); font-size: 1.1rem; margin-bottom: 5px;">📸 تصوير ومستندات وطباعة</div>
         <p style="font-size: 0.85rem; color: #666; margin: 5px 0;">طباعة أبيض وأسود، ألوان، وتصوير ورق بجميع الأحجام</p>
-        <a href="https://wa.me/201027021011?text=استفسار عن خدمة التصوير والطباعة" class="service-btn">استفسار عن السعر واتساب</a>
+        <a href="https://wa.me/201027021011?text=أهلاً ندى، استفسار عن خدمة التصوير والطباعة" class="service-btn">استفسار عن السعر واتساب</a>
     </div>
 </div>
 
 <script>
-    // ضيفي كل المنتجات اللي بعتهالك قبل كدة هنا في المصفوفة دي
     const allProducts = [
-        { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
-        // ... (باقي الـ 300 منتج بتوعك هنا) ...
-        { name: "مسطره 15 سم دلي", img: "", variants: [{label: "عادي", price: "7"}] }
-    ];
-
-    const itemsPerPage = 12;
-    let currentPage = 1;
-    let filteredProducts = [...allProducts]; // مصفوفة للبحث
-    const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
-
-    // وظيفة البحث
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-        const term = e.target.value.toLowerCase();
-        filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
-        currentPage = 1;
-        renderProducts(1);
-    });
-
-    function renderProducts(page) {
-        const grid = document.getElementById('products-grid');
-        if(!grid) return;
-        grid.innerHTML = '';
-        const start = (page - 1) * itemsPerPage;
-        const items = filteredProducts.slice(start, start + itemsPerPage);
-
-        if(items.length === 0) {
-            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 20px;">عفواً، لا يوجد منتج بهذا الاسم.</p>';
-            document.getElementById('pagination').innerHTML = '';
-            return;
-        }
-
-        items.forEach((p, index) => {
-            const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
-            let selectBox = '';
-            if(p.variants && p.variants.length > 1) {
-                selectBox = `<label class="label">اختر النوع:</label>
-                             <select onchange="document.getElementById('p-${start+index}').innerText = this.value + ' ج.م'">
-                                ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price}ج</option>`).join('')}
-                             </select>`;
-            }
-            grid.innerHTML += `
-                <div class="card">
-                    <img src="${imageSrc}" class="img" onerror="this.src='${defaultImg}'">
-                    <div class="name">${p.name}</div>
-                    <div class="price" id="p-${start+index}">${p.variants[0].price} ج.م</div>
-                    ${selectBox}
-                    <button onclick="order('${p.name}', ${start+index})" class="btn">طلب واتساب</button>
-                </div>`;
-        });
-        renderPagination();
-    }
-
-    function renderPagination() {
-        const pages = Math.ceil(filteredProducts.length / itemsPerPage);
-        const div = document.getElementById('pagination');
-        if(!div) return;
-        div.innerHTML = '';
-        if(pages <= 1) return;
-
-        for(let i=1; i<=pages; i++) {
-            div.innerHTML += `<button class="${i===currentPage?'active':''}" onclick="currentPage=${i};renderProducts(${i});window.scrollTo(0,0)">${i}</button>`;
-        }
-    }
-
-    function order(name, id) {
-        let price = document.getElementById('p-'+id).innerText;
-        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
-        window.open("https://wa.me/201027021011?text=" + msg);
-    }
-
-    renderProducts(1);
-</script>
-
-
-        const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "بلانشيطه (سناده) اشکال", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "وراقه شبك معدن", img: "", variants: [{label: "عادي", price: "75"}] },
@@ -146,7 +71,7 @@
         { name: "کشكول ايطالي 100 ورقه عجلان", img: "", variants: [{label: "عادي", price: "40"}] },
         { name: "کشكول ايطالي 100 ورقه علاء", img: "", variants: [{label: "عادي", price: "35"}] },
         { name: "کشكول ايطالي ورقه 60 علاء", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "کشكول ایطالی ورقه 60 برافو", img: "", variants: [{label: "1/2 مم", price: "30"}] },
+        { name: "کشكول ایطالی ورقه 60 برافو", img: "", variants: [{label: "عادي", price: "30"}] },
         { name: "کشكول سلك 100 ورقه", img: "", variants: [{label: "عادي", price: "40"}] },
         { name: "كشكول سلك ورقه 80", img: "", variants: [{label: "عادي", price: "35"}] },
         { name: "کشكول سلك 140 ورقه", img: "", variants: [{label: "عادي", price: "60"}] },
@@ -180,7 +105,7 @@
         { name: "كارت ابر خياطه", img: "", variants: [{label: "عادي", price: "10"}] },
         { name: "مشبك ملابس ق20", img: "", variants: [{label: "عادي", price: "20"}] },
         { name: "كارت مغناطيس", img: "", variants: [{label: "عادي", price: "5"}] },
-        { name: "دبل فيس شفاف", img: "", variants: [{label: "123*", price: "25"}] },
+        { name: "دبل فيس شفاف", img: "", variants: [{label: "عادي", price: "25"}] },
         { name: "دبل فيس ابيض", img: "", variants: [{label: "عادي", price: "10"}] },
         { name: "مسدس شمع كبير", img: "", variants: [{label: "عادي", price: "125"}] },
         { name: "غيار شمع مسدس كبير", img: "", variants: [{label: "عادي", price: "7"}] },
@@ -195,7 +120,7 @@
         { name: "مقص اطفال اشكال", img: "", variants: [{label: "عادي", price: "10"}] },
         { name: "مقص استالس وسط", img: "", variants: [{label: "عادي", price: "20"}] },
         { name: "مقص استالس كبير", img: "", variants: [{label: "عادي", price: "30"}] },
-        { name: "مقص استالس صغير", img: "https://i.ibb.co/RZhq66L/image.jpg", variants: [{label: "عادي", price: "15"}] },
+        { name: "مقص استالس صغير", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "مقص بلاستيك ص", img: "", variants: [{label: "عادي", price: "10"}] },
         { name: "اله حاسبه دلي 82", img: "", variants: [{label: "عادي", price: "240"}] },
         { name: "اله حاسبه دلي 991", img: "", variants: [{label: "عادي", price: "450"}] },
@@ -300,7 +225,7 @@
         { name: "الوان خشب 12 لون دلي", img: "", variants: [{label: "عادي", price: "45"}] },
         { name: "الوان خشب 24 لون دلي", img: "", variants: [{label: "عادي", price: "85"}] },
         { name: "الوان خشب 12 لون روكو", img: "", variants: [{label: "عادي", price: "55"}] },
-        { name: "قلم جاف روترينج تيكي", img: "", variants: [{label: "ازرق", price: "65"}, {label: "اسود", price: "65"}] },
+        { name: "قلم جاف روترينج تيكي", img: "", variants: [{label: "ازرق", price: "65"}] },
         { name: "قلم سنون روترينج تيكي", img: "", variants: [{label: "0.5 مم", price: "145"}, {label: "0.7 مم", price: "145"}] },
         { name: "سنون روترينج 0.5", img: "", variants: [{label: "عادي", price: "35"}] },
         { name: "سنون روترينج 0.7", img: "", variants: [{label: "عادي", price: "35"}] },
@@ -333,7 +258,7 @@
         { name: "مسطره 30 سم دلي", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "مسطره 20 سم دلي", img: "", variants: [{label: "عادي", price: "10"}] },
         { name: "مسطره 15 سم دلي", img: "", variants: [{label: "عادي", price: "7"}] },
-           { name: "برايه دلي مكتب كبير", img: "", variants: [{label: "عادي", price: "125"}] },
+        { name: "برايه دلي مكتب كبير", img: "", variants: [{label: "عادي", price: "125"}] },
         { name: "برايه دلي مكتب وسط", img: "", variants: [{label: "عادي", price: "95"}] },
         { name: "برايه دلي مكتب صغير", img: "", variants: [{label: "عادي", price: "80"}] },
         { name: "برايه خنزير كبير", img: "", variants: [{label: "عادي", price: "35"}] },
@@ -413,165 +338,48 @@
         { name: "قلم فسفوري دلي", img: "", variants: [{label: "اصفر", price: "15"}, {label: "اخضر", price: "15"}] },
         { name: "قلم فسفوري فنتك", img: "", variants: [{label: "عادي", price: "10"}] },
         { name: "قلم سنون روترينج فيسكوزي", img: "", variants: [{label: "0.5 مم", price: "85"}] },
-        { name: "قلم سنون روترينج 0.7", img: "", variants: [{label: "عادي", price: "45"}] },
         { name: "سنون مابيد 0.5", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "سنون مابيد 0.7", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "استيكه فابر كاستل كبير", img: "", variants: [{label: "عادي", price: "20"}] },
-        { name: "استيكه فابر كاستل وسط", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "استيكه فابر كاستل صغير", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "برايه مابيد 1 فتحه", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "برايه مابيد 2 فتحه", img: "", variants: [{label: "عادي", price: "20"}] },
         { name: "مسطره حديد 30 سم", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "مسطره حديد 20 سم", img: "", variants: [{label: "عادي", price: "20"}] },
-        { name: "مسطره حديد 15 سم", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "خرز الوان كيس ص", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "خرز الوان كيس ك", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "خيط صناره بكرة ص", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "خيط صناره بكرة ك", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "قفل خرز كيس", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "حلقه مفاتيح كيس", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "مسدس خرز ليزر", img: "", variants: [{label: "عادي", price: "75"}] },
-        { name: "خرز مسدس كيس", img: "", variants: [{label: "عادي", price: "10"}] },
         { name: "علبه خرز مقسمه", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "بلانشيطه (سناده) اشکال", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "وراقه شبك معدن", img: "", variants: [{label: "عادي", price: "75"}] },
-        { name: "وراقه + مقلمه شبك معدن", img: "", variants: [{label: "عادي", price: "110"}] },
-        { name: "كارت مغناطيس", img: "", variants: [{label: "عادي", price: "5"}] },
-        { name: "دبل فيس شفاف", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "دبل فيس ابيض", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "مسدس شمع كبير", img: "", variants: [{label: "عادي", price: "125"}] },
-        { name: "دبوس حجاب الوان", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "علاقه سمایل 18 ق", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "مسطره بريما 50 سم", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "بكر خيط منزلي الوان ص", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "ظرف غزاله C5", img: "", variants: [{label: "عادي", price: "4"}] },
-        { name: "ظرف غزاله A4", img: "", variants: [{label: "عادي", price: "5"}] },
-        { name: "ظرف آمریکانی DL", img: "", variants: [{label: "عادي", price: "3"}] },
-        { name: "ظرف صغير C6", img: "", variants: [{label: "عادي", price: "2"}] },
-        { name: "ختامة هورس", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "حبر ختامة", img: "", variants: [{label: "عادي", price: "20"}] },
-        { name: "شريط لحام (كهربا)", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "حجارة كاميلون طرش A", img: "", variants: [{label: "عادي", price: "60"}] },
-        { name: "حجارة كامليون رفيعة AAA", img: "", variants: [{label: "عادي", price: "20"}] },
-        { name: "وراقة بلاستيك Notes books", img: "", variants: [{label: "عادي", price: "75"}] },
-        { name: "بروتوفوليو 20 جيب", img: "", variants: [{label: "عادي", price: "30"}] },
-        { name: "بروتوفوليو 30 جيب", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "سكيتش سلك", img: "", variants: [{label: "عادي", price: "40"}] },
-        { name: "سكيتش كانسون 25 * 35", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "سكيتش كانسون 50 * 35", img: "", variants: [{label: "عادي", price: "50"}] },
-        { name: "فوم A4 جليتر لاصق", img: "", variants: [{label: "عادي", price: "6"}] },
-        { name: "فوم A4 جليتر غير لاصق", img: "", variants: [{label: "عادي", price: "5"}] },
-        { name: "حامل نيش صغير", img: "", variants: [{label: "عادي", price: "0"}] },
-        { name: "حامل نيش كبير", img: "", variants: [{label: "عادي", price: "0"}] },
-        { name: "سبورة صغير + قلم", img: "", variants: [{label: "عادي", price: "65"}] },
-        { name: "سبورة وسط + قلم", img: "", variants: [{label: "عادي", price: "75"}] },
-        { name: "سبورة كرتون تعليمي", img: "", variants: [{label: "عادي", price: "50"}] },
         { name: "لانش بوكس 2 دور Space", img: "", variants: [{label: "عادي", price: "60"}] },
-        { name: "لانش بوكس الاندلس 2 دور", img: "", variants: [{label: "عادي", price: "70"}] },
-        { name: "لانش بوكس ستيتش 1 دور", img: "", variants: [{label: "عادي", price: "70"}] },
-        { name: "عرض لانش بوكس + زمزمية", img: "", variants: [{label: "عادي", price: "55"}] },
-        { name: "زمزمية شعبي", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "زمزمية باندا", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "زمزمية لوكس اشكال 700 مم", img: "", variants: [{label: "عادي", price: "70"}] },
-        { name: "زمزمية ريو", img: "", variants: [{label: "عادي", price: "45"}] },
-        { name: "تابلت سبورة 8.5 انش", img: "", variants: [{label: "عادي", price: "75"}] },
         { name: "تابلت سبورة 12 انش", img: "", variants: [{label: "عادي", price: "125"}] },
-        { name: "تابلت سبورة 10 انش", img: "", variants: [{label: "عادي", price: "100"}] },
-        { name: "شنطة هدايا صغير", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "شنطة هدايا وسط", img: "", variants: [{label: "عادي", price: "20"}] },
-        { name: "طقم فرش ق6", img: "", variants: [{label: "عادي", price: "30"}] },
-        { name: "طقم فرش ق12", img: "", variants: [{label: "عادي", price: "50"}] },
-        { name: "كوركتور شريط صغير", img: "", variants: [{label: "عادي", price: "15"}] },
-              { name: "كوركتور شريط وسط", img: "", variants: [{label: "عادي", price: "20"}] },
         { name: "كوركتور شريط كبير", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "الوان بداية 6 لون صغير", img: "", variants: [{label: "عادي", price: "7.5"}] },
-        { name: "الوان دومز doms 12 لون كبير", img: "", variants: [{label: "عادي", price: "75"}] },
         { name: "الوان فبر كاسل 12 لون كبير", img: "", variants: [{label: "عادي", price: "100"}] },
-        { name: "الوان فبر كاسل 12 لون صغير", img: "", variants: [{label: "عادي", price: "60"}] },
-        { name: "الوان دومز doms 12 لون صغير", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "الوان مياه من غير غطاء", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "صلصال على كرت صغير", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "صلصال على كرت كبير", img: "", variants: [{label: "عادي", price: "50"}] },
-        { name: "الوان زيت / شمع 12 لون", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "الوان مياه 12 لون مستورد مم9", img: "", variants: [{label: "عادي", price: "85"}] },
-        { name: "الوان مياه بغطاء 12 لون", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "الوان مياه بغطاء 16 لون", img: "", variants: [{label: "عادي", price: "40"}] },
-        { name: "بالتة الوان صغير", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "بالتة الوان وسط", img: "", variants: [{label: "عادي", price: "30"}] },
-        { name: "بالتة الوان كبير", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "حبل ID 2 سم", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "حافظة / كارنيه ID", img: "", variants: [{label: "عادي", price: "5"}] },
-        { name: "كراسة رسم صغير", img: "", variants: [{label: "عادي", price: "5"}] },
-        { name: "كراسة رسم كبير", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "صلصال فوم كبير", img: "", variants: [{label: "عادي", price: "4"}] },
-        { name: "صلصال جاز اوسكار", img: "", variants: [{label: "عادي", price: "2"}] },
-        { name: "مقص ورق مكتبي صغير", img: "", variants: [{label: "عادي", price: "12.5"}] },
-        { name: "استيكر تزيين اشكال", img: "", variants: [{label: "عادي", price: "2"}] },
-        { name: "تيكت اسم مزين", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "كتاب معلم القراءة", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "كتاب تلوين حروف عربي", img: "", variants: [{label: "عادي", price: "20"}] },
-        { name: "كتاب تلوين حروف انجليزي", img: "", variants: [{label: "عادي", price: "20"}] },
-        { name: "كتاب تلوين متنوع تعليمي", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "كتاب نور البيان حساب", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "كتاب نور البيان قرآن", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "كتاب جزء عم", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "كتاب جزء تبارك", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "كتاب جزء قد سمع", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "قصص اطفال متنوعة", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "كتب تعليمية للأطفال", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "عرض 4 كراسة تلوين + الوان", img: "", variants: [{label: "عادي", price: "40"}] },
-        { name: "قص ولزق غير لاصق", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "مقلمة قماش", img: "", variants: [{label: "عادي", price: "75"}] },
-        { name: "مقلمة فرو", img: "", variants: [{label: "عادي", price: "95"}] },
-        { name: "مقلمة عادية طيور", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "مقلمة آلة حاسبة + براية", img: "", variants: [{label: "عادي", price: "75"}] },
-        { name: "مقلمة شفاف اشكال", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "برايه حديد", img: "", variants: [{label: "عادي", price: "10"}] },
-        { name: "برايه بغطاء اشكال", img: "", variants: [{label: "عادي", price: "12"}] },
-        { name: "برايه هندي CUBIC", img: "", variants: [{label: "عادي", price: "5"}] },
-        { name: "برايه مجوز", img: "", variants: [{label: "عادي", price: "0"}] },
-        { name: "برايه فردي عادي", img: "", variants: [{label: "عادي", price: "0"}] },
-        { name: "استيكه Golden", img: "", variants: [{label: "عادي", price: "5"}] },
-          { name: "علب ساعات لوكس", img: "", variants: [{label: "عادي", price: "30"}] },
-        { name: "علب ساعات حريمي بلاستيك", img: "", variants: [{label: "عادي", price: "12"}] },
-        { name: "علب ساعات مستطيله", img: "", variants: [{label: "عادي", price: "24"}] },
-        { name: "ثلج افراح كبري", img: "", variants: [{label: "عادي", price: "110"}] },
-        { name: "طبق بط عوام", img: "", variants: [{label: "عادي", price: "100"}] },
-        { name: "عضاضه في كيس", img: "", variants: [{label: "عادي", price: "30"}] },
-        { name: "عروسه و بنتها كبريه", img: "", variants: [{label: "عادي", price: "40"}] },
-        { name: "عروسه و بنتها صغريه", img: "", variants: [{label: "عادي", price: "15"}] },
-        { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "40"}] },
-        { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "كشكول سلك الحسام 80 ورقه ص", img: "", variants: [{label: "عادي", price: "25"}] },
-        { name: "كشكول سلك الحسام 100 ورقه ص", img: "", variants: [{label: "عادي", price: "30"}] },
-        { name: "كشكول سلك 80 ورقه الحسام ك", img: "", variants: [{label: "عادي", price: "35"}] },
-        { name: "كشكول سلك 140 ورقه الحسام ك", img: "", variants: [{label: "عادي", price: "60"}] },
-        { name: "كشكول سلك 180 ورقه الحسام ك", img: "", variants: [{label: "عادي", price: "75"}] },
-        { name: "كتاب الامتحان كيمياء 2 ث لغات", img: "", variants: [{label: "عادي", price: "240"}] },
-        { name: "كتاب الامتحان علوم متكاملة 1 ث لغات", img: "", variants: [{label: "عادي", price: "210"}] },
-        { name: "كتاب التاسيس السليم عربي 4 ب", img: "", variants: [{label: "عادي", price: "150"}] },
-        { name: "كتاب جلوبال الماني 3 ث", img: "", variants: [{label: "عادي", price: "180"}] },
+        { name: "علب ساعات لوكس", img: "", variants: [{label: "عادي", price: "30"}] },
         { name: "كتاب الامتحان عربي شرح 3 ث", img: "", variants: [{label: "عادي", price: "290"}] }
-
-        ];
+    ];
 
     const itemsPerPage = 12;
     let currentPage = 1;
+    let filteredProducts = [...allProducts];
     const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
+
+    // وظيفة البحث
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const term = e.target.value.trim().toLowerCase();
+        filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
+        currentPage = 1;
+        renderProducts(1);
+    });
 
     function renderProducts(page) {
         const grid = document.getElementById('products-grid');
-        if(!grid) return;
         grid.innerHTML = '';
         const start = (page - 1) * itemsPerPage;
-        const items = allProducts.slice(start, start + itemsPerPage);
+        const items = filteredProducts.slice(start, start + itemsPerPage);
+
+        if(items.length === 0) {
+            grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:50px; color:#666;">لم يتم العثور على نتائج للبحث</p>';
+            document.getElementById('pagination').innerHTML = '';
+            return;
+        }
 
         items.forEach((p, index) => {
-            const imageSrc = (p.img && p.img.trim().length > 5) ? p.img : defaultImg;
+            const imageSrc = (p.img && p.img.length > 5) ? p.img : defaultImg;
             let selectBox = '';
             if(p.variants && p.variants.length > 1) {
-                selectBox = `<label class="label">اختر النوع:</label>
+                selectBox = `<label style="display:block; font-size:10px; margin-bottom:2px;">اختر النوع:</label>
                              <select onchange="document.getElementById('p-${start+index}').innerText = this.value + ' ج.م'">
                                 ${p.variants.map(v => `<option value="${v.price}">${v.label} - ${v.price}ج</option>`).join('')}
                              </select>`;
@@ -589,18 +397,23 @@
     }
 
     function renderPagination() {
-        const pages = Math.ceil(allProducts.length / itemsPerPage);
+        const pages = Math.ceil(filteredProducts.length / itemsPerPage);
         const div = document.getElementById('pagination');
-        if(!div) return;
         div.innerHTML = '';
-        for(let i=1; i<=pages; i++) {
+        if(pages <= 1) return;
+
+        // إظهار أرقام مختصرة في حالة كثرة الصفحات
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(pages, currentPage + 2);
+
+        for(let i = startPage; i <= endPage; i++) {
             div.innerHTML += `<button class="${i===currentPage?'active':''}" onclick="currentPage=${i};renderProducts(${i});window.scrollTo(0,0)">${i}</button>`;
         }
     }
 
     function order(name, id) {
         let price = document.getElementById('p-'+id).innerText;
-        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
+        let msg = encodeURIComponent("أهلاً مكتبة ذاكر، محتاج أطلب: " + name + " بسعر " + price);
         window.open("https://wa.me/201027021011?text=" + msg);
     }
 
@@ -608,5 +421,3 @@
 </script>
 </body>
 </html>
-
-    
