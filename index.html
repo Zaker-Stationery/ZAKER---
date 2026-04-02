@@ -1073,48 +1073,61 @@
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
+// 1. دالة الفلترة الذكية (محدثة لتشمل السنادات والفرش)
 function filterCategory(categoryName) {
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
-    
     currentPage = 1;
-    
+
     if (categoryName === 'الكل') {
         currentProducts = allProducts;
     } else {
         currentProducts = allProducts.filter(p => {
             const name = p.name.toLowerCase();
             
-            // كلمات البحث للألعاب
-            if (categoryName === 'ألعاب' || categoryName === 'العاب') {
-                return name.includes('لعب') || name.includes('عروس') || name.includes('خرز') || name.includes('بازل') || name.includes('صلصال') || name.includes('كورة') || name.includes('عربية');
-            }
-            // كلمات البحث للمكتبية
             if (categoryName === 'أدوات مكتبية' || categoryName === 'مكتبية') {
-                return name.includes('قلم') || name.includes('كشكول') || name.includes('دفتر') || name.includes('مسطر') || name.includes('استيك') || name.includes('براية') || name.includes('نوت') || name.includes('شنطة');
+                return name.includes('قلم') || name.includes('كشكول') || name.includes('دفتر') || 
+                       name.includes('مسطر') || name.includes('استيك') || name.includes('براية') || 
+                       name.includes('نوت') || name.includes('شنطة') || name.includes('سنادة') || 
+                       name.includes('فرش') || name.includes('وان') || name.includes('لوحة');
             }
-            // كلمات البحث للهدايا
-            if (categoryName === 'هدايا') {
-                return name.includes('بوكس') || name.includes('دبدوب') || name.includes('هدايا') || name.includes('برواز') || name.includes('ساعة') || name.includes('ميدالية');
+            if (categoryName === 'ألعاب' || categoryName === 'العاب') {
+                return name.includes('لعب') || name.includes('عروس') || name.includes('خرز') || 
+                       name.includes('بازل') || name.includes('صلصال') || name.includes('كورة');
             }
-            // كلمات البحث للإكسسوارات
-            if (categoryName === 'إكسسوارات' || categoryName === 'اكسسوارات') {
-                return name.includes('خاتم') || name.includes('سلسلة') || name.includes('انسيال') || name.includes('توكة') || name.includes('بندانة') || name.includes('شراب');
-            }
-            // كلمات البحث للمنزلية
             if (categoryName === 'أدوات منزلية' || categoryName === 'منزلية') {
-                return name.includes('كوب') || name.includes('مج') || name.includes('طبق') || name.includes('فرش') || name.includes('منظم') || name.includes('ديكور') || name.includes('ترمس');
+                return name.includes('كوب') || name.includes('مج') || name.includes('طبق') || 
+                       name.includes('منظم') || name.includes('ديكور') || name.includes('ترمس');
             }
-            
+            if (categoryName === 'إكسسوارات' || categoryName === 'اكسسوارات') {
+                return name.includes('خاتم') || name.includes('سلسلة') || name.includes('توكة') || 
+                       name.includes('ساعة') || name.includes('شراب');
+            }
+            if (categoryName === 'هدايا') {
+                return name.includes('بوكس') || name.includes('دبدوب') || name.includes('برواز') || 
+                       name.includes('ميدالية');
+            }
             return name.includes(categoryName.toLowerCase());
         });
     }
-
-    // تكة تقنية: بنمسح أي منتج مكرر لو اتوجد بالصدفة
     currentProducts = [...new Set(currentProducts)];
-
     renderProducts(currentProducts, 1);
 }
+
+// 2. دالة البحث (عشان تشتغل مع الفلتر الجديد)
+function searchProducts() {
+    const term = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (term === "") return; // لو مفيش كلام مكتوب متعملش حاجة
+
+    // إظهار النتائج فوراً
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+    
+    currentPage = 1;
+    currentProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
+    renderProducts(currentProducts, 1);
+}
+
 
 
 
