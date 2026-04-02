@@ -42,7 +42,7 @@
     style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
     <button onclick="searchProducts()" style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">بحث</button>
 </div>
-    <div class="categories-container" style="text-align: center; margin: 20px 0;">
+<div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
     <button class="category-btn" onclick="filterCategory('الكل')">الكل</button>
     <button class="category-btn" onclick="filterCategory('أدوات مكتبية')">أدوات مكتبية</button>
     <button class="category-btn" onclick="filterCategory('ألعاب')">ألعاب</button>
@@ -50,6 +50,7 @@
     <button class="category-btn" onclick="filterCategory('إكسسوارات')">إكسسوارات</button>
     <button class="category-btn" onclick="filterCategory('أدوات منزلية')">أدوات منزلية</button>
 </div>
+
 
     
     <div id="products-grid" class="product-grid"></div>
