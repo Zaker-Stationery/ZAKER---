@@ -1073,107 +1073,42 @@
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
-// 1. دالة الفلترة الذكية (محدثة لتشمل السنادات والفرش)
-function filterCategory(categoryName) {
-    document.getElementById('products-grid').style.display = 'grid';
-    document.getElementById('pagination').style.display = 'flex';
-    currentPage = 1;
-
-    if (categoryName === 'الكل') {
-        currentProducts = allProducts;
-    } else {
-        currentProducts = allProducts.filter(p => {
-            const name = p.name.toLowerCase();
-            
-            if (categoryName === 'أدوات مكتبية' || categoryName === 'مكتبية') {
-                return name.includes('قلم') || name.includes('كشكول') || name.includes('دفتر') || 
-                       name.includes('مسطر') || name.includes('استيك') || name.includes('براية') || 
-                       name.includes('نوت') || name.includes('شنطة') || name.includes('سنادة') || 
-                       name.includes('فرش') || name.includes('وان') || name.includes('لوحة');
-            }
-            if (categoryName === 'ألعاب' || categoryName === 'العاب') {
-                return name.includes('لعب') || name.includes('عروس') || name.includes('خرز') || 
-                       name.includes('بازل') || name.includes('صلصال') || name.includes('كورة');
-            }
-            if (categoryName === 'أدوات منزلية' || categoryName === 'منزلية') {
-                return name.includes('كوب') || name.includes('مج') || name.includes('طبق') || 
-                       name.includes('منظم') || name.includes('ديكور') || name.includes('ترمس');
-            }
-            if (categoryName === 'إكسسوارات' || categoryName === 'اكسسوارات') {
-                return name.includes('خاتم') || name.includes('سلسلة') || name.includes('توكة') || 
-                       name.includes('ساعة') || name.includes('شراب');
-            }
-            if (categoryName === 'هدايا') {
-                return name.includes('بوكس') || name.includes('دبدوب') || name.includes('برواز') || 
-                       name.includes('ميدالية');
-            }
-            return name.includes(categoryName.toLowerCase());
-        });
-    }
-    currentProducts = [...new Set(currentProducts)];
-    renderProducts(currentProducts, 1);
-}
-
-function searchProducts() {
-    const input = document.getElementById('searchInput'); // الكود دلوقت هيلقط الخانة صح بعد ما زودتي الـ r
-    if (!input) return;
-
-    const term = input.value.toLowerCase().trim();
-    if (term === "") {
-        alert("اكتب اسم المنتج اللي بتدور عليه");
-        return;
-    }
-
-    // الخطوة دي هي اللي بتخلي النتايج تظهر لو كانت الصفحة فاضية
-    document.getElementById('products-grid').style.display = 'grid';
-    document.getElementById('pagination').style.display = 'flex';
-    
-    currentPage = 1;
-    // بيبحث في الـ 1000 صنف
-    currentProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
-    
-    if (currentProducts.length === 0) {
-        document.getElementById('products-grid').innerHTML = '<p style="text-align:center; grid-column: 1/-1; padding: 20px;">للأسف ملقتش منتج بالاسم ده، جربي كلمة تانية</p>';
-        document.getElementById('pagination').style.display = 'none';
-    } else {
-        renderProducts(currentProducts, 1);
-    }
-}
 <script>
 // 1. المتغيرات الأساسية
 const itemsPerPage = 12;
 let currentPage = 1;
-let currentProducts = allProducts;
+let currentProducts = allProducts; 
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-// 2. دالة العرض
+// 2. دالة العرض الرئيسية
 function renderProducts(products, page) {
     const grid = document.getElementById('products-grid');
+    const pagination = document.getElementById('pagination');
     if (!grid) return;
-    
+
     grid.innerHTML = '';
     grid.style.display = 'grid';
-    document.getElementById('pagination').style.display = 'flex';
+    if (pagination) pagination.style.display = 'flex';
 
     const start = (page - 1) * itemsPerPage;
     const items = products.slice(start, start + itemsPerPage);
 
     if (items.length === 0) {
         grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; padding: 50px;">مفيش منتجات بالاسم ده حالياً..</p>';
-        document.getElementById('pagination').style.display = 'none';
+        if (pagination) pagination.style.display = 'none';
         return;
     }
 
     items.forEach((p) => {
         const imageSrc = (p.img && p.img.trim() !== '') ? p.img : defaultImg;
-        let displayPrice = p.price || (p.variants && p.variants.length > 0 ? p.variants[0].price : '');
+        let priceValue = p.price || (p.variants && p.variants.length > 0 ? p.variants[0].price : '');
 
         grid.innerHTML += `
-            <div class="card">
-                <img src="${imageSrc}" class="product-img">
-                <div class="name">${p.name}</div>
-                <div class="price" id="price-${p.name.replace(/\s+/g, '')}">${displayPrice ? displayPrice + ' ج.م' : ''}</div>
-                <button class="whatsapp-btn" onclick="order('${p.name.replace(/'/g, "\\'")}', '${p.name.replace(/\s+/g, '')}')">اطلب عبر واتساب</button>
+            <div class="card" style="background:#fff; padding:15px; border-radius:10px; text-align:center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <img src="${imageSrc}" style="width:100%; height:150px; object-fit:contain;">
+                <div style="margin:10px 0; font-weight:bold; font-size: 14px;">${p.name}</div>
+                <div style="color:#e67e22; margin-bottom:10px; font-weight:bold;">${priceValue ? priceValue + ' ج.م' : ''}</div>
+                <button onclick="order('${p.name.replace(/'/g, "\\'")}', '${priceValue}')" style="background:#25d366; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-family:'Cairo'; width:100%;">اطلب واتساب</button>
             </div>
         `;
     });
@@ -1182,8 +1117,7 @@ function renderProducts(products, page) {
 
 // 3. دالة البحث
 function searchProducts() {
-    const input = document.getElementById('searchInput');
-    const term = input.value.toLowerCase().trim();
+    const term = document.getElementById('searchInput').value.toLowerCase().trim();
     if (term === "") {
         alert("اكتبي اسم المنتج اللي بتدوري عليه");
         return;
@@ -1194,57 +1128,48 @@ function searchProducts() {
 }
 
 // 4. دالة الفئات
-function filterCategory(categoryName) {
+function filterCategory(cat) {
     currentPage = 1;
-    if (categoryName === 'الكل') {
+    if (cat === 'الكل') {
         currentProducts = allProducts;
     } else {
         currentProducts = allProducts.filter(p => {
-            const name = p.name.toLowerCase();
-            if (categoryName === 'أدوات مكتبية') {
-                return name.includes('قلم') || name.includes('كشكول') || name.includes('سنادة') || name.includes('فرش') || name.includes('مكتب');
-            }
-            if (categoryName === 'ألعاب') {
-                return name.includes('لعب') || name.includes('عروس') || name.includes('بازل') || name.includes('صلصال');
-            }
-            if (categoryName === 'إكسسوارات') {
-                return name.includes('ساعة') || name.includes('خاتم') || name.includes('توكة');
-            }
-            if (categoryName === 'أدوات منزلية') {
-                return name.includes('مج') || name.includes('كوب') || name.includes('منظم');
-            }
-            return name.includes(categoryName.toLowerCase());
+            const n = p.name.toLowerCase();
+            if (cat === 'أدوات مكتبية') return n.includes('قلم') || n.includes('كشكول') || n.includes('سنادة') || n.includes('فرش') || n.includes('مكتب');
+            if (cat === 'ألعاب') return n.includes('لعب') || n.includes('عروس') || n.includes('بازل') || n.includes('صلصال') || n.includes('لعبة');
+            if (cat === 'إكسسوارات') return n.includes('ساعة') || n.includes('خاتم') || n.includes('توكة') || n.includes('بندانة');
+            if (cat === 'أدوات منزلية') return n.includes('مج') || n.includes('كوب') || n.includes('منظم') || n.includes('طبق');
+            if (cat === 'هدايا') return n.includes('بوكس') || n.includes('دبدوب') || n.includes('برواز') || n.includes('ميدالية');
+            return n.includes(cat.toLowerCase());
         });
     }
     renderProducts(currentProducts, 1);
 }
 
-// 5. الصفحات والطلب
-function renderPagination(totalItems, currentPageNum) {
-    const pagesContainer = document.getElementById('pagination');
-    if (!pagesContainer) return;
-    pagesContainer.innerHTML = '';
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+// 5. دوال الصفحات والطلب
+function renderPagination(total, pageNum) {
+    const container = document.getElementById('pagination');
+    if (!container) return;
+    container.innerHTML = '';
+    const totalPages = Math.ceil(total / itemsPerPage);
     if (totalPages <= 1) return;
     for (let i = 1; i <= totalPages; i++) {
-        pagesContainer.innerHTML += `<button onclick="goToPage(${i})" ${i === currentPageNum ? 'style="background:#3498db; color:white;"' : ''}>${i}</button>`;
+        container.innerHTML += `<button onclick="goToPage(${i})" style="margin:5px; padding:5px 12px; cursor:pointer; border:1px solid #ddd; border-radius:5px; ${i === pageNum ? 'background:#3498db; color:#fff;' : 'background:#fff;'}">${i}</button>`;
     }
 }
 
-function goToPage(page) {
-    currentPage = page;
-    renderProducts(currentProducts, page);
+function goToPage(p) {
+    currentPage = p;
+    renderProducts(currentProducts, p);
     window.scrollTo(0, 0);
 }
 
-function order(name, priceId) {
-    let priceElement = document.getElementById('price-' + priceId);
-    let currentPrice = priceElement ? priceElement.innerText : '';
-    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " " + currentPrice);
+function order(name, price) {
+    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، محتاجة أطلب: " + name + " بسعر " + price + " ج.م");
     window.open("https://wa.me/201027021011?text=" + msg);
 }
 
-// 6. التشغيل عند الفتح
+// 6. تشغيل الموقع
 window.onload = function() {
     document.getElementById('products-grid').style.display = 'none';
     document.getElementById('pagination').style.display = 'none';
