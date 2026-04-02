@@ -1139,23 +1139,31 @@ function searchProducts() {
         renderProducts(currentProducts, 1);
     }
 }
-
-
-
-// 2. المتغيرات الأساسية
+<script>
+// 1. المتغيرات الأساسية
 let currentProducts = allProducts;
 const itemsPerPage = 12;
 let currentPage = 1;
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-// 3. دالة العرض (تصليح شامل لشكل الكارت)
+// 2. دالة العرض (دي اللي بتظهر الصور والأسعار)
 function renderProducts(products, page) {
     const grid = document.getElementById('products-grid');
     if (!grid) return;
     grid.innerHTML = '';
 
+    // إظهار الشبكة لو كانت مخفية
+    grid.style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+
     const start = (page - 1) * itemsPerPage;
-    const items = products.slice(start, starte);
+    const items = products.slice(start, start + itemsPerPage);
+
+    if (items.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; padding: 50px;">مفيش منتجات بالاسم ده حالياً..</p>';
+        document.getElementById('pagination').style.display = 'none';
+        return;
+    }
 
     items.forEach((p) => {
         const imageSrc = (p.img && p.img.trim() !== '') ? p.img : defaultImg;
@@ -1173,7 +1181,45 @@ function renderProducts(products, page) {
     renderPagination(products.length, page);
 }
 
-// 4. الدوال المساعدة
+// 3. دالة البحث (بتدور في الـ 1000 صنف)
+function searchProducts() {
+    const term = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (term === "") {
+        alert("اكتبي حاجة عشان أبحث لك عنها");
+        return;
+    }
+    currentPage = 1;
+    currentProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
+    renderProducts(currentProducts, 1);
+}
+
+// 4. دالة الفئات (بتدور بالكلمات اللي قولتلك عليها)
+function filterCategory(categoryName) {
+    currentPage = 1;
+    if (categoryName === 'الكل') {
+        currentProducts = allProducts;
+    } else {
+        currentProducts = allProducts.filter(p => {
+            const name = p.name.toLowerCase();
+            if (categoryName === 'أدوات مكتبية') {
+                return name.includes('قلم') || name.includes('كشكول') || name.includes('سنادة') || name.includes('فرش') || name.includes('مكتب');
+            }
+            if (categoryName === 'ألعاب') {
+                return name.includes('لعب') || name.includes('عروس') || name.includes('بازل') || name.includes('صلصال');
+            }
+            if (categoryName === 'إكسسوارات') {
+                return name.includes('ساعة') || name.includes('خاتم') || name.includes('توكة');
+            }
+            if (categoryName === 'أدوات منزلية') {
+                return name.includes('مج') || name.includes('كوب') || name.includes('منظم');
+            }
+            return name.includes(categoryName.toLowerCase());
+        });
+    }
+    renderProducts(currentProducts, 1);
+}
+
+// 5. دوال الصفحات والطلب
 function renderPagination(totalItems, currentPageNum) {
     const pagesContainer = document.getElementById('pagination');
     if (!pagesContainer) return;
@@ -1181,26 +1227,28 @@ function renderPagination(totalItems, currentPageNum) {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     if (totalPages <= 1) return;
     for (let i = 1; i <= totalPages; i++) {
-        pagesContainer.innerHTML += `<button onclick="goToPage(${i})">${i}</button>`;
+        pagesContainer.innerHTML += `<button onclick="goToPage(${i})" ${i === currentPageNum ? 'style="background:#3498db; color:white;"' : ''}>${i}</button>`;
     }
 }
 
 function goToPage(page) {
     currentPage = page;
     renderProducts(currentProducts, page);
+    window.scrollTo(0, 0);
 }
 
 function order(name, priceId) {
     let priceElement = document.getElementById('price-' + priceId);
     let currentPrice = priceElement ? priceElement.innerText : '';
-    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " " + currentPrice);
+    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، محتاجة أطلب: " + name + " " + currentPrice);
     window.open("https://wa.me/201027021011?text=" + msg);
 }
 
-// 5. أهم خطوة: الموقع يفتح "رايق" على الفئات بس
-document.getElementById('products-grid').style.display = 'none';
-document.getElementById('pagination').style.display = 'none';
-
+// 6. تشغيل الموقع (بيخفي كل حاجة في الأول)
+window.onload = function() {
+    document.getElementById('products-grid').style.display = 'none';
+    document.getElementById('pagination').style.display = 'none';
+};
 </script>
 </body>
 </html>
