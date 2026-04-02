@@ -1141,18 +1141,17 @@ function searchProducts() {
 }
 <script>
 // 1. المتغيرات الأساسية
-let currentProducts = allProducts;
 const itemsPerPage = 12;
 let currentPage = 1;
+let currentProducts = allProducts;
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-// 2. دالة العرض (دي اللي بتظهر الصور والأسعار)
+// 2. دالة العرض
 function renderProducts(products, page) {
     const grid = document.getElementById('products-grid');
     if (!grid) return;
+    
     grid.innerHTML = '';
-
-    // إظهار الشبكة لو كانت مخفية
     grid.style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
 
@@ -1181,11 +1180,12 @@ function renderProducts(products, page) {
     renderPagination(products.length, page);
 }
 
-// 3. دالة البحث (بتدور في الـ 1000 صنف)
+// 3. دالة البحث
 function searchProducts() {
-    const term = document.getElementById('searchInput').value.toLowerCase().trim();
+    const input = document.getElementById('searchInput');
+    const term = input.value.toLowerCase().trim();
     if (term === "") {
-        alert("اكتبي حاجة عشان أبحث لك عنها");
+        alert("اكتبي اسم المنتج اللي بتدوري عليه");
         return;
     }
     currentPage = 1;
@@ -1193,7 +1193,7 @@ function searchProducts() {
     renderProducts(currentProducts, 1);
 }
 
-// 4. دالة الفئات (بتدور بالكلمات اللي قولتلك عليها)
+// 4. دالة الفئات
 function filterCategory(categoryName) {
     currentPage = 1;
     if (categoryName === 'الكل') {
@@ -1219,7 +1219,7 @@ function filterCategory(categoryName) {
     renderProducts(currentProducts, 1);
 }
 
-// 5. دوال الصفحات والطلب
+// 5. الصفحات والطلب
 function renderPagination(totalItems, currentPageNum) {
     const pagesContainer = document.getElementById('pagination');
     if (!pagesContainer) return;
@@ -1240,11 +1240,11 @@ function goToPage(page) {
 function order(name, priceId) {
     let priceElement = document.getElementById('price-' + priceId);
     let currentPrice = priceElement ? priceElement.innerText : '';
-    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، محتاجة أطلب: " + name + " " + currentPrice);
+    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " " + currentPrice);
     window.open("https://wa.me/201027021011?text=" + msg);
 }
 
-// 6. تشغيل الموقع (بيخفي كل حاجة في الأول)
+// 6. التشغيل عند الفتح
 window.onload = function() {
     document.getElementById('products-grid').style.display = 'none';
     document.getElementById('pagination').style.display = 'none';
