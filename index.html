@@ -44,8 +44,17 @@
 </div>
 <div class="container">
     <h2 class="category-title">قسم الأدوات والكتب</h2>
+  <div style="text-align:center; margin:20px;">
+    <button onclick="filterCategory('all')">الكل</button>
+    <button onclick="filterCategory('ادوات مكتبية')">ادوات مكتبية</button>
+    <button onclick="filterCategory('اكسسوارات')">اكسسوارات</button>
+    <button onclick="filterCategory('كتب')">كتب</button>
+    <button onclick="filterCategory('هدايا')">هدايا</button>
+    <button onclick="filterCategory('منزلية')">منزلية</button>
+    <button onclick="filterCategory('العاب')">🎮 ألعاب</button>
+  </div>
     <div id="products-grid" class="product-grid"></div>
-    <div id="pagination" class="pagination"></div>
+     <div id="pagination" class="pagination"></div>
 
     <h2 class="category-title">خدمات إضافية</h2>
     <div class="service-card">
@@ -55,6 +64,35 @@
 </div>
 
 <script>
+    function getCategory(name) {
+    name = name.toLowerCase();
+
+    if (name.includes("كشكول") || name.includes("نوته") || name.includes("قلم") || name.includes("مسطره") || name.includes("دباسه") || name.includes("فايل")) {
+        return "ادوات مكتبية";
+    }
+
+    if (name.includes("خرز") || name.includes("اكسسو") || name.includes("سلسله") || name.includes("حلق")) {
+        return "اكسسوارات";
+    }
+
+    if (name.includes("كتاب") || name.includes("قصص") || name.includes("قرآن")) {
+        return "كتب";
+    }
+
+    if (name.includes("هدايا") || name.includes("شنطه") || name.includes("بوكس")) {
+        return "هدايا";
+    }
+
+    if (name.includes("زمزمية") || name.includes("منزلي") || name.includes("مطبخ")) {
+        return "منزلية";
+    }
+
+    if (name.includes("صلصال") || name.includes("الوان") || name.includes("سبوره تابلت")) {
+        return "العاب";
+    }
+
+    return "ادوات مكتبية";
+    }
         const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "بلانشيطه (سناده) اشکال", img: "", variants: [{label: "عادي", price: "15"}] },
@@ -1035,6 +1073,17 @@
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
 function searchProducts() {
+    let currentProducts = allProducts;
+
+function filterCategory(category) {
+    if (category === 'all') {
+        currentProducts = allProducts;
+    } else {
+        currentProducts = allProducts.filter(p => getCategory(p.name) === category);
+    }
+
+    renderProducts(currentProducts, 1);
+}
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
     const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
     renderProducts(filtered, 1);
