@@ -1163,7 +1163,7 @@ function renderPagination(totalItems, currentPageNum) {
 
 function goToPage(page) {
     currentPage = page;
-    renderProducts(allProducts, page);
+    renderProducts(currentProducts, page);
 }
     
 function order(name, priceId) {
@@ -1175,7 +1175,7 @@ function order(name, priceId) {
 }
 
 // تشغيل الموقع لأول مرة
-renderProducts(allProducts, 1);
+renderProducts(currentProducts, 1);
 </script>
 </body>
 </html>
