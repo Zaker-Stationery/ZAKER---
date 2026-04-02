@@ -42,26 +42,20 @@
     style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
     <button onclick="searchProducts()" style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">بحث</button>
 </div>
-<div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+    <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
     <button class="category-btn" onclick="filterCategory('الكل')">الكل</button>
-    <button class="category-btn" onclick="filterCategory('مكتبية')">أدوات مكتبية</button>
-    <button class="category-btn" onclick="filterCategory('العاب')">ألعاب</button>
+    <button class="category-btn" onclick="filterCategory('أدوات مكتبية')">أدوات مكتبية</button>
+    <button class="category-btn" onclick="filterCategory('ألعاب')">ألعاب</button>
     <button class="category-btn" onclick="filterCategory('هدايا')">هدايا</button>
-    <button class="category-btn" onclick="filterCategory('اكسسوارات')">إكسسوارات</button>
-    <button class="category-btn" onclick="filterCategory('منزلية')">أدوات منزلية</button>
+    <button class="category-btn" onclick="filterCategory('إكسسوارات')">إكسسوارات</button>
+    <button class="category-btn" onclick="filterCategory('أدوات منزلية')">أدوات منزلية</button>
 </div>
-
 
 <div class="container">
     <div id="products-grid" class="product-grid"></div>
     <div id="pagination" class="pagination"></div>
 </div>
 
-
-
-    
-    <div id="products-grid" class="product-grid"></div>
-     <div id="pagination" class="pagination"></div>
 
     <h2 class="category-title">خدمات إضافية</h2>
     <div class="service-card">
@@ -1080,7 +1074,6 @@
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
 function filterCategory(categoryName) {
-    // إظهار الشبكة والصفحات
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
     
@@ -1089,29 +1082,40 @@ function filterCategory(categoryName) {
     if (categoryName === 'الكل') {
         currentProducts = allProducts;
     } else {
-        // الكود ده "بيخمن" القسم من اسم المنتج نفسه
         currentProducts = allProducts.filter(p => {
             const name = p.name.toLowerCase();
             
-            if (categoryName === 'ألعاب') {
-                return name.includes('لعبة') || name.includes('عروسة') || name.includes('خرز') || name.includes('بازل') || name.includes('صلصال');
+            // كلمات البحث للألعاب
+            if (categoryName === 'ألعاب' || categoryName === 'العاب') {
+                return name.includes('لعب') || name.includes('عروس') || name.includes('خرز') || name.includes('بازل') || name.includes('صلصال') || name.includes('كورة') || name.includes('عربية');
             }
-            if (categoryName === 'أدوات مكتبية') {
-                return name.includes('قلم') || name.includes('كشكول') || name.includes('مسطرة') || name.includes('أستيكة') || name.includes('براية') || name.includes('نوت');
+            // كلمات البحث للمكتبية
+            if (categoryName === 'أدوات مكتبية' || categoryName === 'مكتبية') {
+                return name.includes('قلم') || name.includes('كشكول') || name.includes('دفتر') || name.includes('مسطر') || name.includes('استيك') || name.includes('براية') || name.includes('نوت') || name.includes('شنطة');
             }
-            if (categoryName === 'إكسسوارات') {
-                return name.includes('ساعة') || name.includes('خاتم') || name.includes('توكة') || name.includes('بندانة');
+            // كلمات البحث للهدايا
+            if (categoryName === 'هدايا') {
+                return name.includes('بوكس') || name.includes('دبدوب') || name.includes('هدايا') || name.includes('برواز') || name.includes('ساعة') || name.includes('ميدالية');
             }
-            if (categoryName === 'أدوات منزلية') {
-                return name.includes('كوب') || name.includes('مج') || name.includes('فرشاة') || name.includes('منظم');
+            // كلمات البحث للإكسسوارات
+            if (categoryName === 'إكسسوارات' || categoryName === 'اكسسوارات') {
+                return name.includes('خاتم') || name.includes('سلسلة') || name.includes('انسيال') || name.includes('توكة') || name.includes('بندانة') || name.includes('شراب');
+            }
+            // كلمات البحث للمنزلية
+            if (categoryName === 'أدوات منزلية' || categoryName === 'منزلية') {
+                return name.includes('كوب') || name.includes('مج') || name.includes('طبق') || name.includes('فرش') || name.includes('منظم') || name.includes('ديكور') || name.includes('ترمس');
             }
             
-            // لو ملقاش الكلمات اللي فوق، بيدور على اسم الزرار نفسه جوه اسم المنتج
             return name.includes(categoryName.toLowerCase());
         });
     }
+
+    // تكة تقنية: بنمسح أي منتج مكرر لو اتوجد بالصدفة
+    currentProducts = [...new Set(currentProducts)];
+
     renderProducts(currentProducts, 1);
 }
+
 
 
 
