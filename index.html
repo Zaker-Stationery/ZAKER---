@@ -44,12 +44,13 @@
 </div>
 <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
     <button class="category-btn" onclick="filterCategory('الكل')">الكل</button>
-    <button class="category-btn" onclick="filterCategory('أدوات مكتبية')">أدوات مكتبية</button>
-    <button class="category-btn" onclick="filterCategory('ألعاب')">ألعاب</button>
+    <button class="category-btn" onclick="filterCategory('مكتبية')">أدوات مكتبية</button>
+    <button class="category-btn" onclick="filterCategory('العاب')">ألعاب</button>
     <button class="category-btn" onclick="filterCategory('هدايا')">هدايا</button>
-    <button class="category-btn" onclick="filterCategory('إكسسوارات')">إكسسوارات</button>
-    <button class="category-btn" onclick="filterCategory('أدوات منزلية')">أدوات منزلية</button>
+    <button class="category-btn" onclick="filterCategory('اكسسوارات')">إكسسوارات</button>
+    <button class="category-btn" onclick="filterCategory('منزلية')">أدوات منزلية</button>
 </div>
+
 
 <div class="container">
     <div id="products-grid" class="product-grid"></div>
@@ -1078,9 +1079,8 @@
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
-// 1. الدالة اللي بتشغل الزراير وتظهر الشبكة
 function filterCategory(categoryName) {
-    // بنظهر الشبكة أول ما نختار فئة
+    // إظهار الشبكة
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
     
@@ -1088,10 +1088,14 @@ function filterCategory(categoryName) {
     if (categoryName === 'الكل') {
         currentProducts = allProducts;
     } else {
-        currentProducts = allProducts.filter(p => p.category === categoryName);
+        // فلتر مرن: بيدور لو اسم الفئة موجود جوه الـ category بتاع المنتج
+        currentProducts = allProducts.filter(p => {
+            return p.category && p.category.includes(categoryName);
+        });
     }
     renderProducts(currentProducts, 1);
 }
+
 
 // 2. المتغيرات الأساسية
 let currentProducts = allProducts;
