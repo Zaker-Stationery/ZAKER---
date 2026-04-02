@@ -1080,21 +1080,39 @@
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
 function filterCategory(categoryName) {
-    // إظهار الشبكة
+    // إظهار الشبكة والصفحات
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
     
     currentPage = 1;
+    
     if (categoryName === 'الكل') {
         currentProducts = allProducts;
     } else {
-        // فلتر مرن: بيدور لو اسم الفئة موجود جوه الـ category بتاع المنتج
+        // الكود ده "بيخمن" القسم من اسم المنتج نفسه
         currentProducts = allProducts.filter(p => {
-            return p.category && p.category.includes(categoryName);
+            const name = p.name.toLowerCase();
+            
+            if (categoryName === 'ألعاب') {
+                return name.includes('لعبة') || name.includes('عروسة') || name.includes('خرز') || name.includes('بازل') || name.includes('صلصال');
+            }
+            if (categoryName === 'أدوات مكتبية') {
+                return name.includes('قلم') || name.includes('كشكول') || name.includes('مسطرة') || name.includes('أستيكة') || name.includes('براية') || name.includes('نوت');
+            }
+            if (categoryName === 'إكسسوارات') {
+                return name.includes('ساعة') || name.includes('خاتم') || name.includes('توكة') || name.includes('بندانة');
+            }
+            if (categoryName === 'أدوات منزلية') {
+                return name.includes('كوب') || name.includes('مج') || name.includes('فرشاة') || name.includes('منظم');
+            }
+            
+            // لو ملقاش الكلمات اللي فوق، بيدور على اسم الزرار نفسه جوه اسم المنتج
+            return name.includes(categoryName.toLowerCase());
         });
     }
     renderProducts(currentProducts, 1);
 }
+
 
 
 // 2. المتغيرات الأساسية
