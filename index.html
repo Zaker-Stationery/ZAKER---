@@ -85,8 +85,7 @@ style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border:
 <button class="category-btn" onclick="filterCategory('كتب خارجية و تعليمية')">كتب خارجية و تعليمية</button>
 <button class="category-btn" onclick="filterCategory('عناية شخصية')">عناية شخصية</button>
 <button class="category-btn" onclick="filterCategory('الكترونيات')">الكترونيات</button>
-</div>
-
+    </div>
 <div class="container">
     <div id="products-grid" class="products-grid"></div>
 <div id="pagination" class="pagination"></div>
@@ -148,10 +147,8 @@ style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border:
     ]
 };
 
-
 function getCategory(name) {
     name = name.toLowerCase();
-
     for (let category in categories) {
         for (let keyword of categories[category]) {
             if (name.includes(keyword.toLowerCase())) {
@@ -160,7 +157,7 @@ function getCategory(name) {
         }
     }
     return "ادوات مكتبية";
-    }
+        }
 let currentProducts = [];
 const itemsPerPage = 12;
 let currentPage = 1;
@@ -1150,19 +1147,15 @@ function filterCategory(category) {
     currentPage = 1;
 
     // إزالة التحديد من كل الأزرار
-    document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
 
-    // تلوين الزرار الحالي
+    // تلوين الزرار اللي اتداس
     event.target.classList.add('active');
 
     if (category === 'الكل') {
         currentProducts = allProducts;
     } else {
-        currentProducts = allProducts.filter(p =>
-            getCategory(p.name) === category
-        );
+        currentProducts = allProducts.filter(p => getCategory(p.name) === category);
     }
 
     document.getElementById('products-grid').style.display = 'grid';
@@ -1172,11 +1165,7 @@ function filterCategory(category) {
 }
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
-
-    const filtered = currentProducts.filter(p =>
-        p.name.toLowerCase().includes(term)
-    );
-
+    const filtered = currentProducts.filter(p => p.name.toLowerCase().includes(term));
     renderProducts(filtered, 1);
     }
 
@@ -1227,13 +1216,6 @@ function renderPagination(totalItems, currentPageNum) {
 function goToPage(page) {
     currentPage = page;
     renderProducts(currentProducts, page);
-}
-
-function order(name, priceId) {
-    let priceElement = document.getElementById('price-' + priceId);
-    let currentPrice = priceElement ? priceElement.innerText : '';
-    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " " + currentPrice);
-    window.open("https://wa.me/201027021011?text=" + msg);
 }
 
 function order(name, priceId) {
