@@ -12,7 +12,39 @@
         .logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #fff; background: #fff; margin-bottom: 5px; }
         .container { padding: 10px; max-width: 1000px; margin: auto; }
         .category-title { border-right: 4px solid var(--s); padding-right: 10px; margin: 15px 0; color: var(--p); font-size: 1.1rem; text-align: right; }
-        
+        .category-btn {
+    background: #eee;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Cairo';
+    transition: 0.3s;
+}
+
+.category-btn.active {
+    background: #3498db;
+    color: white;
+}
+        .category-btn {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Cairo';
+}
+
+.category-btn:hover {
+    background: #3498db;
+    color: white;
+}
+
+.category-btn.active {
+    background: #2c3e50;
+    color: white;
+}
         .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -40,6 +72,10 @@
 
         .service-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 10px; border-right: 5px solid var(--s); }
         .service-btn { background: var(--s); color: #fff; padding: 10px; border-radius: 8px; display: block; text-decoration: none; font-weight: bold; margin-top: 10px; font-size: 0.9rem; }
+  #products-grid,
+#pagination {
+    display: none;
+              }
     </style>
 </head>
 <body>
@@ -54,15 +90,15 @@ style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border:
     <button onclick="searchProducts()" style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">بحث</button>
 </div>
     <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-<button onclick="filterCategory('الكل')">الكل</button>
-<button onclick="filterCategory('ادوات مكتبية')">ادوات مكتبية</button>
-<button onclick="filterCategory('العاب')">ألعاب</button>
-<button onclick="filterCategory('هدايا')">هدايا</button>
-<button onclick="filterCategory('اكسسوارات')">اكسسوارات</button>
-<button onclick="filterCategory('ادوات منزلية')">ادوات منزلية</button>
-<button onclick="filterCategory('كتب خارجية و تعليمية')">كتب خارجية و تعليمية</button>
-<button onclick="filterCategory('عناية شخصية')">عناية شخصية</button>
-<button onclick="filterCategory('الكترونيات')">الكترونيات</button>
+<button class="category-btn" onclick="filterCategory('الكل')">الكل</button>
+<button class="category-btn" onclick="filterCategory('ادوات مكتبية')">ادوات مكتبية</button>
+<button class="category-btn" onclick="filterCategory('العاب')">ألعاب</button>
+<button class="category-btn" onclick="filterCategory('هدايا')">هدايا</button>
+<button class="category-btn" onclick="filterCategory('اكسسوارات')">اكسسوارات</button>
+<button class="category-btn" onclick="filterCategory('ادوات منزلية')">ادوات منزلية</button>
+<button class="category-btn" onclick="filterCategory('كتب خارجية و تعليمية')">كتب خارجية و تعليمية</button>
+<button class="category-btn" onclick="filterCategory('عناية شخصية')">عناية شخصية</button>
+<button class="category-btn" onclick="filterCategory('الكترونيات')">الكترونيات</button>
 </div>
 
 <div class="container">
@@ -137,9 +173,13 @@ function getCategory(name) {
             }
         }
     }
-
     return "ادوات مكتبية";
     }
+let currentProducts = [];
+const itemsPerPage = 12;
+let currentPage = 1;
+const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
+
         const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "بلانشيطه (سناده) اشکال", img: "", variants: [{label: "عادي", price: "15"}] },
@@ -1123,6 +1163,14 @@ function getCategory(name) {
 function filterCategory(category) {
     currentPage = 1;
 
+    // إزالة التحديد من كل الأزرار
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // تلوين الزرار الحالي
+    event.target.classList.add('active');
+
     if (category === 'الكل') {
         currentProducts = allProducts;
     } else {
@@ -1131,8 +1179,11 @@ function filterCategory(category) {
         );
     }
 
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+
     renderProducts(currentProducts, 1);
-    }
+}
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
 
@@ -1205,9 +1256,6 @@ function order(name, priceId) {
     let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " " + currentPrice);
     window.open("https://wa.me/201027021011?text=" + msg);
 }
-
-// تشغيل الموقع أول ما يفتح
-renderProducts(currentProducts, 1);
 </script>
 </body>
  </html>
