@@ -1189,10 +1189,15 @@ function order(name, priceId) {
     window.open("https://wa.me/201027021011?text=" + msg);
 }
 
-// 5. أهم خطوة: الموقع يفتح "رايق" على الفئات بس
-document.getElementById('products-grid').style.display = 'none';
-document.getElementById('pagination').style.display = 'none';
+function order(name, priceId) {
+    let priceElement = document.getElementById('price-' + priceId);
+    let currentPrice = priceElement ? priceElement.innerText : '';
+    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " " + currentPrice);
+    window.open("https://wa.me/201027021011?text=" + msg);
+}
 
+// تشغيل الموقع أول ما يفتح
+renderProducts(currentProducts, 1);
 </script>
 </body>
  </html>
