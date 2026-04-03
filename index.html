@@ -38,17 +38,17 @@
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
     <div style="text-align: center; margin: 20px 0; display: flex; justify-content: center; gap: 8px;">
-    <input type="text" id="searchInput" placeholder="ابحث عن منتج..." 
+    <input type="text" id="searchInput" oninput="searchProducts()">
     style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
     <button onclick="searchProducts()" style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">بحث</button>
 </div>
     <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-    <button onclick="filterCategory('الكل')">الكل</button>
+<button onclick="filterCategory('الكل')">الكل</button>
 <button onclick="filterCategory('ادوات مكتبية')">ادوات مكتبية</button>
 <button onclick="filterCategory('العاب')">ألعاب</button>
 <button onclick="filterCategory('هدايا')">هدايا</button>
-<button onclick="filterCategory('اكسسوارات')">إكسسوارات</button>
-<button onclick="filterCategory('ادوات منزلية')">أدوات منزلية</button>
+<button onclick="filterCategory('اكسسوارات')">اكسسوارات</button>
+<button onclick="filterCategory('ادوات منزلية')">ادوات منزلية</button>
 <button onclick="filterCategory('كتب خارجية و تعليمية')">كتب خارجية و تعليمية</button>
 <button onclick="filterCategory('عناية شخصية')">عناية شخصية</button>
 <button onclick="filterCategory('الكترونيات')">الكترونيات</button>
