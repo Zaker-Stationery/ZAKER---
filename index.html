@@ -1142,23 +1142,23 @@ let currentProducts = allProducts;
 const itemsPerPage = 12;
 let currentPage = 1;
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
-
 function filterCategory(category) {
     currentPage = 1;
 
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
 
+    currentProducts = allProducts.filter(p => {
+        return getCategory(p.name).trim() === category.trim();
+    });
+
     if (category === 'الكل') {
         currentProducts = allProducts;
-    } else {
-        currentProducts = allProducts.filter(p =>
-            getCategory(p.name) === category
-        );
     }
 
     renderProducts(currentProducts, 1);
-    }
+}
+
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
 
