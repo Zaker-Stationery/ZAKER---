@@ -147,18 +147,6 @@ style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border:
     ]
 };
 
-function getCategory(name) {
-    name = name.toLowerCase();
-    for (let category in categories) {
-        for (let keyword of categories[category]) {
-            if (name.includes(keyword.toLowerCase())) {
-                return category;
-            }
-        }
-    }
-    return "ادوات مكتبية";
-        }
-
         const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
         { name: "بلانشيطه (سناده) اشکال", img: "", variants: [{label: "عادي", price: "15"}] },
@@ -1138,6 +1126,22 @@ function getCategory(name) {
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
+    function getCategory(name) {
+    name = name.toLowerCase();
+
+    for (let category in categories) {
+        for (let keyword of categories[category]) {
+            let key = keyword.toLowerCase().trim();
+
+            // أهم سطر 👇
+            if (name.includes(key)) {
+                return category;
+            }
+        }
+    }
+
+    return "غير مصنف";
+}
 let currentProducts = allProducts;
 const itemsPerPage = 12;
 let currentPage = 1;
@@ -1148,12 +1152,13 @@ function filterCategory(category) {
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
 
-    currentProducts = allProducts.filter(p => {
-        return getCategory(p.name).trim() === category.trim();
-    });
-
     if (category === 'الكل') {
         currentProducts = allProducts;
+    } else {
+        currentProducts = allProducts.filter(p => {
+            const cat = getCategory(p.name);
+            return cat === category;
+        });
     }
 
     renderProducts(currentProducts, 1);
