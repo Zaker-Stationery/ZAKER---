@@ -69,28 +69,48 @@
 <header>
     <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
+<header>
+    <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
+    <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
-    <div style="text-align: center; margin: 20px 0; display: flex; justify-content: center; gap: 8px;">
-    <input type="text" id="searchInput" oninput="searchProducts()" 
-style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
-    <button onclick="searchProducts()" style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">بحث</button>
+
+<!-- 🔍 السيرش -->
+<div style="text-align: center; margin: 20px 0; display: flex; justify-content: center; gap: 8px;">
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="ابحث عن منتج..."
+        oninput="searchProducts()" 
+        style="width: 65%; max-width: 300px; padding: 12px; border-radius: 25px; border: 1px solid #ddd; text-align: right; outline: none;">
+    
+    <button 
+        onclick="searchProducts()" 
+        style="padding: 10px 20px; border-radius: 25px; border: none; background: #3498db; color: white; cursor: pointer; font-family: 'Cairo';">
+        بحث
+    </button>
 </div>
-    <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-<button class="category-btn" onclick="filterCategory('الكل')">الكل</button>
-<button class="category-btn" onclick="filterCategory('ادوات مكتبية')">ادوات مكتبية</button>
-<button class="category-btn" onclick="filterCategory('العاب')">ألعاب</button>
-<button class="category-btn" onclick="filterCategory('هدايا')">هدايا</button>
-<button class="category-btn" onclick="filterCategory('اكسسوارات')">اكسسوارات</button>
-<button class="category-btn" onclick="filterCategory('ادوات منزلية')">ادوات منزلية</button>
-<button class="category-btn" onclick="filterCategory('كتب خارجية و تعليمية')">كتب خارجية و تعليمية</button>
-<button class="category-btn" onclick="filterCategory('عناية شخصية')">عناية شخصية</button>
-<button class="category-btn" onclick="filterCategory('الكترونيات')">الكترونيات</button>
-    </div>
+
+<!-- 🧩 الفئات -->
+<div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+    
+    <button class="category-btn" onclick="filterCategory('الكل', this)">الكل</button>
+    <button class="category-btn" onclick="filterCategory('ادوات مكتبية', this)">ادوات مكتبية</button>
+    <button class="category-btn" onclick="filterCategory('العاب', this)">ألعاب</button>
+    <button class="category-btn" onclick="filterCategory('هدايا', this)">هدايا</button>
+    <button class="category-btn" onclick="filterCategory('اكسسوارات', this)">اكسسوارات</button>
+    <button class="category-btn" onclick="filterCategory('ادوات منزلية', this)">ادوات منزلية</button>
+    <button class="category-btn" onclick="filterCategory('كتب خارجية و تعليمية', this)">كتب خارجية و تعليمية</button>
+    <button class="category-btn" onclick="filterCategory('عناية شخصية', this)">عناية شخصية</button>
+    <button class="category-btn" onclick="filterCategory('الكترونيات', this)">الكترونيات</button>
+
+</div>
+
+<!-- 🛍️ المنتجات -->
 <div class="container">
     <div id="products-grid" class="products-grid"></div>
-<div id="pagination" class="pagination"></div>
+    <div id="pagination" class="pagination"></div>
 
-
+    <!-- خدمات -->
     <h2 class="category-title">خدمات إضافية</h2>
     <div class="service-card">
         <div style="font-weight: bold; color: var(--p);">📸 تصوير ومستندات</div>
@@ -1146,11 +1166,15 @@ let currentProducts = allProducts;
 const itemsPerPage = 12;
 let currentPage = 1;
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
-function filterCategory(category) {
+
+    function filterCategory(category, el) {
     currentPage = 1;
 
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
+
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    el.classList.add('active');
 
     if (category === 'الكل') {
         currentProducts = allProducts;
@@ -1162,7 +1186,7 @@ function filterCategory(category) {
     }
 
     renderProducts(currentProducts, 1);
-}
+    }
 
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1178,13 +1202,6 @@ function searchProducts() {
 
     renderProducts(filtered, 1);
 }
-
-
-// 2. المتغيرات الأساسية
-let currentProducts = allProducts;
-const itemsPerPage = 12;
-let currentPage = 1;
-const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
 // 3. دالة العرض (تصليح شامل لشكل الكارت)
 function renderProducts(products, page) {
@@ -1215,11 +1232,15 @@ function renderProducts(products, page) {
 function renderPagination(totalItems, currentPageNum) {
     const pagesContainer = document.getElementById('pagination');
     if (!pagesContainer) return;
+
     pagesContainer.innerHTML = '';
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     if (totalPages <= 1) return;
+
     for (let i = 1; i <= totalPages; i++) {
-        pagesContainer.innerHTML += `<button onclick="goToPage(${i})">${i}</button>`;
+        pagesContainer.innerHTML += `
+            <button class="${i === currentPageNum ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>
+        `;
     }
 }
 
@@ -1234,6 +1255,9 @@ function order(name, priceId) {
     let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " " + currentPrice);
     window.open("https://wa.me/201027021011?text=" + msg);
 }
+    window.onload = function() {
+    currentProducts = allProducts;
+};
 </script>
 </body>
  </html>
