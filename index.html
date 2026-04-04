@@ -31,10 +31,60 @@
     background: #2c3e50;
     color: white;
 }
+        .whatsapp-btn {
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Cairo';
+    margin-top: 5px;
+}
+        .hero {
+    width: 100%;
+    height: 180px;
+    background: url("https://i.ibb.co/tpxqKtYd") center/cover no-repeat;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+        .categories-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.category-card {
+    min-width: 140px;
+    height: 100px;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-card span {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
 .products-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+    margin-bottom: 20px;
 }
     margin-bottom: 20px;
         }
@@ -46,6 +96,10 @@
 .card:hover {
     transform: scale(1.03);
 }
+        .card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+}
         .product-img {
     width: 100%;
     height: 120px;
@@ -55,6 +109,10 @@
         }
         .name { font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; min-height: 35px; color: #333; display: flex; align-items: center; justify-content: center; }
         .price { color: #27ae60; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
+       .price {
+    text-align: center;
+    width: 100%;
+       }
         .label { display: block; text-align: right; font-size: 0.7rem; margin-bottom: 2px; color: #666; font-weight: bold; }
         
         select { width: 100%; padding: 4px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 8px; font-family: 'Cairo'; font-size: 0.75rem; }
@@ -66,15 +124,50 @@
 
         .service-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 10px; border-right: 5px solid var(--s); }
         .service-btn { background: var(--s); color: #fff; padding: 10px; border-radius: 8px; display: block; text-decoration: none; font-weight: bold; margin-top: 10px; font-size: 0.9rem; }
-  #products-grid,
+.social {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.social a {
+    background: #3498db;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.footer {
+    text-align: center;
+    margin: 15px 0;
+    color: #555;
+    font-size: 0.8rem;
+}
+        #products-grid,
 #pagination {
     display: none;
               }
     </style>
 </head>
-<body>
+<div class="social">
+    <a href="https://www.facebook.com/share/1C8SBPN83y/" target="_blank">فيسبوك</a>
+    <a href="https://chat.whatsapp.com/Hi7h1ryoMoCAgr4Cwj0pA2" target="_blank">واتساب</a>
+    <a href="https://t.me/zakerbookstoer" target="_blank">تيليجرام</a>
+    <a href="https://www.instagram.com/zak.er2025" target="_blank">انستجرام</a>
+    <a href="https://www.tiktok.com/@.zaker30" target="_blank">تيك توك</a>
+</div>
+
+<div class="footer">
+    جميع الحقوق محفوظة لمكتبة ذاكر 2026
+</div>
+    <body>
 
 <header>
+    <div class="hero"></div>
     <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
@@ -98,9 +191,17 @@
 <!-- 🧩 الفئات -->
 <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
     
-    <button class="category-btn" onclick="filterCategory('الكل', this)">الكل</button>
-    <button class="category-btn" onclick="filterCategory('ادوات مكتبية', this)">ادوات مكتبية</button>
-    <button class="category-btn" onclick="filterCategory('العاب', this)">ألعاب</button>
+    <button class="category-btn" onclick="filterCategory('الكل', this)">الكل</button> 
+
+    <div class="category-card" onclick="filterCategory('ادوات مكتبية')">
+        <img src="https://i.ibb.co/ZpgpxFG8">
+        <span>ادوات مكتبية</span>
+    </div>
+
+    <div class="category-card" onclick="filterCategory('العاب')">
+        <img src="https://i.ibb.co/LD5KZhL3">
+        <span>ألعاب</span>
+        </div>
     <button class="category-btn" onclick="filterCategory('هدايا', this)">هدايا</button>
     <button class="category-btn" onclick="filterCategory('اكسسوارات', this)">اكسسوارات</button>
     <button class="category-btn" onclick="filterCategory('ادوات منزلية', this)">ادوات منزلية</button>
@@ -1174,10 +1275,9 @@ const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
     function filterCategory(category, el) {
     currentPage = 1;
-
-    document.getElementById('products-grid').style.display = 'grid';
-    document.getElementById('pagination').style.display = 'flex';
-
+document.getElementById('products-grid').style.display = 'grid';
+document.getElementById('pagination').style.display = 'flex';
+    
     document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
     el.classList.add('active');
 
@@ -1196,6 +1296,7 @@ const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
 
+    // 👇 هنا برضو
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
 
