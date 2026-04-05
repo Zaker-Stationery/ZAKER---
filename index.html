@@ -1266,7 +1266,6 @@
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
-    <script>
 const itemsPerPage = 12;
 let currentPage = 1;
 let currentProducts = allProducts;
@@ -1370,8 +1369,12 @@ function order(name, price) {
 }
 
 window.onload = function() {
-    currentProducts = allProducts;
-    renderProducts(allProducts, 1);
+    if (typeof allProducts !== "undefined") {
+        currentProducts = allProducts;
+        renderProducts(allProducts, 1);
+    } else {
+        console.log("allProducts مش متعرفه ❌");
+    }
 };
 </script>
      <div class="social">
