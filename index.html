@@ -41,10 +41,10 @@
     font-family: 'Cairo';
     margin-top: 5px;
 }
-        .hero {
+.hero {
     width: 100%;
     height: 180px;
-    background: url("https://i.ibb.co/tpxqKtYd") center/cover no-repeat;
+    background: url("https://i.ibb.co/3m6n1wR/your-image.jpg") center/cover no-repeat;
     margin-bottom: 15px;
     border-radius: 10px;
 }
@@ -63,7 +63,9 @@
     overflow: hidden;
     cursor: pointer;
 }
-
+.category-card.active {
+    outline: 3px solid #2c3e50;
+}
 .category-card img {
     width: 100%;
     height: 100%;
@@ -86,8 +88,6 @@
     gap: 15px;
     margin-bottom: 20px;
 }
-    margin-bottom: 20px;
-        }
         .card { background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; }
        .card {
     transition: 0.3s;
@@ -153,6 +153,8 @@
               }
     </style>
 </head>
+
+    <body>
 <div class="social">
     <a href="https://www.facebook.com/share/1C8SBPN83y/" target="_blank">فيسبوك</a>
     <a href="https://chat.whatsapp.com/Hi7h1ryoMoCAgr4Cwj0pA2" target="_blank">واتساب</a>
@@ -164,11 +166,9 @@
 <div class="footer">
     جميع الحقوق محفوظة لمكتبة ذاكر 2026
 </div>
-    <body>
-
+   <div class="hero"></div>     
 <header>
-    <div class="hero"></div>
-    <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
+ <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
 
@@ -193,12 +193,12 @@
     
     <button class="category-btn" onclick="filterCategory('الكل', this)">الكل</button> 
 
-    <div class="category-card" onclick="filterCategory('ادوات مكتبية')">
+    <div class="category-card" onclick="filterCategory('ادوات مكتبية', this)">
         <img src="https://i.ibb.co/ZpgpxFG8">
         <span>ادوات مكتبية</span>
     </div>
 
-    <div class="category-card" onclick="filterCategory('العاب')">
+    <div class="category-card" onclick="filterCategory('العاب', this)">
         <img src="https://i.ibb.co/LD5KZhL3">
         <span>ألعاب</span>
         </div>
@@ -1272,27 +1272,24 @@ let currentProducts = allProducts;
 const itemsPerPage = 12;
 let currentPage = 1;
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
-
-    function filterCategory(category, el) {
+function filterCategory(category, el) {
     currentPage = 1;
-document.getElementById('products-grid').style.display = 'grid';
-document.getElementById('pagination').style.display = 'flex';
-    
-    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-    el.classList.add('active');
+
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+
+    document.querySelectorAll('.category-btn, .category-card').forEach(btn => btn.classList.remove('active'));
+    if(el) el.classList.add('active');
 
     if (category === 'الكل') {
         currentProducts = allProducts;
     } else {
-        currentProducts = allProducts.filter(p => {
-            const cat = getCategory(p.name);
-            return cat === category;
-        });
+        currentProducts = allProducts.filter(p => getCategory(p.name) === category);
     }
 
     renderProducts(currentProducts, 1);
-    }
-
+}
+    
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
 
