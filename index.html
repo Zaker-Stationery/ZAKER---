@@ -186,23 +186,43 @@
 
 <!-- 🧩 الفئات -->
 <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-    <button class="category-btn" onclick="filterCategory('الكل')" style="background: #3498db; color: white; width: 100px; height: 70px; border-radius: 10px;">الكل</button>
+    
+    <button class="category-btn" onclick="filterCategory('الكل')" style="background: #3498db; color: white; width: 100px; height: 70px; border-radius: 10px;">
+        الكل
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('أدوات مكتبية')" style="background: url('https://i.ibb.co/ZpgpxFG8/stationery.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">أدوات مكتبية</button>
+    <button class="category-btn" onclick="filterCategory('ادوات مكتبية')" style="background: url('https://i.ibb.co/ZpgpxFG8/stationery.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        ادوات مكتبية
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('ألعاب')" style="background: url('https://i.ibb.co/LD5KZhL3/toys.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">ألعاب</button>
+    <button class="category-btn" onclick="filterCategory('العاب')" style="background: url('https://i.ibb.co/LD5KZhL3/toys.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        العاب
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('هدايا')" style="background: url('https://i.ibb.co/tpk2BhDY/gifts.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">هدايا</button>
+    <button class="category-btn" onclick="filterCategory('هدايا')" style="background: url('https://i.ibb.co/tpk2BhDY/gifts.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        هدايا
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('إكسسوارات')" style="background: url('https://i.ibb.co/rRcCpTfk/acc.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">إكسسوارات</button>
+    <button class="category-btn" onclick="filterCategory('اكسسوارات')" style="background: url('https://i.ibb.co/rRcCpTfk/acc.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        اكسسوارات
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('أدوات منزلية')" style="background: url('https://i.ibb.co/m5HkvsHT/home.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">أدوات منزلية</button>
+    <button class="category-btn" onclick="filterCategory('ادوات منزلية')" style="background: url('https://i.ibb.co/m5HkvsHT/home.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        ادوات منزلية
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('كتب خارجية')" style="background: url('https://i.ibb.co/3yQjBLnr/books.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">كتب خارجية</button>
+    <button class="category-btn" onclick="filterCategory('كتب خارجية و تعليمية')" style="background: url('https://i.ibb.co/3yQjBLnr/books.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        كتب خارجية
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('عناية شخصية')" style="background: url('https://i.ibb.co/V0n8ztZB/care.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">عناية شخصية</button>
+    <button class="category-btn" onclick="filterCategory('عناية شخصية')" style="background: url('https://i.ibb.co/V0n8ztZB/care.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        عناية شخصية
+    </button>
 
-    <button class="category-btn" onclick="filterCategory('إلكترونيات')" style="background: url('https://i.ibb.co/x8tddygB/elec.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">إلكترونيات</button>
+    <button class="category-btn" onclick="filterCategory('الكترونيات')" style="background: url('https://i.ibb.co/x8tddygB/elec.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">
+        الكترونيات
+    </button>
+
 </div>
 
 <!-- 🛍️ المنتجات -->
@@ -1249,7 +1269,7 @@
     <script>
 const itemsPerPage = 12;
 let currentPage = 1;
-let currentProducts = [];
+let currentProducts = allProducts;
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
 function renderProducts(products, page) {
@@ -1293,8 +1313,10 @@ function searchProducts() {
             p.name.toLowerCase().includes(term)
         );
     }
-document.getElementById('products-grid').style.display = 'grid';
-document.getElementById('pagination').style.display = 'flex';
+
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+
     renderProducts(currentProducts, 1);
 }
 
@@ -1318,10 +1340,14 @@ function filterCategory(cat) {
     if (cat === 'الكل') {
         currentProducts = allProducts;
     } else {
-        currentProducts = allProducts.filter(p => getCategory(p.name) === cat);
+        currentProducts = allProducts.filter(p => {
+            return getCategory(p.name) === cat;
+        });
     }
-document.getElementById('products-grid').style.display = 'grid';
-document.getElementById('pagination').style.display = 'flex';
+
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+
     renderProducts(currentProducts, 1);
 }
 
@@ -1345,6 +1371,7 @@ function order(name, price) {
 
 window.onload = function() {
     currentProducts = allProducts;
+    renderProducts(allProducts, 1);
 };
 </script>
      <div class="social">
