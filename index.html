@@ -1364,7 +1364,7 @@ function renderPagination(total, pageNum) {
 function goToPage(p) { currentPage = p; renderProducts(currentProducts, p); window.scrollTo(0,0); }
 
 function order(name, price) {
-    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، محتاجة أطلب: " + name + " بسعر " + price + " ج.م");
+    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، محتاج أطلب: " + name + " بسعر " + price + " ج.م");
     window.open("https://wa.me/201027021011?text=" + msg);
 }
 
