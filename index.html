@@ -15,13 +15,9 @@
     margin: 0; 
     padding: 0; 
 }
-header {
-    padding: 20px;
-    text-align: center;
-    color: #fff;
-}
 
-      .logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #fff; background: #fff; margin-bottom: 5px; }
+        header { background: linear-gradient(135deg, var(--p), var(--s)); color: #fff; padding: 15px; text-align: center; }
+        .logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #fff; background: #fff; margin-bottom: 5px; }
         .container { padding: 10px; max-width: 1000px; margin: auto; }
         .category-title { border-right: 4px solid var(--s); padding-right: 10px; margin: 15px 0; color: var(--p); font-size: 1.1rem; text-align: right; }
         .category-btn {
@@ -179,9 +175,9 @@ header {
     جميع الحقوق محفوظة لمكتبة ذاكر 2026
 </div>
    <div class="hero"></div>     
-<header style="background: url('https://i.ibb.co/tpxqKtYd/background.jpg') no-repeat center center; background-size: cover; height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">
-    <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo" style="width: 70px; height: 70px;">
-    <h1 style="font-size: 1.5rem; margin: 10px 0 0 0;">مكتبة ذاكر - ZAKER</h1>
+<header>
+ <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
+    <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
 </header>
 
 <!-- 🔍 السيرش -->
@@ -202,13 +198,24 @@ header {
 
 <!-- 🧩 الفئات -->
 <div class="categories-container" style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-    <button class="category-btn" onclick="filterCategory('الكل')" style="background:#3498db; color:white;">الكل</button>
-    <button class="category-btn" onclick="filterCategory('أدوات مكتبية')" style="background: url('https://i.ibb.co/ZpgpxFG8/stationery.jpg') center/cover; color:white; text-shadow: 2px 2px 4px #000;">أدوات مكتبية</button>
-    <button class="category-btn" onclick="filterCategory('ألعاب')" style="background: url('https://i.ibb.co/LD5KZhL3/toys.jpg') center/cover; color:white; text-shadow: 2px 2px 4px #000;">ألعاب</button>
-    <button class="category-btn" onclick="filterCategory('هدايا')" style="background: url('https://i.ibb.co/tpk2BhDY/gifts.jpg') center/cover; color:white; text-shadow: 2px 2px 4px #000;">هدايا</button>
-    <button class="category-btn" onclick="filterCategory('إكسسوارات')" style="background: url('https://i.ibb.co/rRcCpTfk/acc.jpg') center/cover; color:white; text-shadow: 2px 2px 4px #000;">إكسسوارات</button>
-</div>
+    <button class="category-btn" onclick="filterCategory('الكل')" style="background: #3498db; color: white; width: 100px; height: 70px; border-radius: 10px;">الكل</button>
 
+    <button class="category-btn" onclick="filterCategory('أدوات مكتبية')" style="background: url('https://i.ibb.co/ZpgpxFG8/stationery.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">أدوات مكتبية</button>
+
+    <button class="category-btn" onclick="filterCategory('ألعاب')" style="background: url('https://i.ibb.co/LD5KZhL3/toys.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">ألعاب</button>
+
+    <button class="category-btn" onclick="filterCategory('هدايا')" style="background: url('https://i.ibb.co/tpk2BhDY/gifts.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">هدايا</button>
+
+    <button class="category-btn" onclick="filterCategory('إكسسوارات')" style="background: url('https://i.ibb.co/rRcCpTfk/acc.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">إكسسوارات</button>
+
+    <button class="category-btn" onclick="filterCategory('أدوات منزلية')" style="background: url('https://i.ibb.co/m5HkvsHT/home.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">أدوات منزلية</button>
+
+    <button class="category-btn" onclick="filterCategory('كتب خارجية')" style="background: url('https://i.ibb.co/3yQjBLnr/books.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">كتب خارجية</button>
+
+    <button class="category-btn" onclick="filterCategory('عناية شخصية')" style="background: url('https://i.ibb.co/V0n8ztZB/care.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">عناية شخصية</button>
+
+    <button class="category-btn" onclick="filterCategory('إلكترونيات')" style="background: url('https://i.ibb.co/x8tddygB/elec.jpg') center/cover; color: white; text-shadow: 2px 2px 4px #000; width: 100px; height: 70px; border-radius: 10px;">إلكترونيات</button>
+</div>
 
 <!-- 🛍️ المنتجات -->
 <div class="container">
@@ -1251,10 +1258,10 @@ header {
         { name: "مسدس خرز فيض و دهيب وسط", img: "", variants: [{label: "عادي", price: "2"}] },
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
-<script>
+    <script>
 const itemsPerPage = 12;
 let currentPage = 1;
-let currentProducts = allProducts; // اتأكدي إن الـ 1000 صنف فوق السطر ده
+let currentProducts = allProducts;
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
 function renderProducts(products, page) {
@@ -1262,12 +1269,14 @@ function renderProducts(products, page) {
     if (!grid) return;
     grid.innerHTML = '';
     grid.style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
 
     const start = (page - 1) * itemsPerPage;
     const items = products.slice(start, start + itemsPerPage);
 
     if (items.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; padding: 50px;">مفيش منتجات بالاسم ده حالياً..</p>';
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; padding: 50px;">مفيش منتجات هنا حالياً..</p>';
+        document.getElementById('pagination').style.display = 'none';
         return;
     }
 
@@ -1275,7 +1284,7 @@ function renderProducts(products, page) {
         const imageSrc = (p.img && p.img.trim() !== '') ? p.img : defaultImg;
         let price = p.price || (p.variants && p.variants.length > 0 ? p.variants[0].price : '0');
         grid.innerHTML += `
-            <div class="card" style="background:#fff; padding:15px; border-radius:10px; text-align:center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="card" style="background:rgba(255,255,255,0.9); padding:15px; border-radius:10px; text-align:center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                 <img src="${imageSrc}" style="width:100%; height:150px; object-fit:contain;">
                 <div style="margin:10px 0; font-weight:bold;">${p.name}</div>
                 <div style="color:#e67e22; font-weight:bold; margin-bottom:10px;">${price} ج.م</div>
@@ -1287,7 +1296,7 @@ function renderProducts(products, page) {
 
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
-    if (term === "") { alert("اكتبي اسم المنتج"); return; }
+    if (term === "") return;
     currentPage = 1;
     currentProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
     renderProducts(currentProducts, 1);
@@ -1300,10 +1309,10 @@ function filterCategory(cat) {
     } else {
         currentProducts = allProducts.filter(p => {
             const n = p.name.toLowerCase();
-            // البحث بذكاء جوه الأسامي
-            if (cat === 'أدوات مكتبية') return n.includes('قلم') || n.includes('كشكول') || n.includes('سنادة');
-            if (cat === 'ألعاب') return n.includes('لعب') || n.includes('بازل') || n.includes('صلصال');
-            return n.includes(cat.toLowerCase());
+            if (cat === 'كتب خارجية') return n.includes('كتاب') || n.includes('سلاح') || n.includes('اضواء');
+            if (cat === 'عناية شخصية') return n.includes('كريم') || n.includes('شامبو') || n.includes('لوشن');
+            if (cat === 'إلكترونيات') return n.includes('سماعة') || n.includes('شاحن') || n.includes('باور');
+            return n.includes(cat.toLowerCase().substring(0, 4));
         });
     }
     renderProducts(currentProducts, 1);
@@ -1316,19 +1325,20 @@ function renderPagination(total, pageNum) {
     const totalPages = Math.ceil(total / itemsPerPage);
     if (totalPages <= 1) return;
     for (let i = 1; i <= totalPages; i++) {
-        container.innerHTML += `<button onclick="goToPage(${i})" style="margin:2px; padding:5px 10px; ${i === pageNum ? 'background:#3498db; color:#fff;' : ''}">${i}</button>`;
+        container.innerHTML += `<button onclick="goToPage(${i})" style="margin:3px; padding:5px 10px; ${i === pageNum ? 'background:#3498db; color:#fff;' : ''}">${i}</button>`;
     }
 }
 
 function goToPage(p) { currentPage = p; renderProducts(currentProducts, p); window.scrollTo(0,0); }
 
 function order(name, price) {
-    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، أريد طلب: " + name + " بسعر " + price);
+    let msg = encodeURIComponent("أهلاً مكتبة ذاكر، محتاجة أطلب: " + name + " بسعر " + price + " ج.م");
     window.open("https://wa.me/201027021011?text=" + msg);
 }
 
-// الموقع يظهر فاضي في الأول زي ما طلبتي
-window.onload = function() { document.getElementById('products-grid').style.display = 'none'; };
+window.onload = function() { 
+    document.getElementById('products-grid').style.display = 'none'; 
+};
 </script>
 </body>
 </html>
