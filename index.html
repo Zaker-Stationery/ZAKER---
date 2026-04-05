@@ -7,14 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #2c3e50; --s: #3498db; --a: #25d366; }
-        body { 
-    font-family: 'Cairo', sans-serif; 
-    background: url('https://i.ibb.co/tpxqKtYd/background.jpg') no-repeat center top; 
-    background-attachment: fixed;
-    background-size: cover; 
-    margin: 0; 
-    padding: 0; 
-}
+        body {
+    font-family: 'Cairo', sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+        }
 
         header { background: linear-gradient(135deg, var(--p), var(--s)); color: #fff; padding: 15px; text-align: center; }
         .logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #fff; background: #fff; margin-bottom: 5px; }
@@ -49,12 +47,10 @@
     font-family: 'Cairo';
     margin-top: 5px;
 }
-.hero {
+.hero img {
     width: 100%;
-    height: 180px;
-    background: url("https://i.ibb.co/3m6n1wR/your-image.jpg") center/cover no-repeat;
-    margin-bottom: 15px;
-    border-radius: 10px;
+    height: auto;
+    display: block;
 }
         .categories-container {
     display: flex;
@@ -163,18 +159,10 @@
 </head>
 
     <body>
-<div class="social">
-    <a href="https://www.facebook.com/share/1C8SBPN83y/" target="_blank">فيسبوك</a>
-    <a href="https://chat.whatsapp.com/Hi7h1ryoMoCAgr4Cwj0pA2" target="_blank">واتساب</a>
-    <a href="https://t.me/zakerbookstoer" target="_blank">تيليجرام</a>
-    <a href="https://www.instagram.com/zak.er2025" target="_blank">انستجرام</a>
-    <a href="https://www.tiktok.com/@.zaker30" target="_blank">تيك توك</a>
-</div>
 
-<div class="footer">
-    جميع الحقوق محفوظة لمكتبة ذاكر 2026
-</div>
-   <div class="hero"></div>     
+   <div class="hero">
+    <img src="https://i.ibb.co/fdnkF5rc/IMG-20260404-WA0103.jpg">
+   </div>     
 <header>
  <img src="https://i.ibb.co/JjGYxZSd/logo.png" class="logo">
     <h1 style="font-size: 1.2rem; margin: 0;">مكتبة ذاكر - ZAKER</h1>
@@ -1261,7 +1249,7 @@
     <script>
 const itemsPerPage = 12;
 let currentPage = 1;
-let currentProducts = allProducts;
+let currentProducts = [];
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
 function renderProducts(products, page) {
@@ -1293,28 +1281,47 @@ function renderProducts(products, page) {
     });
     renderPagination(products.length, page);
 }
-
 function searchProducts() {
     const term = document.getElementById('searchInput').value.toLowerCase().trim();
-    if (term === "") return;
+
     currentPage = 1;
-    currentProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
+
+    if (term === "") {
+        currentProducts = allProducts;
+    } else {
+        currentProducts = allProducts.filter(p =>
+            p.name.toLowerCase().includes(term)
+        );
+    }
+document.getElementById('products-grid').style.display = 'grid';
+document.getElementById('pagination').style.display = 'flex';
     renderProducts(currentProducts, 1);
+}
+
+
+function getCategory(name) {
+    name = name.toLowerCase();
+
+    for (let category in categories) {
+        for (let keyword of categories[category]) {
+            if (name.includes(keyword.toLowerCase())) {
+                return category;
+            }
+        }
+    }
+    return "غير مصنف";
 }
 
 function filterCategory(cat) {
     currentPage = 1;
+
     if (cat === 'الكل') {
         currentProducts = allProducts;
     } else {
-        currentProducts = allProducts.filter(p => {
-            const n = p.name.toLowerCase();
-            if (cat === 'كتب خارجية') return n.includes('كتاب') || n.includes('سلاح') || n.includes('اضواء');
-            if (cat === 'عناية شخصية') return n.includes('كريم') || n.includes('شامبو') || n.includes('لوشن');
-            if (cat === 'إلكترونيات') return n.includes('سماعة') || n.includes('شاحن') || n.includes('باور');
-            return n.includes(cat.toLowerCase().substring(0, 4));
-        });
+        currentProducts = allProducts.filter(p => getCategory(p.name) === cat);
     }
+document.getElementById('products-grid').style.display = 'grid';
+document.getElementById('pagination').style.display = 'flex';
     renderProducts(currentProducts, 1);
 }
 
@@ -1336,9 +1343,20 @@ function order(name, price) {
     window.open("https://wa.me/201027021011?text=" + msg);
 }
 
-window.onload = function() { 
-    document.getElementById('products-grid').style.display = 'none'; 
+window.onload = function() {
+    currentProducts = allProducts;
 };
 </script>
+     <div class="social">
+    <a href="https://www.facebook.com/share/1C8SBPN83y/" target="_blank">فيسبوك</a>
+    <a href="https://chat.whatsapp.com/Hi7h1ryoMoCAgr4Cwj0pA2" target="_blank">واتساب</a>
+    <a href="https://t.me/zakerbookstoer" target="_blank">تيليجرام</a>
+    <a href="https://www.instagram.com/zak.er2025" target="_blank">انستجرام</a>
+    <a href="https://www.tiktok.com/@.zaker30" target="_blank">تيك توك</a>
+</div>
+
+<div class="footer">
+    جميع الحقوق محفوظة لمكتبة ذاكر 2026
+</div>   
 </body>
 </html>
