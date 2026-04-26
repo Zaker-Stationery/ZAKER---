@@ -2213,20 +2213,67 @@ const categories = {
         { name: "مسدس خرز وسط بين", img: "", variants: [{label: "عادي", price: "4"}] }
         ];
 
-
+let allProducts = [];
+let currentProducts = [];
 const itemsPerPage = 12;
 let currentPage = 1;
-let currentProducts = [];
 const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
-function renderProducts() { }
-function searchProducts() { }
-function filterCategory() { }
-function getCategory() { }
 
-window.onload = function() {
-    currentProducts = allProducts;
+  function renderProducts(products, page = 1) {
+    const grid = document.getElementById('products-grid');
+    const pagination = document.getElementById('pagination');
+
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    const start = (page - 1) * itemsPerPage;
+    const items = products.slice(start, start + itemsPerPage);
+
+    if (items.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">مفيش منتجات</p>';
+        pagination.innerHTML = '';
+        return;
+    }
+
+    items.forEach(p => {
+        const img = (p.img && p.img.trim() !== '') ? p.img : defaultImg;
+        const price = p.price || (p.variants?.[0]?.price ?? 0);
+
+        grid.innerHTML += `
+            <div class="card">
+                <img src="${img}" class="product-img">
+                <div class="name">${p.name}</div>
+                <div class="price">${price} ج.م</div>
+            </div>
+        `;
+    });
+
+    renderPagination(products.length, page);
+  }
+function searchProducts() { }
+function filterCategory(cat) {
+    currentPage = 1;
+
+    if (cat === 'الكل') {
+        currentProducts = allProducts;
+    } else {
+        currentProducts = allProducts.filter(p =>
+            getCategory(p.name) === cat
+        );
+    }
+
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+
+    renderProducts(currentProducts, 1);
+}
+function getCategory() { }
+window.onload = function () {
+    currentProducts = [];
 };
+
 </script>
 <script>
 // ── AUTH ──
