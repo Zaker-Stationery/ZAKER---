@@ -1195,7 +1195,27 @@ document.getElementById('mBg').addEventListener('click',function(e){if(e.target=
     </div>
   </div>
 </div>
+<script>
+const categories = { ... };
 
+const allProducts = [
+   { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label:"عادي", price:"15"}] }
+];
+
+const itemsPerPage = 12;
+let currentPage = 1;
+let currentProducts = [];
+let isFirstLoad = true;
+
+function renderProducts() { }
+function searchProducts() { }
+function filterCategory() { }
+function getCategory() { }
+
+window.onload = function() {
+    currentProducts = allProducts;
+};
+</script>
 <script>
 // ── AUTH ──
 const CRED = {user:'Abdo.dbaba3', pass:'Abdo131997'};
