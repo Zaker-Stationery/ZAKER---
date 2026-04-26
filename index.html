@@ -1196,7 +1196,14 @@ document.getElementById('mBg').addEventListener('click',function(e){if(e.target=
   </div>
 </div>
 <script>
-const categories = { ... };
+<script>
+const categories = {
+    "أدوات مكتبية": [ ... ],
+    "كتب خارجية ": [ ... ],
+    "أدوات منزلية": [ ... ],
+    "ألعاب": [ ... ],
+    "هدايا": [ ... ]
+};
 
   const allProducts = [
         { name: "بلانشيطه (سناده) خشب", img: "", variants: [{label: "عادي", price: "15"}] },
@@ -2179,11 +2186,10 @@ const categories = { ... };
         ];
 
 
-
 const itemsPerPage = 12;
 let currentPage = 1;
 let currentProducts = [];
-let isFirstLoad = true;
+const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
 function renderProducts() { }
 function searchProducts() { }
