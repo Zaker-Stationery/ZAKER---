@@ -450,32 +450,34 @@ HEAD_END -->
     <h2><span class="ar-text">إيه اللي <em>تدور عليه؟</em></span><span class="en-text">What Are You <em>Looking For?</em></span></h2>
     <p><span class="ar-text">اضغط على أي قسم لتصفح منتجاته</span><span class="en-text">Click a category to browse its products</span></p>
   </div>
-  <div class="cats-grid">
-    <div class="cat-card active rv" onclick="filterProds('all',this)">
-      <div class="cat-emoji">🛍️</div>
-      <div class="cat-foot"><span class="ar-text">الكل</span><span class="en-text">All</span></div>
+<div class="cat-grid">
+    <div class="cat-card" onclick="filterByCategory('all')">
+        <div class="cat-icon">🏠</div>
+        <div class="cat-name">عرض الكل</div>
     </div>
-    <div class="cat-card rv" onclick="filterProds('stationery',this)">
-      <img class="cat-img" src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&q=80" alt="stationery" onerror="this.outerHTML='<div class=\'cat-emoji\'>✏️</div>'">
-      <div class="cat-foot"><span class="ar-text">أدوات مكتبية</span><span class="en-text">Stationery</span></div>
+    <div class="cat-card" onclick="filterByCategory('أدوات مكتبية')">
+        <div class="cat-icon">✏️</div>
+        <div class="cat-name">أدوات مكتبية</div>
     </div>
-    <div class="cat-card rv" onclick="filterProds('toys',this)">
-      <img class="cat-img" src="https://images.unsplash.com/photo-1558877385-81a1c7e67d72?w=400&q=80" alt="toys" onerror="this.outerHTML='<div class=\'cat-emoji\'>🧸</div>'">
-      <div class="cat-foot"><span class="ar-text">ألعاب</span><span class="en-text">Toys</span></div>
+    <div class="cat-card" onclick="filterByCategory('ألعاب')">
+        <div class="cat-icon">🧩</div>
+        <div class="cat-name">ألعاب</div>
     </div>
-    <div class="cat-card rv" onclick="filterProds('gifts',this)">
-      <img class="cat-img" src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80" alt="gifts" onerror="this.outerHTML='<div class=\'cat-emoji\'>🎁</div>'">
-      <div class="cat-foot"><span class="ar-text">هدايا</span><span class="en-text">Gifts</span></div>
+    <div class="cat-card" onclick="filterByCategory('هدايا')">
+        <div class="cat-icon">🎁</div>
+        <div class="cat-name">هدايا</div>
     </div>
-    <div class="cat-card rv" onclick="filterProds('home',this)">
-      <img class="cat-img" src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=400&q=80" alt="home" onerror="this.outerHTML='<div class=\'cat-emoji\'>🏠</div>'">
-      <div class="cat-foot"><span class="ar-text">أدوات منزلية</span><span class="en-text">Home Items</span></div>
+    <div class="cat-card" onclick="filterByCategory('أدوات منزلية')">
+        <div class="cat-icon">🏠</div>
+        <div class="cat-name">أدوات منزلية</div>
     </div>
-    <div class="cat-card rv" onclick="filterProds('books',this)">
-      <img class="cat-img" src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=400&q=80" alt="books" onerror="this.outerHTML='<div class=\'cat-emoji\'>📚</div>'">
-      <div class="cat-foot"><span class="ar-text">كتب خارجية</span><span class="en-text">Books</span></div>
+    <div class="cat-card" onclick="filterByCategory('كتب خارجية')">
+        <div class="cat-icon">📚</div>
+        <div class="cat-name">كتب خارجية</div>
     </div>
-  </div>
+</div>
+
+
 </section>
 
 <!-- PRODUCTS -->
@@ -2269,23 +2271,32 @@ function searchProducts() {
     document.getElementById('pagination').style.display = 'flex';
 }
 
-  function filterCategory(cat) {
-    currentPage = 1;
-
-    if (cat === 'الكل') {
-        currentProducts = allProducts;
+  
+function filterByCategory(catName) {
+    // 1. منطق الفلترة
+    if (catName === 'all') {
+        currentProducts = [...allProducts]; // عرض كل المنتجات
     } else {
-        currentProducts = allProducts.filter(p => {
-            return getCategory(p.name) === cat;
-        });
+        // فلترة المنتجات بناءً على الفئة المختارة
+        currentProducts = allProducts.filter(p => p.category === catName);
     }
 
-    // 🚨 ده أهم سطر كان ناقص في بعض نسخك
-    renderProducts(currentProducts, 1);
+    // 2. إعادة ضبط الصفحة الحالية للبداية
+    currentPage = 1;
 
-    document.getElementById('products-grid').style.display = 'grid';
-    document.getElementById('pagination').style.display = 'flex';
-  }
+    // 3. تحديث شكل الأزرار (إضافة كلاس active للزر المختار)
+    document.querySelectorAll('.cat-card').forEach(card => {
+        card.classList.remove('active');
+        // لو النص داخل الكارت يحتوي على اسم الفئة، يتم تمييزه
+        if (card.innerText.includes(catName === 'all' ? 'عرض الكل' : catName)) {
+            card.classList.add('active');
+        }
+    });
+
+    // 4. تحديث الشاشة بالمنتجات المفلترة
+    renderProducts();
+}
+
 
 window.onload = function () {
     // مفيش عرض تلقائي للمنتجات
