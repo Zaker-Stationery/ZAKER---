@@ -2260,21 +2260,32 @@ function renderProducts(products, page) {
   }
 function filterCategory(cat) {
     currentPage = 1;
-
+console.log(currentProducts);
     if (cat === 'الكل') {
         currentProducts = allProducts;
     } else {
-        currentProducts = allProducts.filter(p =>
-            getCategory(p.name) === cat
-        );
+        currentProducts = allProducts.filter(p => {
+            const productCat = getCategory(p.name);
+            return productCat && productCat === cat;
+        });
     }
-
-    document.getElementById('products-grid').style.display = 'grid';
-    document.getElementById('pagination').style.display = 'flex';
 
     renderProducts(currentProducts, 1);
 }
-function getCategory() { }
+
+function getCategory(name) {
+    name = name.toLowerCase().trim();
+
+    for (let category in categories) {
+        for (let keyword of categories[category]) {
+            if (name.includes(keyword.toLowerCase().trim())) {
+                return category.trim();
+            }
+        }
+    }
+
+    return null; // بدل "غير مصنف"
+}
 window.onload = function () {
     currentProducts = [];
 };
