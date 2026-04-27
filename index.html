@@ -2273,29 +2273,35 @@ function searchProducts() {
 
   
 function filterByCategory(catName) {
-    // 1. منطق الفلترة
+    // 1. تحديد المنتجات التي ستظهر
     if (catName === 'all') {
-        currentProducts = [...allProducts]; // عرض كل المنتجات
+        currentProducts = [...allProducts]; // عرض الكل
     } else {
-        // فلترة المنتجات بناءً على الفئة المختارة
-        currentProducts = allProducts.filter(p => p.category === catName);
+        // الحصول على الكلمات المفتاحية للفئة المختارة من القائمة اللي عندك فوق
+        const keywords = categories[catName] || [];
+        
+        currentProducts = allProducts.filter(product => {
+            const name = product.name.toLowerCase();
+            // البحث: هل اسم المنتج يحتوي على أي كلمة من كلمات هذه الفئة؟
+            return keywords.some(keyword => name.includes(keyword.toLowerCase()));
+        });
     }
 
-    // 2. إعادة ضبط الصفحة الحالية للبداية
+    // 2. إعادة ضبط رقم الصفحة للبداية
     currentPage = 1;
 
-    // 3. تحديث شكل الأزرار (إضافة كلاس active للزر المختار)
+    // 3. تمييز الزر المختار (إضافة كلاس active) بدون تغيير التصميم
     document.querySelectorAll('.cat-card').forEach(card => {
         card.classList.remove('active');
-        // لو النص داخل الكارت يحتوي على اسم الفئة، يتم تمييزه
         if (card.innerText.includes(catName === 'all' ? 'عرض الكل' : catName)) {
             card.classList.add('active');
         }
     });
 
-    // 4. تحديث الشاشة بالمنتجات المفلترة
+    // 4. السطر الأهم: استدعاء الدالة اللي بترسم المنتجات على الشاشة
     renderProducts();
 }
+
 
 
 window.onload = function () {
