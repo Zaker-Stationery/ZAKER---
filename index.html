@@ -2252,28 +2252,47 @@ const defaultImg = "https://i.ibb.co/JjGYxZSd/logo.png";
 
     renderPagination(products.length, page);
   }
-function searchProducts() { }
-function filterCategory(cat) {
+function searchProducts() {
+    const term = document.getElementById('searchInput').value.toLowerCase().trim();
+
+    currentPage = 1;
+
+    if (term === "") {
+        currentProducts = allProducts;
+    } else {
+        currentProducts = allProducts.filter(p =>
+            p.name.toLowerCase().includes(term)
+        );
+    }
+
+    renderProducts(currentProducts, 1);
+
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('pagination').style.display = 'flex';
+}
+
+  function filterCategory(cat) {
     currentPage = 1;
 
     if (cat === 'الكل') {
         currentProducts = allProducts;
     } else {
-        currentProducts = allProducts.filter(p =>
-            getCategory(p.name) === cat
-        );
+        currentProducts = allProducts.filter(p => {
+            return getCategory(p.name) === cat;
+        });
     }
+
+    // 🚨 ده أهم سطر كان ناقص في بعض نسخك
+    renderProducts(currentProducts, 1);
 
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('pagination').style.display = 'flex';
+  }
 
-    renderProducts(currentProducts, 1);
-}
-function getCategory() { }
 window.onload = function () {
+    // مفيش عرض تلقائي للمنتجات
     currentProducts = [];
 };
-
 </script>
 <script>
 // ── AUTH ──
